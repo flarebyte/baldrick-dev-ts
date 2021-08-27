@@ -15,6 +15,7 @@ import {
   RollupOptions,
   OutputOptions,
 } from 'rollup';
+import asyncro from 'asyncro';
 
 const prog = sade("devts");
 prog.version(version);
@@ -94,7 +95,7 @@ const buildCmd = async (dirtyOpts: BuildOpts) => {
   const buildConfigs = await computeRollupConfig(appPackageJson, dirtyOpts);
   await cleanDistFolder();
   if (dirtyOpts.format.includes('cjs')) {
-    const promise = writeCjsEntryFile(opts.name).catch(logError);
+    writeCjsEntryFile(dirtyOpts.name || 'no-name').catch(logError);
   }
   try {
     const promise = asyncro

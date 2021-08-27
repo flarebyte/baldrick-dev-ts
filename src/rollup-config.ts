@@ -22,6 +22,7 @@ import typescript from "rollup-plugin-typescript2";
 import json from "@rollup/plugin-json";
 import sourceMaps from "rollup-plugin-sourcemaps";
 import { terser } from "rollup-plugin-terser";
+import replace from "@rollup/plugin-replace";
 
 export type Many<T> = T | T[];
 
@@ -114,6 +115,8 @@ async function createRollupConfig(
   ]
     .filter(Boolean)
     .join(".");
+
+  const external = (id: string) => !id.startsWith(".") && !path.isAbsolute(id);
 
   const tsconfigPath = opts.tsconfig || paths.tsconfigJson;
   // borrowed from https://github.com/facebook/create-react-app/pull/7248
