@@ -11,7 +11,7 @@ import glob from "tiny-glob/sync";
 import path from "path";
 import fs from "fs-extra";
 import { paths } from "./path-helper";
-import { OutputOptions, RollupOptions } from "rollup";
+import { RollupOptions } from "rollup";
 import ts from "typescript";
 import camelCase from "camelcase";
 import resolve, {
@@ -308,7 +308,7 @@ if (fs.existsSync(paths.appConfig)) {
 
 export async function createBuildConfigs(
   opts: NormalizedOpts
-): Promise<Array<RollupOptions & { output: OutputOptions }>> {
+) {
   const allInputs = concatAllArray(
     opts.input.map((input: string) =>
       createAllFormats(opts, input).map(

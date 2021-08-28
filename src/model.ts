@@ -1,8 +1,11 @@
+export type ObjectWithKeys = { [key: string]: any };
+
 export interface PackageJson {
   name: string;
   source?: string;
-  jest?: any;
-  eslint?: any;
+  jest?: ObjectWithKeys;
+  eslint?: ObjectWithKeys;
+  prettier?: ObjectWithKeys;
   dependencies?: { [packageName: string]: string };
   devDependencies?: { [packageName: string]: string };
   engines?: {
@@ -68,4 +71,13 @@ export interface TsdxOptions extends SharedOpts {
   writeMeta?: boolean;
   // Only transpile, do not type check (makes compilation faster)
   transpileOnly?: boolean;
+}
+
+export interface LocalSetup {
+  rootFileNames: string[];
+  packageJson: PackageJson;
+  tsConfig?: ObjectWithKeys;
+  eslintConfig?: ObjectWithKeys;
+  prettierConfig?: ObjectWithKeys;
+  jestConfig?: ObjectWithKeys;
 }
