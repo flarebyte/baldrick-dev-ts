@@ -49,11 +49,9 @@ export interface JestOpts {
 
 export interface LintOpts {
   fix: boolean;
-  "ignore-pattern": string;
-  "write-file": boolean;
-  "report-file": string;
-  "max-warnings": number;
-  _: string[];
+  writeFile: boolean;
+  reportFile: string;
+  maxWarnings: number;
 }
 
 export interface TsdxOptions extends SharedOpts {
@@ -83,14 +81,18 @@ export interface Coverage {
   statements: number;
 }
 
+export interface Linting {
+  ignore: string[];
+}
+
 export interface ToolOptions {
   profileName: ProfileName;
   sizeLimitKB: number;
   coverage: Coverage;
+  linting: Linting;
 }
 
 export interface LocalSetup {
-  toolOptions: ToolOptions;
-  packageJson: PackageJson;
   modulePath: string;
+  toolOptions: ToolOptions;
 }

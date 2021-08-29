@@ -20,6 +20,9 @@ describe("Local setup", () => {
           statements: 97,
           functions: 96,
         },
+        linting: {
+          ignore: ["-io"],
+        },
       }),
       createPackageJson(),
     ];
@@ -50,6 +53,11 @@ describe("Local setup", () => {
             ],
             "lines": 95,
             "statements": 97,
+          },
+          "linting": Object {
+            "ignore": Array [
+              "-io",
+            ],
           },
           "profileName": "ts-lib",
           "sizeLimitKB": 10,

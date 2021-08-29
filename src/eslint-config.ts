@@ -1,4 +1,4 @@
-import { LintOpts, PackageJson } from "./model";
+import { LintOpts, LocalSetup } from "./model";
 
 const defaultConfig = {
     extends: [
@@ -9,14 +9,13 @@ const defaultConfig = {
     },
   };
 
-export const computeEsLintConfig = (appPackageJson: PackageJson, opts: LintOpts) => {
+export const computeEsLintConfig = (localSetup: LocalSetup, opts: LintOpts) => {
     return {
         baseConfig: {
           ...defaultConfig,
-          ...appPackageJson.eslint,
         },
         extensions: [".ts", ".tsx"],
         fix: opts.fix,
-        ignorePattern: opts["ignore-pattern"],
+        ignorePattern: localSetup.toolOptions.linting.ignore,
       }
 }
