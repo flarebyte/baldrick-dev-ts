@@ -10,13 +10,8 @@
     "node": ">=14"
   },
   "scripts": {
-    "prepare": "tsc -p tsconfig.json",
-    "build": "tsc -p tsconfig.json",
-    "lint": "yarn build && yarn lint:post-build",
-    "lint:post-build": "node dist/index.js lint ./",
-    "test": "jest",
-    "test:post-build": "node dist/index.js test",
-    "start": "tsc -p tsconfig.json --watch"
+    "lint": "tsdx lint",
+    "test": "tsdx test"
   },
   "dependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",
@@ -48,6 +43,8 @@
     "@types/eslint": "^7.28.0",
     "@types/fs-extra": "^9.0.12",
     "@types/node": "^16.7.2",
-    "@types/sade": "^1.7.3"
+    "@types/sade": "^1.7.3",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.3.1"
   }
 }

@@ -3,6 +3,7 @@ import {
   createTestingFilesSync,
   createToolOptions,
 } from "./generator";
+import { readLocalSetup } from "../src/local-setup";
 
 describe("Local setup", () => {
   beforeAll(() => {
@@ -23,5 +24,28 @@ describe("Local setup", () => {
     createTestingFilesSync(fileContents);
   });
 
-  it("reads the local setup", () => {});
+  it("reads the local setup", () => {
+    const actual = readLocalSetup("temp");
+    expect(actual).toMatchInlineSnapshot(
+      `
+      Object {
+        "appPath": "temp",
+        "packageJson": Object {
+          "name": "",
+        },
+        "toolOptions": Object {
+          "coverage": Object {
+            "branches": 100,
+            "functions": 100,
+            "ignore": Array [],
+            "lines": 100,
+            "statements": 100,
+          },
+          "profileName": "ts-lib",
+          "sizeLimitKB": 5,
+        },
+      }
+    `
+    );
+  });
 });
