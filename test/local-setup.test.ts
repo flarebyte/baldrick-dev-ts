@@ -1,22 +1,24 @@
 import {
-  createFileContent,
   createTempDirsSync,
   createTestingFilesSync,
+  createToolOptions,
 } from "./generator";
-
-const objSetup = (name: string) => ({
-  name,
-});
-
-const stringObjSetup = (name: string) =>
-  JSON.stringify(objSetup(name), null, 2);
 
 describe("Local setup", () => {
   beforeAll(() => {
     createTempDirsSync();
     const fileContents = [
-      createFileContent("eslintrc.json", stringObjSetup("eslint")),
-      createFileContent("prettierrc.json", stringObjSetup("prettier")),
+      createToolOptions({
+        profileName: "ts-lib",
+        sizeLimitKB: 10,
+        coverage: {
+          ignore: ["-io"],
+          branches: 95,
+          lines: 95,
+          statements: 97,
+          functions: 96,
+        },
+      }),
     ];
     createTestingFilesSync(fileContents);
   });

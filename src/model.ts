@@ -62,7 +62,7 @@ export interface TsdxOptions extends SharedOpts {
   // path to file
   input: string;
   // Environment
-  env: 'development' | 'production';
+  env: "development" | "production";
   // Module format
   format: ModuleFormat;
   // Is minifying?
@@ -73,11 +73,24 @@ export interface TsdxOptions extends SharedOpts {
   transpileOnly?: boolean;
 }
 
+export type ProfileName = "ts-lib" | "ts-cli";
+
+export interface Coverage {
+  ignore: string[];
+  branches: number;
+  functions: number;
+  lines: number;
+  statements: number;
+}
+
+export interface ToolOptions {
+  profileName: ProfileName;
+  sizeLimitKB: number;
+  coverage: Coverage;
+}
+
 export interface LocalSetup {
-  rootFileNames: string[];
+  toolOptions: ToolOptions;
   packageJson: PackageJson;
-  tsConfig?: ObjectWithKeys;
-  eslintConfig?: ObjectWithKeys;
-  prettierConfig?: ObjectWithKeys;
-  jestConfig?: ObjectWithKeys;
+  appPath: string;
 }
