@@ -1,8 +1,8 @@
 import { LocalSetup } from "./model";
 
-export const readLocalSetup = (appPath: string): LocalSetup => {
+export const readLocalSetup = (modulePath: string): LocalSetup => {
   const localSetup: LocalSetup = {
-    appPath,
+    modulePath,
     toolOptions: {
       profileName: "ts-lib",
       sizeLimitKB: 5,

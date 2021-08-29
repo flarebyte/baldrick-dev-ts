@@ -21,7 +21,7 @@ describe("Local setup", () => {
         },
       }),
     ];
-    createTestingFilesSync(fileContents);
+    createTestingFilesSync("temp", fileContents);
   });
 
   it("reads the local setup", () => {
@@ -29,7 +29,7 @@ describe("Local setup", () => {
     expect(actual).toMatchInlineSnapshot(
       `
       Object {
-        "appPath": "temp",
+        "modulePath": "temp",
         "packageJson": Object {
           "name": "",
         },

@@ -92,5 +92,5 @@ export interface ToolOptions {
 export interface LocalSetup {
   toolOptions: ToolOptions;
   packageJson: PackageJson;
-  appPath: string;
+  modulePath: string;
 }

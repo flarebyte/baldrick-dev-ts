@@ -44,8 +44,8 @@ export const createTempDirsSync = () => {
   fs.mkdirSync("temp/test");
 };
 
-export const createTestingFilesSync = (fileContents: FileContent[]) => {
+export const createTestingFilesSync = (modulePath: string, fileContents: FileContent[]) => {
   fileContents.forEach((fileContent) =>
-    fs.writeFileSync(fileContent.path, fileContent.content)
+    fs.writeFileSync(`${modulePath}/${fileContent.path}`, fileContent.content)
   );
 };
