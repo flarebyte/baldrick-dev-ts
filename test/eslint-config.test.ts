@@ -11,7 +11,6 @@ describe("eslint-config", () => {
     const opts = simpleLintOpts;
     const actual = computeEsLintConfig(localSetup, opts);
     expect(actual).toMatchInlineSnapshot(
-      "",
       `
       Object {
         "baseConfig": Object {
