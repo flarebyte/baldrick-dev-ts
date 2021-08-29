@@ -1,22 +1,12 @@
+import { readJsonSync } from "fs-extra";
 import { LocalSetup } from "./model";
+import { resolve } from "path";
 
 export const readLocalSetup = (modulePath: string): LocalSetup => {
   const localSetup: LocalSetup = {
     modulePath,
-    toolOptions: {
-      profileName: "ts-lib",
-      sizeLimitKB: 5,
-      coverage: {
-        ignore: [],
-        branches: 100,
-        functions: 100,
-        lines: 100,
-        statements: 100,
-      },
-    },
-    packageJson: {
-      name: "",
-    },
+    toolOptions: readJsonSync(resolve(modulePath, ".baldrick-dev.json")),
+    packageJson: readJsonSync(resolve(modulePath, "package.json")),
   };
   return localSetup;
 };

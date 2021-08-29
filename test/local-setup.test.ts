@@ -1,4 +1,5 @@
 import {
+  createPackageJson,
   createTempDirsSync,
   createTestingFilesSync,
   createToolOptions,
@@ -20,32 +21,40 @@ describe("Local setup", () => {
           functions: 96,
         },
       }),
+      createPackageJson(),
     ];
     createTestingFilesSync("temp", fileContents);
   });
 
   it("reads the local setup", () => {
     const actual = readLocalSetup("temp");
-    expect(actual).toMatchInlineSnapshot(
-      `
+    expect(actual).toMatchInlineSnapshot(`
       Object {
         "modulePath": "temp",
         "packageJson": Object {
-          "name": "",
+          "dependencies": Object {},
+          "devDependencies": Object {
+            "jest": "^27.0.6",
+          },
+          "engines": Object {
+            "node": ">=14",
+          },
+          "name": "test-package-name",
         },
         "toolOptions": Object {
           "coverage": Object {
-            "branches": 100,
-            "functions": 100,
-            "ignore": Array [],
-            "lines": 100,
-            "statements": 100,
+            "branches": 95,
+            "functions": 96,
+            "ignore": Array [
+              "-io",
+            ],
+            "lines": 95,
+            "statements": 97,
           },
           "profileName": "ts-lib",
-          "sizeLimitKB": 5,
+          "sizeLimitKB": 10,
         },
       }
-    `
-    );
+    `);
   });
 });

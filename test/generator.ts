@@ -1,5 +1,5 @@
 import fs from "fs-extra";
-import { ObjectWithKeys, ToolOptions } from "../src/model";
+import { ToolOptions } from "../src/model";
 
 interface FileContent {
   path: string;
@@ -11,17 +11,11 @@ export const createFileContent = (path: string, content: string) => ({
 });
 
 export const createPackageJson = (
-  jest?: ObjectWithKeys,
-  eslint?: ObjectWithKeys,
-  prettier?: ObjectWithKeys
 ): FileContent => ({
   path: "package.json",
   content: JSON.stringify(
     {
       name: "test-package-name",
-      jest,
-      eslint,
-      prettier,
       dependencies: {},
       devDependencies: { jest: "^27.0.6" },
       engines: {
