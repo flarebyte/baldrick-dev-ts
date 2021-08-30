@@ -43,3 +43,23 @@ export const createTestingFilesSync = (modulePath: string, fileContents: FileCon
     fs.writeFileSync(`${modulePath}/${fileContent.path}`, fileContent.content)
   );
 };
+
+const additionTs = `
+export const sum = (a: number, b: number) => {
+  return a + b;
+};
+`
+
+export const indexTs: FileContent = createFileContent('src/index.ts', additionTs)
+
+const additionTestTs = `
+import { sum } from '../src';
+
+describe('sum', () => {
+  it('adds two numbers together', () => {
+    expect(sum(1, 1)).toEqual(2);
+  });
+});
+`
+
+export const indexTestTs: FileContent = createFileContent('test/index.test.ts', additionTestTs)

@@ -3,9 +3,11 @@ import {
   createTempDirsSync,
   createTestingFilesSync,
   createToolOptions,
+  indexTestTs,
+  indexTs,
 } from "./generator";
 import { eslintCommand } from "../src/eslint-command";
-import { LocalSetup } from "../src/model";
+import { LintOpts, LocalSetup } from "../src/model";
 import { simpleToolOptions } from "./fixture-tool-opts";
 
 const someToolOptions = {...simpleToolOptions}
@@ -20,11 +22,19 @@ describe("eslint-command", () => {
     const fileContents = [
       createToolOptions(someToolOptions),
       createPackageJson(),
+      indexTs,
+      indexTestTs
     ];
     createTestingFilesSync("temp", fileContents);
   });
   it("run linting", () => {
-    const actual = eslintCommand(someLocalSetup);
+      const lintOpts: LintOpts = {
+        fix: false,
+        writeFile: false,
+        reportFile: "report",
+        maxWarnings: 3
+      }
+    const actual = eslintCommand(someLocalSetup)(lintOpts);
     expect(actual).toBeDefined()
   });
 });

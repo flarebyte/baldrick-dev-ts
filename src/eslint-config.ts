@@ -2,8 +2,6 @@ import { LintOpts, LocalSetup } from "./model";
 
 const defaultConfig = {
     extends: [
-      'prettier/@typescript-eslint',
-      'plugin:prettier/recommended',
     ],
     settings: {
     },
