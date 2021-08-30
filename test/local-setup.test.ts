@@ -24,7 +24,7 @@ describe("Local setup", () => {
           ignore: ["-io"],
         },
       }),
-      createPackageJson(),
+      createPackageJson('temp'),
     ];
     createTestingFilesSync("temp", fileContents);
   });

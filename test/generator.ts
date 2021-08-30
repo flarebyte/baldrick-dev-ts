@@ -10,12 +10,12 @@ export const createFileContent = (path: string, content: string) => ({
   content,
 });
 
-export const createPackageJson = (
+export const createPackageJson = ( name: string
 ): FileContent => ({
   path: "package.json",
   content: JSON.stringify(
     {
-      name: "test-package-name",
+      name,
       dependencies: {},
       devDependencies: { jest: "^27.0.6" },
       engines: {
@@ -32,11 +32,17 @@ export const createToolOptions = (toolOpts: ToolOptions): FileContent => ({
   content: JSON.stringify(toolOpts, null, 2),
 });
 
-export const createTempDirsSync = () => {
-  fs.emptyDirSync("temp");
-  fs.mkdirSync("temp/src");
-  fs.mkdirSync("temp/test");
+const randomBetween = (low: number, high: number): number => Math.ceil(Math.random() * (high - low) + low)
+
+export const createTempDirsSync = () : string => {
+  const suffix = randomBetween(1, 1000000)
+  const tempFolder = `temp/temp${suffix}`
+  fs.ensureDirSync(`${tempFolder}/src`);
+  fs.ensureDirSync(`${tempFolder}/test`);
+  return tempFolder;
 };
+
+export const emptyTempDir = () => fs.emptyDirSync('temp');
 
 export const createTestingFilesSync = (modulePath: string, fileContents: FileContent[]) => {
   fileContents.forEach((fileContent) =>
