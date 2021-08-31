@@ -81,3 +81,8 @@ describe('sum', () => {
 
 export const indexTestTs: FileContent = createFileContent('test/index.test.ts', additionTestTs)
 
+const readmeLint = `
+# test readme
+> Basic markdown description
+`
+export const readmeMd: FileContent = createFileContent('README.md', readmeLint)
