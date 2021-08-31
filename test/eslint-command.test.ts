@@ -5,6 +5,7 @@ import {
   createToolOptions,
   indexTestTs,
   indexTs,
+  problematicTs,
 } from "./generator";
 import { eslintCommand } from "../src/eslint-command";
 import { LintOpts, LocalSetup } from "../src/model";
@@ -17,6 +18,7 @@ const createProjectDir = () => {
     createToolOptions(someToolOptions),
     createPackageJson("module-" + tempDir.replace("/", "-")),
     indexTs,
+    problematicTs,
     indexTestTs,
   ];
   createTestingFilesSync(tempDir, fileContents);

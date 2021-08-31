@@ -58,6 +58,17 @@ export const sum = (a: number, b: number) => {
 
 export const indexTs: FileContent = createFileContent('src/index.ts', additionTs)
 
+const fullOfProblemLint = `
+function addOne(i) {
+  if (i != NaN) {
+      return i ++
+  } else {
+    return
+  }
+};
+`
+export const problematicTs: FileContent = createFileContent('src/problematic.ts', fullOfProblemLint)
+
 const additionTestTs = `
 import { sum } from '../src';
 
@@ -69,3 +80,4 @@ describe('sum', () => {
 `
 
 export const indexTestTs: FileContent = createFileContent('test/index.test.ts', additionTestTs)
+

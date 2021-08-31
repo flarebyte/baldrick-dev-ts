@@ -5,7 +5,10 @@ import { ESLint } from "eslint";
 export const eslintCommand = (localSetup: LocalSetup) => async (opts: LintOpts) => {
   const cliConfig = computeEsLintConfig(localSetup, opts);
   console.log('>>>ignore', cliConfig)
-  const eslint = new ESLint();
+  
+  const eslint = new ESLint(cliConfig);
   const results = await eslint.lintFiles([`${localSetup.modulePath}/src/**/*.ts`, `${localSetup.modulePath}/test/**/*.ts`]);
-  console.log('>>>', results)
+  const formatter = await eslint.loadFormatter("stylish");
+  const resultText = formatter.format(results);
+  console.log('>>> stylish:', resultText)
 };
