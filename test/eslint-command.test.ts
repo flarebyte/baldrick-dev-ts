@@ -7,8 +7,8 @@ import {
   indexTs,
   problematicTs,
 } from "./generator";
-import { eslintCommand } from "../src/eslint-command";
-import { LintOpts, LocalSetup } from "../src/model";
+import { createESLint, lintCommand } from "../src/eslint-command";
+import { LintResolvedOpts } from "../src/model";
 import { simpleToolOptions } from "./fixture-tool-opts";
 
 const someToolOptions = { ...simpleToolOptions };
@@ -25,19 +25,21 @@ const createProjectDir = () => {
   return tempDir;
 };
 describe("eslint-command", () => {
-  it("run linting", () => {
+  it("run linting", async () => {
     const modulePath = createProjectDir();
-    const lintOpts: LintOpts = {
-      fix: false,
-      writeFile: false,
-      reportFile: "report",
-      maxWarnings: 3,
-    };
-    const someLocalSetup: LocalSetup = {
+    const lintOpts: LintResolvedOpts = {
       modulePath,
-      toolOptions: someToolOptions,
+      mode: 'check',
+      folders: ['src', 'test']
     };
-    const actual = eslintCommand(someLocalSetup)(lintOpts);
-    expect(actual).toBeDefined();
+    const handle = await createESLint(lintOpts);
+    expect(handle).toBeDefined();
+    expect(handle.eslint).toBeDefined();
+    expect(handle.opts).toBeDefined();
+    expect(handle.options).toBeDefined();
+    expect(handle.formatter).toBeDefined();
+    const results = await lintCommand(handle)
+    expect(results).toHaveLength(3)
+    expect(handle.formatter.format(results)).toContain('Missing return type')
   });
 });
