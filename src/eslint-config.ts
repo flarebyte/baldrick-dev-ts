@@ -5,11 +5,12 @@ import { ESLint } from "eslint";
 
 const defaultConfig = {
   parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "jest"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
+    "plugin:jest/recommended",
   ],
   settings: {},
 };
