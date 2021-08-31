@@ -2,7 +2,7 @@ import { computeEsLintConfig } from "./eslint-config";
 import { LintResolvedOpts } from "./model";
 import { ESLint } from "eslint";
 
-interface ESLintHandle {
+export interface ESLintHandle {
   eslint: ESLint;
   opts: LintResolvedOpts;
   options: ESLint.Options;

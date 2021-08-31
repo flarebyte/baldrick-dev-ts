@@ -56,7 +56,13 @@ export const sum = (a: number, b: number) => {
 };
 `
 
-export const indexTs: FileContent = createFileContent('src/index.ts', additionTs)
+const addPrefixTs = `
+export const addPrefix = (text: string) => {
+  return "prefix" + text;
+};
+`
+
+export const indexTs: FileContent = createFileContent('src/index.ts', [additionTs, addPrefixTs].join('\n'))
 
 const fullOfProblemLint = `
 function addOne(i) {
