@@ -6,7 +6,11 @@ import { ESLint } from "eslint";
 const defaultConfig = {
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
-  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+  ],
   settings: {},
 };
 
