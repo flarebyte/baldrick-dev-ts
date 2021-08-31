@@ -22,7 +22,7 @@ export const computeEsLintConfig = (opts: LintResolvedOpts): ESLint.Options => {
     baseConfig: {
       ...defaultConfig,
     },
-    extensions: [".ts", ".tsx"],
+    extensions: [".ts", ".json"],
     fix: opts.mode === "fix",
   };
 };
