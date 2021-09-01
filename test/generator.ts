@@ -151,3 +151,15 @@ export const tsconfigEsNext: FileContent = createFileContent(
   'tsconfig.json',
   JSON.stringify(tsconfigEsNextJson, null, 2)
 );
+
+export const tsconfigNode = (configVersion: 'node14' | 'node16') =>
+  createFileContent(
+    'tsconfig.json',
+    JSON.stringify(
+      {
+        extends: `@tsconfig/${configVersion}/tsconfig.json`,
+      },
+      null,
+      2
+    )
+  );
