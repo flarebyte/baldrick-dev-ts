@@ -3,6 +3,7 @@ import {
   createTempDirsSync,
   createTestingFilesSync,
   createToolOptions,
+  editorConfig,
   indexTestTs,
   indexTs,
   problematicTs,
@@ -23,6 +24,7 @@ const createProjectDir = () => {
     problematicTs,
     indexTestTs,
     readmeMd,
+    editorConfig,
     tsconfigNode('node14')
   ];
   createTestingFilesSync(tempDir, fileContents);
