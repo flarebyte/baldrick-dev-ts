@@ -7,6 +7,7 @@ import {
   indexTs,
   problematicTs,
   readmeMd,
+  tsconfigEsNext,
 } from "./generator";
 import { createESLint, ESLintHandle, lintCommand } from "../src/eslint-command";
 import { LintResolvedOpts } from "../src/model";
@@ -22,6 +23,7 @@ const createProjectDir = () => {
     problematicTs,
     indexTestTs,
     readmeMd,
+    tsconfigEsNext
   ];
   createTestingFilesSync(tempDir, fileContents);
   return tempDir;
