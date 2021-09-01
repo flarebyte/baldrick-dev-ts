@@ -20,12 +20,6 @@ export const createPackageJson = (name: string): FileContent => ({
       engines: {
         node: '>=14',
       },
-      prettier: {
-        printWidth: 80,
-        semi: true,
-        singleQuote: true,
-        trailingComma: 'es5',
-      },
     },
     null,
     2
@@ -36,6 +30,18 @@ export const createToolOptions = (toolOpts: ToolOptions): FileContent => ({
   path: '.baldrick-dev.json',
   content: JSON.stringify(toolOpts, null, 2),
 });
+
+const prettierConfig = {
+  printWidth: 80,
+  semi: true,
+  singleQuote: true,
+  trailingComma: 'es5',
+};
+
+export const prettierContent: FileContent = {
+  path: '.prettierrc',
+  content: JSON.stringify(prettierConfig, null, 2),
+};
 
 const randomBetween = (low: number, high: number): number =>
   Math.ceil(Math.random() * (high - low) + low);

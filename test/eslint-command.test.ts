@@ -6,6 +6,7 @@ import {
   editorConfig,
   indexTestTs,
   indexTs,
+  prettierContent,
   problematicTs,
   readmeMd,
   tsconfigNode,
@@ -25,6 +26,7 @@ const createProjectDir = () => {
     indexTestTs,
     readmeMd,
     editorConfig,
+    prettierContent,
     tsconfigNode('node14')
   ];
   createTestingFilesSync(tempDir, fileContents);
@@ -57,6 +59,7 @@ describe("eslint-command", () => {
     expect(handle.jsonFormatter.format(results)).toContain(
       "Missing return type"
     );
+    console.log(handle.formatter.format(results))
     expect(results.map((r) => r.errorCount)).toEqual([0, 1, 0]);
     expect(results.map((r) => r.warningCount)).toEqual([2, 1, 0]);
     expect(results.map((r) => toLastPartOfFile(r.filePath))).toEqual([
