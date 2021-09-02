@@ -59,15 +59,14 @@ describe("eslint-command", () => {
     expect(handle.jsonFormatter.format(results)).toContain(
       "Missing return type"
     );
-    console.log(handle.formatter.format(results))
-    expect(results.map((r) => r.errorCount)).toEqual([0, 1, 0]);
+    expect(results.map((r) => r.errorCount)).toEqual([3, 5, 1]);
     expect(results.map((r) => r.warningCount)).toEqual([2, 1, 0]);
     expect(results.map((r) => toLastPartOfFile(r.filePath))).toEqual([
       "index.ts",
       "problematic.ts",
       "index.test.ts",
     ]);
-    expect(results.map((r) => r.fixableErrorCount)).toEqual([0, 0, 0]);
+    expect(results.map((r) => r.fixableErrorCount)).toEqual([3, 4, 1]);
     expect(results.map((r) => r.fixableWarningCount)).toEqual([0, 0, 0]);
   });
   it("run linting ci", async () => {
