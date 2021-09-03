@@ -105,3 +105,7 @@ export interface LintResolvedOpts {
   folders: string[];
 }
 
+export interface PathInfo {
+  path: string;
+  flags: string[];
+}

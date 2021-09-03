@@ -94,7 +94,8 @@ describe('eslint-command', () => {
       'Missing return type'
     );
     const indexAfter = readTempFileAsync(modulePath, 'src/index.ts');
-    expect(diffChars(indexBefore, indexAfter)).toMatchInlineSnapshot(`
+    const diffIndex = diffChars(indexBefore, indexAfter);
+    expect(diffIndex).toMatchInlineSnapshot(`
       Array [
         Object {
           "count": 143,
