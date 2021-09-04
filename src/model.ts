@@ -124,3 +124,12 @@ export type FileInfoFilter =
 export type FilterArgs = {
   
 }
+
+export interface StatusRecord {
+    title: string;
+    message: string;
+    params: string[];
+    status: 'success' | 'failure'
+}
+
+export type GlobAction = (script: string[]) => void
