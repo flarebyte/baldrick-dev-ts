@@ -13,19 +13,19 @@ export interface PackageJson {
   };
 }
 interface SharedOpts {
-  target: "node" | "browser";
+  target: 'node' | 'browser';
   // Path to tsconfig file
   tsconfig?: string;
   // Is error extraction running?
   extractErrors?: boolean;
 }
-export type ModuleFormat = "cjs" | "umd" | "esm" | "system";
+export type ModuleFormat = 'cjs' | 'umd' | 'esm' | 'system';
 
 export interface BuildOpts extends SharedOpts {
   name?: string;
   entry?: string | string[];
-  format: "cjs,esm";
-  target: "browser";
+  format: 'cjs,esm';
+  target: 'browser';
 }
 
 export interface WatchOpts extends BuildOpts {
@@ -37,7 +37,7 @@ export interface WatchOpts extends BuildOpts {
 }
 
 export interface NormalizedOpts
-  extends Omit<WatchOpts, "name" | "input" | "format"> {
+  extends Omit<WatchOpts, 'name' | 'input' | 'format'> {
   name: string;
   input: string[];
   format: [ModuleFormat, ...ModuleFormat[]];
@@ -60,7 +60,7 @@ export interface TsdxOptions extends SharedOpts {
   // path to file
   input: string;
   // Environment
-  env: "development" | "production";
+  env: 'development' | 'production';
   // Module format
   format: ModuleFormat;
   // Is minifying?
@@ -71,7 +71,7 @@ export interface TsdxOptions extends SharedOpts {
   transpileOnly?: boolean;
 }
 
-export type ProfileName = "ts-lib" | "ts-cli";
+export type ProfileName = 'ts-lib' | 'ts-cli';
 
 export interface Coverage {
   ignore: string[];
@@ -97,7 +97,7 @@ export interface LocalSetup {
   toolOptions: ToolOptions;
 }
 
-export type LintMode = 'check' | 'fix' | 'ci'
+export type LintMode = 'check' | 'fix' | 'ci';
 
 export interface LintResolvedOpts {
   modulePath: string;
@@ -108,4 +108,19 @@ export interface LintResolvedOpts {
 export interface PathInfo {
   path: string;
   flags: string[];
+}
+
+export type FileInfoFilter =
+  | { kind: 'unknown' }
+  | { kind: 'tag:equal'; value: string }
+  | { kind: 'tag:startsWith'; value: string }
+  | { kind: 'tag:any'; values: string[] }
+  | { kind: 'tag:all'; values: string[] }
+  | { kind: 'ext:equal'; value: string }
+  | { kind: 'ext:any'; values: string[] }
+  | { kind: 'not'; filter: FileInfoFilter }
+  | { kind: 'and'; filters: FileInfoFilter[] };
+
+export type FilterArgs = {
+  
 }

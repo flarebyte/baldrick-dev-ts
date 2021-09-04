@@ -1,5 +1,5 @@
 import { PathInfo } from '../src/model';
-import { byFlag } from '../src/path-filtering'
+import { byFlag, filterToString, stringToFilter } from '../src/path-filtering'
 import { asPath } from '../src/path-transforming'
 
 const examples: PathInfo[] = [
@@ -56,4 +56,14 @@ describe('Path filtering', () => {
     expect(actual.map(asPath)).toEqual(['package.json', 'src/data.json'])
   });
   it.todo('filter a list of files by flags and regex');
+});
+
+describe('Conversion between string and filter', () => {
+  it('should create a simple filter', () => {
+    const givenQuery = 'tag:equal json'
+    const actualFilter = stringToFilter(givenQuery)
+    const actualQuery = filterToString(actualFilter)
+    expect(actualQuery).toEqual(givenQuery)
+  });
+  
 });
