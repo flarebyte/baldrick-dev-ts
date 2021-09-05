@@ -110,27 +110,12 @@ export interface PathInfo {
   flags: string[];
 }
 
-export const supportedFileInfoFilterKind = [
-  'with-path-starting:',
-  'with-no-path-starting:',
-  'with-extension:',
-  'with-no-extension:',
-  'with-path-segment:',
-  'with-no-path-segment:',
-  'with-flag:',
-  'with-no-flag:',
-];
+const rawFilterKind = ['path-starting', 'extension', 'path-segment', 'flag'];
 
-export type FileInfoFilter =
-  | { kind: 'unknown' }
-  | { kind: 'with-path-starting:'; values: string[] }
-  | { kind: 'with-no-path-starting:'; values: string[] }
-  | { kind: 'with-extension:'; values: string[] }
-  | { kind: 'with-no-extension:'; values: string[] }
-  | { kind: 'with-path-segment:'; values: string[] }
-  | { kind: 'with-no-path-segment:'; values: string[] }
-  | { kind: 'with-flag:'; values: string[] }
-  | { kind: 'with-no-flag:'; values: string[] };
+export const supportedFileInfoFilterKind = [
+  ...rawFilterKind.map((name) => `with-${name}:`),
+  ...rawFilterKind.map((name) => `with-no-${name}:`),
+];
 
 export type FilterArgs = {};
 
