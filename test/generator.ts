@@ -51,6 +51,8 @@ export const createTempDirsSync = (): string => {
   const tempFolder = `temp/temp${suffix}`;
   fs.ensureDirSync(`${tempFolder}/src`);
   fs.ensureDirSync(`${tempFolder}/test`);
+  fs.ensureDirSync(`${tempFolder}/schemas`);
+  fs.ensureDirSync(`${tempFolder}/data`);
   return tempFolder;
 };
 
@@ -188,3 +190,52 @@ export const editorConfig: FileContent = createFileContent(
   '.editorconfig',
   editorConfigSimple
 );
+
+// https://json-schema.org/learn/miscellaneous-examples.html
+
+const personSchemaObj = {
+  $id: 'https://example.com/person.schema.json',
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
+  title: 'Person',
+  type: 'object',
+  properties: {
+    firstName: {
+      type: 'string',
+      description: "The person's first name.",
+    },
+    lastName: {
+      type: 'string',
+      description: "The person's last name.",
+    },
+    age: {
+      description: 'Age in years which must be equal to or greater than zero.',
+      type: 'integer',
+      minimum: 0,
+    },
+  },
+};
+
+export const personSchema = createFileContent(
+  'schemas/author.schema.json',
+  JSON.stringify(personSchemaObj, null, 2)
+);
+
+export const author = (firstName: string, lastName: string, age: number) =>
+  createFileContent(
+    `data/author-${lastName}.json`,
+    JSON.stringify(
+      {
+        firstName,
+        lastName,
+        age,
+      },
+      null,
+      2
+    )
+  );
+
+export const authorList = (names: string[]) =>
+  createFileContent(
+    'author-list.csv',
+    names.map((lastName) => `data/author-${lastName}.json`).join('\n')
+  );
