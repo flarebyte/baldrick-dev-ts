@@ -17,13 +17,12 @@ export class CommandingInstrumentation {
     const lastId = this._statusRecords.length - 1;
     return lastId >= 0 ? this._statusRecords[lastId] : unknown;
   }
-  globAction(params: string[]) {
-      console.log('>>>', params)
+  globActionStart(params: string[]) {
     this._statusRecords.push({
       title: 'glob action',
       message: 'run',
       params,
-      status: 'success',
+      status: 'before',
     });
   }
 }

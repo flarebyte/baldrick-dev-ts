@@ -121,15 +121,13 @@ export type FileInfoFilter =
   | { kind: 'not'; filter: FileInfoFilter }
   | { kind: 'and'; filters: FileInfoFilter[] };
 
-export type FilterArgs = {
-  
-}
+export type FilterArgs = {};
 
 export interface StatusRecord {
-    title: string;
-    message: string;
-    params: string[];
-    status: 'success' | 'failure'
+  title: string;
+  message: string;
+  params: string[];
+  status: 'before' | 'success' | 'failure';
 }
 
-export type GlobAction = (script: string[]) => void
+export type GlobAction = (script: string[]) => void;
