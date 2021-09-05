@@ -1,5 +1,5 @@
 import { PathInfo } from '../src/model';
-import { byFlag, filterToString, stringToFilter } from '../src/path-filtering'
+import { byFlag, filterToSubscript, subscriptToFilter } from '../src/path-filtering'
 import { asPath } from '../src/path-transforming'
 
 const examples: PathInfo[] = [
@@ -60,9 +60,9 @@ describe('Path filtering', () => {
 
 describe('Conversion between string and filter', () => {
   it('should create a simple filter', () => {
-    const givenQuery = 'tag:equal json'
-    const actualFilter = stringToFilter(givenQuery)
-    const actualQuery = filterToString(actualFilter)
+    const givenQuery = ['with-path-containing:', 'test']
+    const actualFilter = subscriptToFilter(givenQuery)
+    const actualQuery = filterToSubscript(actualFilter)
     expect(actualQuery).toEqual(givenQuery)
   });
   
