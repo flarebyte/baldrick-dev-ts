@@ -5,47 +5,47 @@ import { asPath } from '../src/path-transforming'
 const examples: PathInfo[] = [
   {
     path: 'package.json',
-    flags: ['json'],
+    tags: ['json'],
   },
   {
     path: 'README.md',
-    flags: ['md'],
+    tags: ['md'],
   },
   {
     path: 'src/index.ts',
-    flags: ['ts'],
+    tags: ['ts'],
   },
   {
     path: 'src/data.json',
-    flags: ['json'],
+    tags: ['json'],
   },
   {
     path: 'src/alpha.ts',
-    flags: ['ts'],
+    tags: ['ts'],
   },
   {
     path: 'src/bravo.ts',
-    flags: ['ts'],
+    tags: ['ts'],
   },
   {
     path: 'src/charlie.ts',
-    flags: ['ts', 'charlie'],
+    tags: ['ts', 'charlie'],
   },
   {
     path: 'test/index.test.ts',
-    flags: ['ts'],
+    tags: ['ts'],
   },
   {
     path: 'test/alpha.test.ts',
-    flags: ['ts'],
+    tags: ['ts'],
   },
   {
     path: 'test/bravo.test.ts',
-    flags: ['ts'],
+    tags: ['ts'],
   },
   {
     path: 'test/charlie.test.ts',
-    flags: ['ts', 'charlie'],
+    tags: ['ts', 'charlie'],
   },
 ];
 
