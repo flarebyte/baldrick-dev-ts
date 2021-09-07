@@ -1,4 +1,4 @@
-import { StatusRecord } from './model';
+import { LintActionOpts, StatusRecord } from './model';
 const unknown: StatusRecord = {
   title: 'unknown',
   message: 'no record yet',
@@ -22,6 +22,14 @@ export class CommandingInstrumentation {
       title: 'glob action',
       message: 'run',
       params,
+      status: 'before',
+    });
+  }
+  lintActionStart(lintOpts: LintActionOpts) {
+    this._statusRecords.push({
+      title: 'lint action',
+      message: 'run',
+      params: [JSON.stringify(lintOpts, null, 2)],
       status: 'before',
     });
   }

@@ -107,15 +107,27 @@ export interface LintResolvedOpts {
 
 export interface PathInfo {
   path: string;
-  flags: string[];
+  tags: string[];
 }
 
-const rawFilterKind = ['path-starting', 'extension', 'path-segment', 'flag'];
+const rawFilterKind = ['path-starting', 'extension', 'path-segment', 'tag'];
 
 export const supportedFileInfoFilterKind = [
   ...rawFilterKind.map((name) => `with-${name}:`),
   ...rawFilterKind.map((name) => `with-no-${name}:`),
 ];
+
+
+export interface FileFiltering {
+  withPathStarting: string[];
+  withoutPathStarting: string[];
+  withExtension: string[];
+  withoutExtension: string[];
+  withPathSegment: string[];
+  withoutPathSegment: string[];
+  withTag: string[];
+  withoutTag: string[];
+}
 
 export type FilterArgs = {};
 
@@ -127,3 +139,18 @@ export interface StatusRecord {
 }
 
 export type GlobAction = (script: string[]) => void;
+
+export type LintReport =
+  | { kind: 'junit', filename: string }
+  | { kind: 'json', filename: string }
+
+export type FileSearchMode = 'find' | 'list' | 'load'
+export interface LintActionOpts {
+  searchMode: string;
+  pathInfos: PathInfo[];
+  fileFiltering: FileFiltering;
+  ecmaVersion: number;
+  report: LintReport[];
+}
+
+export type LintAction = (options: LintActionOpts) => void;
