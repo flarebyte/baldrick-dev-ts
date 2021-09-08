@@ -9,6 +9,8 @@ interface CmdLintFilterOptions {
   withoutPathSegment: CmdOption;
   withTag: CmdOption;
   withoutTag: CmdOption;
+  withTagStarting: CmdOption;
+  withoutTagStarting: CmdOption;
 }
 const option = (
   shortFlag: string,
@@ -30,4 +32,6 @@ export const cmdLintFilterOptions: CmdLintFilterOptions = {
   withoutPathSegment: option('S', 'without-path-segment', 'Exclude a list of unwanted texts that should not be part of the path'),
   withTag: option('t', 'with-tag', 'Specify a list of expected tags (any will match)'),
   withoutTag: option('T', 'without-tag', 'Exclude a list of unwanted tags'),
+  withTagStarting: option('p', 'with-tag-starting', 'Specify a list of expected prefixes for the tag (any will match)'),
+  withoutTagStarting: option('P', 'without-tag-starting', 'Exclude a list of unwanted prefixes for the tag'),
 };

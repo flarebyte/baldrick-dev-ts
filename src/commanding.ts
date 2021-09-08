@@ -42,6 +42,8 @@ export class Commanding {
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutPathSegment))
       .addOption(toCommanderOption(cmdLintFilterOptions.withTag))
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutTag))
+      .addOption(toCommanderOption(cmdLintFilterOptions.withTagStarting))
+      .addOption(toCommanderOption(cmdLintFilterOptions.withoutTagStarting))
       .option(
         '-ecma, --ecma-version [ecmaVersion...]',
         'specify the ecma version',
@@ -59,6 +61,8 @@ export class Commanding {
           withoutPathSegment: string[],
           withTag: string[],
           withoutTag: string[],
+          withTagStarting: string[],
+          withoutTagStarting: string[],
           ecmaVersion: number
         ) => {
           const lintOpts: LintActionOpts = {
@@ -73,6 +77,8 @@ export class Commanding {
               withoutPathSegment,
               withTag,
               withoutTag,
+              withTagStarting,
+              withoutTagStarting,
             },
             ecmaVersion,
             report: [],

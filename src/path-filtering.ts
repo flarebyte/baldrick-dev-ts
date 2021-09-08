@@ -10,6 +10,8 @@ export const emptyFileFiltering: FileFiltering = {
   withoutPathSegment: [],
   withTag: [],
   withoutTag: [],
+  withTagStarting: [],
+  withoutTagStarting: [],
 };
 
 export const byFileQuery =
@@ -30,7 +32,10 @@ export const byFileQuery =
         query.withPathSegment.some((segment) =>
           pathInfo.path.includes(segment)
         ) ||
-        query.withTag.some((tag) => pathInfo.tags.includes(tag))) &&
+        query.withTag.some((tag) => pathInfo.tags.includes(tag)) ||
+        query.withTagStarting.some((tag) =>
+          pathInfo.tags.some((tag2) => tag2.startsWith(tag))
+        )) &&
       !(
         query.withoutPathStarting.some((start) =>
           pathInfo.path.startsWith(start)
@@ -39,7 +44,10 @@ export const byFileQuery =
         query.withoutPathSegment.some((segment) =>
           pathInfo.path.includes(segment)
         ) ||
-        query.withoutTag.some((tag) => pathInfo.tags.includes(tag))
+        query.withoutTag.some((tag) => pathInfo.tags.includes(tag)) ||
+        query.withoutTagStarting.some((tag) =>
+          pathInfo.tags.some((tag2) => tag2.startsWith(tag))
+        )
       )
     );
   };
@@ -82,14 +90,24 @@ export const filteringToCommanderStrings = (
     cmdLintFilterOptions.withoutTag,
     filtering.withoutTag
   );
+  const withTagStarting = optionOrEmpty(
+    cmdLintFilterOptions.withTagStarting,
+    filtering.withTagStarting
+  );
+  const withoutTagStarting = optionOrEmpty(
+    cmdLintFilterOptions.withoutTagStarting,
+    filtering.withoutTagStarting
+  );
   return [
     ...withPathStarting,
     ...withExtension,
     ...withPathSegment,
     ...withTag,
+    ...withTagStarting,
     ...withoutPathStarting,
     ...withoutExtension,
     ...withoutPathSegment,
     ...withoutTag,
+    ...withoutTagStarting,
   ];
 };

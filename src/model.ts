@@ -110,14 +110,6 @@ export interface PathInfo {
   tags: string[];
 }
 
-const rawFilterKind = ['path-starting', 'extension', 'path-segment', 'tag'];
-
-export const supportedFileInfoFilterKind = [
-  ...rawFilterKind.map((name) => `with-${name}:`),
-  ...rawFilterKind.map((name) => `with-no-${name}:`),
-];
-
-
 export interface FileFiltering {
   withPathStarting: string[];
   withoutPathStarting: string[];
@@ -127,6 +119,8 @@ export interface FileFiltering {
   withoutPathSegment: string[];
   withTag: string[];
   withoutTag: string[];
+  withTagStarting: string[];
+  withoutTagStarting: string[];
 }
 
 export type FilterArgs = {};

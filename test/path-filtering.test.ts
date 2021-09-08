@@ -82,6 +82,10 @@ const givenExamples: [string, FileFiltering, string[]][] = [
     'package.json',
     'src/data.json',
   ]),
+  createExample({ ...emptyFileFiltering, withTagStarting: ['j'] }, [
+    'package.json',
+    'src/data.json',
+  ]),
   createExample({ ...emptyFileFiltering, withoutPathStarting: ['src/'] }, [
     'package.json',
     'README.md',
@@ -122,6 +126,13 @@ const givenExamples: [string, FileFiltering, string[]][] = [
     {
       ...emptyFileFiltering,
       withoutTag: ['ts', 'md'],
+    },
+    ['package.json', 'src/data.json']
+  ),
+  createExample(
+    {
+      ...emptyFileFiltering,
+      withoutTagStarting: ['t', 'm'],
     },
     ['package.json', 'src/data.json']
   ),
