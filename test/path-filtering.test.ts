@@ -1,6 +1,10 @@
-import { PathInfo } from '../src/model';
-import { byFlag, filterToSubscript, subscriptToFilter } from '../src/path-filtering'
-import { asPath } from '../src/path-transforming'
+import { FileFiltering, PathInfo } from '../src/model';
+import {
+  byFileQuery,
+  emptyFileFiltering,
+  filteringToCommanderStrings,
+} from '../src/path-filtering';
+import { asPath } from '../src/path-transforming';
 
 const examples: PathInfo[] = [
   {
@@ -49,21 +53,87 @@ const examples: PathInfo[] = [
   },
 ];
 
-describe('Path filtering', () => {
-  it('should filter by flag name', () => {
-    const actual = examples.filter(byFlag('json'))
-    expect(actual).toHaveLength(2)
-    expect(actual.map(asPath)).toEqual(['package.json', 'src/data.json'])
-  });
-  it.todo('filter a list of files by flags and regex');
-});
+const createExample = (
+  given: FileFiltering,
+  expectedPaths: string[]
+): [string, FileFiltering, string[]] => [
+  filteringToCommanderStrings(given).join(' '),
+  given,
+  expectedPaths,
+];
 
-describe('Conversion between string and filter', () => {
-  it('should create a simple filter', () => {
-    const givenQuery = ['with-path-containing:', 'test']
-    const actualFilter = subscriptToFilter(givenQuery)
-    const actualQuery = filterToSubscript(actualFilter)
-    expect(actualQuery).toEqual(givenQuery)
-  });
-  
+const givenExamples: [string, FileFiltering, string[]][] = [
+  createExample({ ...emptyFileFiltering }, examples.map(asPath)),
+  createExample({ ...emptyFileFiltering, withPathStarting: ['src/'] }, [
+    'src/index.ts',
+    'src/data.json',
+    'src/alpha.ts',
+    'src/bravo.ts',
+    'src/charlie.ts',
+  ]),
+  createExample({ ...emptyFileFiltering, withExtension: ['.json'] }, [
+    'package.json',
+    'src/data.json',
+  ]),
+  createExample({ ...emptyFileFiltering, withPathSegment: ['data'] }, [
+    'src/data.json',
+  ]),
+  createExample({ ...emptyFileFiltering, withTag: ['json'] }, [
+    'package.json',
+    'src/data.json',
+  ]),
+  createExample({ ...emptyFileFiltering, withoutPathStarting: ['src/'] }, [
+    'package.json',
+    'README.md',
+    'test/index.test.ts',
+    'test/alpha.test.ts',
+    'test/bravo.test.ts',
+    'test/charlie.test.ts',
+  ]),
+  createExample(
+    { ...emptyFileFiltering, withoutPathStarting: ['src/', 'test/'] },
+    ['package.json', 'README.md']
+  ),
+  createExample(
+    {
+      ...emptyFileFiltering,
+      withoutPathStarting: ['src/'],
+      withExtension: ['.json', '.md'],
+    },
+    ['package.json', 'README.md']
+  ),
+  createExample(
+    {
+      ...emptyFileFiltering,
+      withoutPathStarting: ['src/'],
+      withoutExtension: ['.ts'],
+    },
+    ['package.json', 'README.md']
+  ),
+  createExample(
+    {
+      ...emptyFileFiltering,
+      withPathStarting: ['test/'],
+      withoutPathSegment: ['bravo', 'charlie'],
+    },
+    ['test/index.test.ts', 'test/alpha.test.ts']
+  ),
+  createExample(
+    {
+      ...emptyFileFiltering,
+      withoutTag: ['ts', 'md'],
+    },
+    ['package.json', 'src/data.json']
+  ),
+];
+
+describe('Path filtering', () => {
+  test.each(givenExamples)(
+    'should filter by given query %s',
+    (label, given, expectedPaths) => {
+      expect(label).toBeDefined();
+      const actual = examples.filter(byFileQuery(given));
+      expect(actual.map(asPath)).toEqual(expectedPaths);
+    }
+  );
 });

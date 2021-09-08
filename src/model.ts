@@ -154,3 +154,10 @@ export interface LintActionOpts {
 }
 
 export type LintAction = (options: LintActionOpts) => void;
+
+export interface CmdOption {
+  shortFlag: string;
+  longFlag: string;
+  description: string;
+}
+

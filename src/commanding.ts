@@ -3,7 +3,8 @@ import { version } from './version';
 import { CommandingInstrumentation } from './commanding-instrumentation';
 import { GlobAction, LintAction, LintActionOpts } from './model';
 import { toPathInfo } from './path-transforming';
-import { parseEcma } from './commanding-helper';
+import { parseEcma, toCommanderOption } from './commanding-helper';
+import { cmdLintFilterOptions } from './commanding-data';
 
 export class Commanding {
   _instr: CommandingInstrumentation = new CommandingInstrumentation();
@@ -33,32 +34,14 @@ export class Commanding {
         new Argument('<mode>', 'mode').choices(['find', 'list', 'load'])
       )
       .argument('<paths...>', 'List of paths')
-      .option(
-        '-start, --with-path-starting [withPathStarting...]',
-        'specify a start of paths'
-      )
-      .option(
-        '-noStart, --without-path-starting [withoutPathStarting...]',
-        'exclude a start of path'
-      )
-      .option(
-        '-ext, --with-extension [withExtension...]',
-        'specify a file extension'
-      )
-      .option(
-        '-noExt, --without-extension [withoutExtension...]',
-        'Without a file extension'
-      )
-      .option(
-        '-seg, --with-path-segment [withPathSegment...]',
-        'specify a segment of path'
-      )
-      .option(
-        '-noSeg, --without-path-segment [withoutPathSegment...]',
-        'Without a segment of path'
-      )
-      .option('-tag, --with-tag [withTag...]', 'specify a tag')
-      .option('-noTag, --without-tag [withoutTag...]', 'Without a tag')
+      .addOption(toCommanderOption(cmdLintFilterOptions.withPathStarting))
+      .addOption(toCommanderOption(cmdLintFilterOptions.withoutPathStarting))
+      .addOption(toCommanderOption(cmdLintFilterOptions.withExtension))
+      .addOption(toCommanderOption(cmdLintFilterOptions.withoutExtension))
+      .addOption(toCommanderOption(cmdLintFilterOptions.withPathSegment))
+      .addOption(toCommanderOption(cmdLintFilterOptions.withoutPathSegment))
+      .addOption(toCommanderOption(cmdLintFilterOptions.withTag))
+      .addOption(toCommanderOption(cmdLintFilterOptions.withoutTag))
       .option(
         '-ecma, --ecma-version [ecmaVersion...]',
         'specify the ecma version',
