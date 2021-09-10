@@ -21,7 +21,8 @@ export const byFileQuery =
       query.withPathStarting.length +
         query.withExtension.length +
         query.withPathSegment.length +
-        query.withTag.length ===
+        query.withTag.length +
+        query.withTagStarting.length ===
       0;
     return (
       (noWithFilter ||
@@ -33,8 +34,8 @@ export const byFileQuery =
           pathInfo.path.includes(segment)
         ) ||
         query.withTag.some((tag) => pathInfo.tags.includes(tag)) ||
-        query.withTagStarting.some((tag) =>
-          pathInfo.tags.some((tag2) => tag2.startsWith(tag))
+        query.withTagStarting.some(
+          (start) => pathInfo.tags.some((tag) => tag.startsWith(start))
         )) &&
       !(
         query.withoutPathStarting.some((start) =>
@@ -45,8 +46,8 @@ export const byFileQuery =
           pathInfo.path.includes(segment)
         ) ||
         query.withoutTag.some((tag) => pathInfo.tags.includes(tag)) ||
-        query.withoutTagStarting.some((tag) =>
-          pathInfo.tags.some((tag2) => tag2.startsWith(tag))
+        query.withoutTagStarting.some((start) =>
+          pathInfo.tags.some((tag) => tag.startsWith(start))
         )
       )
     );

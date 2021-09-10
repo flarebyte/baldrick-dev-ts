@@ -82,7 +82,7 @@ const givenExamples: [string, FileFiltering, string[]][] = [
     'package.json',
     'src/data.json',
   ]),
-  createExample({ ...emptyFileFiltering, withTagStarting: ['j'] }, [
+  createExample({ ...emptyFileFiltering, withTagStarting: ['jso'] }, [
     'package.json',
     'src/data.json',
   ]),
