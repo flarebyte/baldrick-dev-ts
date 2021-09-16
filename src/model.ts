@@ -123,6 +123,11 @@ export interface FileFiltering {
   withoutTagStarting: string[];
 }
 
+export interface FileSearching {
+  pathInfos: PathInfo[];
+  filtering: FileFiltering;
+}
+
 export type FilterArgs = {};
 
 export interface StatusRecord {
@@ -135,10 +140,20 @@ export interface StatusRecord {
 export type GlobAction = (script: string[]) => void;
 
 export type LintReport =
-  | { kind: 'junit', filename: string }
-  | { kind: 'json', filename: string }
+  | { kind: 'junit'; filename: string }
+  | { kind: 'json'; filename: string };
 
-export type FileSearchMode = 'find' | 'list' | 'load'
+export type FileSearchMode = 'find' | 'list' | 'load';
+
+export type MicroInstructionName = 'configure-lint' | 'load';
+
+export type InstructionParams = { [paramName: string]: string[] };
+
+export interface MicroInstruction {
+  name: MicroInstructionName;
+  params: InstructionParams;
+}
+
 export interface LintActionOpts {
   searchMode: string;
   pathInfos: PathInfo[];
@@ -154,4 +169,3 @@ export interface CmdOption {
   longFlag: string;
   description: string;
 }
-
