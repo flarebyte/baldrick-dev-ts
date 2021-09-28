@@ -36,13 +36,86 @@ const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
   ),
   createExample(
     [],
-    { ...emptyFileFiltering, withPathStarting: ['test/'], withExtension: ['.specs.ts'] },
+    {
+      ...emptyFileFiltering,
+      withPathStarting: ['test/'],
+      withExtension: ['.specs.ts'],
+    },
     [
       {
         name: 'configure-lint',
         params: {
-          targetFiles: ['src', 'test'],
-          extensions: ['.specs.ts']
+          targetFiles: ['test'],
+          extensions: ['.specs.ts'],
+        },
+      },
+    ]
+  ),
+  createExample(
+    [
+      { path: 'gen/step1.ts', tags: ['phase1'] },
+      { path: 'gen/step2.ts', tags: ['phase2'] },
+    ],
+    { ...emptyFileFiltering, withTag: ['phase1'] },
+    [
+      {
+        name: 'configure-lint',
+        params: {
+          targetFiles: ['gen/step1.ts'],
+          extensions: ['.specs.ts'],
+          flags: ['globInputPaths:false'],
+        },
+      },
+    ]
+  ),
+  createExample(
+    [{ path: 'gen/schemas.csv', tags: ['@load'] }],
+    { ...emptyFileFiltering, withTag: ['phase1'] },
+    [
+      {
+        name: 'load',
+        params: {
+          targetFiles: ['gen/schemas.csv'],
+        },
+      },
+      {
+        name: 'filter',
+        params: {
+          query: ['--with-tag', 'phase1'],
+        },
+      },
+      {
+        name: 'configure-lint',
+        params: {
+          flags: ['filesPassedIn', 'globInputPaths:false'],
+        },
+      },
+    ]
+  ),
+  createExample(
+    [],
+    {
+      ...emptyFileFiltering,
+      withPathStarting: ['src/', 'test/'],
+      withoutPathSegment: ['fixture'],
+    },
+    [
+      {
+        name: 'glob',
+        params: {
+          targetFiles: ['src/**/*', 'test/**/*'],
+        },
+      },
+      {
+        name: 'filter',
+        params: {
+          query: ['--without-path-segment', 'fixture'],
+        },
+      },
+      {
+        name: 'configure-lint',
+        params: {
+          flags: ['filesPassedIn', 'globInputPaths:false'],
         },
       },
     ]

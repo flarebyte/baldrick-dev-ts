@@ -145,7 +145,7 @@ export type LintReport =
 
 export type FileSearchMode = 'find' | 'list' | 'load';
 
-export type MicroInstructionName = 'configure-lint' | 'load';
+export type MicroInstructionName = 'configure-lint' | 'load' | 'glob' | 'filter';
 
 export type InstructionParams = { [paramName: string]: string[] };
 
