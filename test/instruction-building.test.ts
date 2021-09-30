@@ -27,9 +27,11 @@ const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
     { ...emptyFileFiltering, withPathStarting: ['src/', 'test/'] },
     [
       {
-        name: 'configure-lint',
+        name: 'lint',
         params: {
-          targetFiles: ['src', 'test'],
+          targetFiles: ['src/', 'test/'],
+          extensions: [],
+          flags: [],
         },
       },
     ]
@@ -43,10 +45,11 @@ const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
     },
     [
       {
-        name: 'configure-lint',
+        name: 'lint',
         params: {
-          targetFiles: ['test'],
+          targetFiles: ['test/'],
           extensions: ['.specs.ts'],
+          flags: [],
         },
       },
     ]
@@ -59,10 +62,16 @@ const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
     { ...emptyFileFiltering, withTag: ['phase1'] },
     [
       {
-        name: 'configure-lint',
+        name: 'files',
         params: {
           targetFiles: ['gen/step1.ts'],
-          extensions: ['.specs.ts'],
+        },
+      },
+      {
+        name: 'lint',
+        params: {
+          targetFiles: [],
+          extensions: [],
           flags: ['globInputPaths:false'],
         },
       },
@@ -85,9 +94,11 @@ const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
         },
       },
       {
-        name: 'configure-lint',
+        name: 'lint',
         params: {
-          flags: ['filesPassedIn', 'globInputPaths:false'],
+          targetFiles: [],
+          extensions: [],
+          flags: ['globInputPaths:false'],
         },
       },
     ]
@@ -113,9 +124,11 @@ const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
         },
       },
       {
-        name: 'configure-lint',
+        name: 'lint',
         params: {
-          flags: ['filesPassedIn', 'globInputPaths:false'],
+          targetFiles: [],
+          extensions: [],
+          flags: ['globInputPaths:false'],
         },
       },
     ]
