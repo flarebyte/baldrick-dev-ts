@@ -1,5 +1,5 @@
 import { FileFiltering, FileSearching, MicroInstruction } from './model';
-import { filteringToCommanderStrings } from './path-filtering';
+import { byFileQuery, filteringToCommanderStrings } from './path-filtering';
 
 const preferGlob = (fileSearching: FileSearching): boolean =>
   fileSearching.pathInfos.length === 0 &&
@@ -42,6 +42,7 @@ const filesInstructions = (
 ): MicroInstruction[] => {
   const targetFiles = fileSearching.pathInfos
     .filter((pathInfo) => !pathInfo.tags.includes('@load'))
+    .filter(byFileQuery(fileSearching.filtering))
     .map((pathInfo) => pathInfo.path);
   return targetFiles.length === 0
     ? []
@@ -56,7 +57,7 @@ const filesInstructions = (
 };
 const globInstructions = (fileSearching: FileSearching): MicroInstruction[] => {
   const targetFiles = fileSearching.filtering.withPathStarting.map(
-    (p) => `${p}/**/*`
+    (p) => `${p}**/*`
   );
   return preferGlob(fileSearching)
     ? [
