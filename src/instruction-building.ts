@@ -1,4 +1,4 @@
-import { FileFiltering, FileSearching, MicroInstruction } from './model';
+import { FileSearching, MicroInstruction } from './model';
 import { byFileQuery, filteringToCommanderStrings } from './path-filtering';
 
 const moreThanStartAndExt = (fileSearching: FileSearching): boolean =>
@@ -76,34 +76,12 @@ const globInstructions = (fileSearching: FileSearching): MicroInstruction[] => {
 const filterInstructions = (
   fileSearching: FileSearching
 ): MicroInstruction[] => {
-  const {
-    withPathSegment,
-    withTag,
-    withTagStarting,
-    withoutExtension,
-    withoutPathSegment,
-    withoutPathStarting,
-    withoutTag,
-    withoutTagStarting,
-  } = fileSearching.filtering;
-  const queryFilter: FileFiltering = {
-    withPathStarting: [],
-    withExtension: [],
-    withPathSegment,
-    withTag,
-    withTagStarting,
-    withoutExtension,
-    withoutPathSegment,
-    withoutPathStarting,
-    withoutTag,
-    withoutTagStarting,
-  };
   return shouldFilter(fileSearching)
     ? [
         {
           name: 'filter',
           params: {
-            query: filteringToCommanderStrings(queryFilter),
+            query: filteringToCommanderStrings(fileSearching.filtering),
           },
         },
       ]
@@ -137,7 +115,6 @@ const configureLintInstructions = (
 export const toLintInstructions = (
   fileSearching: FileSearching
 ): MicroInstruction[] => {
-  // const { pathInfos, filtering } = fileSearching;
   return [
     ...filesInstructions(fileSearching),
     ...loadInstructions(fileSearching),

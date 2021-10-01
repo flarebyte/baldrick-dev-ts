@@ -76,12 +76,12 @@ export const filteringToCommanderStrings = (
     filtering.withoutExtension
   );
   const withPathSegment = optionOrEmpty(
-    cmdLintFilterOptions.withPathStarting,
-    filtering.withPathStarting
-  );
-  const withoutPathSegment = optionOrEmpty(
     cmdLintFilterOptions.withPathSegment,
     filtering.withPathSegment
+  );
+  const withoutPathSegment = optionOrEmpty(
+    cmdLintFilterOptions.withoutPathSegment,
+    filtering.withoutPathSegment
   );
   const withTag = optionOrEmpty(
     cmdLintFilterOptions.withTag,

@@ -120,7 +120,13 @@ const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
       {
         name: 'filter',
         params: {
-          query: ['--without-path-segment', 'fixture'],
+          query: [
+            '--with-path-starting',
+            'src/',
+            'test/',
+            '--without-path-segment',
+            'fixture',
+          ],
         },
       },
       {
