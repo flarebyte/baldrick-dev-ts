@@ -1,26 +1,29 @@
 import { FileFiltering, FileSearching, MicroInstruction } from './model';
 import { byFileQuery, filteringToCommanderStrings } from './path-filtering';
 
-const preferGlob = (fileSearching: FileSearching): boolean =>
-  fileSearching.pathInfos.length === 0 &&
-  fileSearching.filtering.withPathStarting.length > 0 &&
-  (fileSearching.filtering.withPathSegment.length > 0 ||
-    fileSearching.filtering.withoutPathStarting.length > 0 ||
-    fileSearching.filtering.withoutPathSegment.length > 0 ||
-    fileSearching.filtering.withoutExtension.length > 0);
-
-const shouldFilter = (fileSearching: FileSearching): boolean =>
-  fileSearching.filtering.withPathSegment.length > 0 ||
-  fileSearching.filtering.withTag.length > 0 ||
-  fileSearching.filtering.withTagStarting.length > 0 ||
-  fileSearching.filtering.withoutExtension.length > 0 ||
-  fileSearching.filtering.withoutPathSegment.length > 0 ||
-  fileSearching.filtering.withoutPathStarting.length > 0 ||
-  fileSearching.filtering.withoutTag.length > 0 ||
-  fileSearching.filtering.withoutTagStarting.length > 0;
+const moreThanStartAndExt = (fileSearching: FileSearching): boolean =>
+  fileSearching.filtering.withPathSegment.length +
+    fileSearching.filtering.withTag.length +
+    fileSearching.filtering.withTagStarting.length +
+    fileSearching.filtering.withoutExtension.length +
+    fileSearching.filtering.withoutPathSegment.length +
+    fileSearching.filtering.withoutPathStarting.length +
+    fileSearching.filtering.withoutTag.length +
+    fileSearching.filtering.withoutTagStarting.length >
+  0;
 
 const isSimpleLint = (fileSearching: FileSearching): boolean =>
-  !(preferGlob(fileSearching) || shouldFilter(fileSearching));
+  fileSearching.pathInfos.length === 0 && !moreThanStartAndExt(fileSearching);
+
+const shouldGlob = (fileSearching: FileSearching): boolean =>
+  fileSearching.pathInfos.length === 0 && moreThanStartAndExt(fileSearching);
+
+const shouldLoadFiles = (fileSearching: FileSearching): boolean =>
+  fileSearching.pathInfos.some((p) => p.tags.includes('@load'));
+
+const shouldFilter = (fileSearching: FileSearching): boolean =>
+  (shouldGlob(fileSearching) || shouldLoadFiles(fileSearching)) &&
+  moreThanStartAndExt(fileSearching);
 
 const loadInstructions = (fileSearching: FileSearching): MicroInstruction[] => {
   const targetFiles = fileSearching.pathInfos
@@ -59,7 +62,7 @@ const globInstructions = (fileSearching: FileSearching): MicroInstruction[] => {
   const targetFiles = fileSearching.filtering.withPathStarting.map(
     (p) => `${p}**/*`
   );
-  return preferGlob(fileSearching)
+  return shouldGlob(fileSearching)
     ? [
         {
           name: 'glob',
