@@ -88,7 +88,8 @@ const filterInstructions = (
     : [];
 };
 const configureLintInstructions = (
-  fileSearching: FileSearching
+  fileSearching: FileSearching,
+  flags: string[]
 ): MicroInstruction[] => {
   return isSimpleLint(fileSearching)
     ? [
@@ -97,7 +98,7 @@ const configureLintInstructions = (
           params: {
             targetFiles: fileSearching.filtering.withPathStarting,
             extensions: fileSearching.filtering.withExtension,
-            flags: [],
+            flags,
           },
         },
       ]
@@ -107,19 +108,20 @@ const configureLintInstructions = (
           params: {
             targetFiles: [],
             extensions: [],
-            flags: ['globInputPaths:false'],
+            flags: ['globInputPaths:false', ...flags],
           },
         },
       ];
 };
 export const toLintInstructions = (
-  fileSearching: FileSearching
+  fileSearching: FileSearching,
+  flags: string[]
 ): MicroInstruction[] => {
   return [
     ...filesInstructions(fileSearching),
     ...loadInstructions(fileSearching),
     ...globInstructions(fileSearching),
     ...filterInstructions(fileSearching),
-    ...configureLintInstructions(fileSearching),
+    ...configureLintInstructions(fileSearching, flags),
   ];
 };

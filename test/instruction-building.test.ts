@@ -9,20 +9,22 @@ import { emptyFileFiltering } from '../src/path-filtering';
 
 const createExample = (
   givenPathInfos: PathInfo[],
+  flags: string[],
   givenFiltering: FileFiltering,
   expected: MicroInstruction[]
-): [string, FileSearching, MicroInstruction[]] => {
+): [string, FileSearching, string[], MicroInstruction[]] => {
   const given: FileSearching = {
     pathInfos: givenPathInfos,
     filtering: givenFiltering,
   };
-  return [JSON.stringify(given), given, expected];
+  return [JSON.stringify(given), given, flags, expected];
 };
 
 // https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions
 
-const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
+const givenExamples: [string, FileSearching, string[], MicroInstruction[]][] = [
   createExample(
+    [],
     [],
     { ...emptyFileFiltering, withPathStarting: ['src/', 'test/'] },
     [
@@ -37,6 +39,7 @@ const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
     ]
   ),
   createExample(
+    [],
     [],
     {
       ...emptyFileFiltering,
@@ -59,6 +62,7 @@ const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
       { path: 'gen/step1.ts', tags: ['phase1'] },
       { path: 'gen/step2.ts', tags: ['phase2'] },
     ],
+    [],
     { ...emptyFileFiltering, withTag: ['phase1'] },
     [
       {
@@ -79,6 +83,7 @@ const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
   ),
   createExample(
     [{ path: 'gen/schemas.csv', tags: ['@load'] }],
+    [],
     { ...emptyFileFiltering, withTag: ['phase1'] },
     [
       {
@@ -105,6 +110,7 @@ const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
   ),
   createExample(
     [],
+    ['fix'],
     {
       ...emptyFileFiltering,
       withPathStarting: ['src/', 'test/'],
@@ -134,7 +140,7 @@ const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
         params: {
           targetFiles: [],
           extensions: [],
-          flags: ['globInputPaths:false'],
+          flags: ['globInputPaths:false', 'fix'],
         },
       },
     ]
@@ -144,9 +150,9 @@ const givenExamples: [string, FileSearching, MicroInstruction[]][] = [
 describe('Build instruction for linting', () => {
   test.each(givenExamples)(
     'should provide instruction for %s',
-    (label, given, expected) => {
+    (label, given, flags, expected) => {
       expect(label).toBeDefined();
-      const actual = toLintInstructions(given);
+      const actual = toLintInstructions(given, flags);
       expect(actual).toEqual(expected);
     }
   );
