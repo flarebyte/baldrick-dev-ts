@@ -17,3 +17,13 @@ export const toPathInfo = (pathAndTags: string): PathInfo => {
     tags,
   };
 };
+
+export const toPathInfos = (content: string): PathInfo[] => {
+  const lines = content
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .filter((line) => !line.startsWith('#'));
+  const pathInfos = lines.map(toPathInfo);
+  return pathInfos;
+};

@@ -1,4 +1,6 @@
 import { MicroInstruction, PathInfo } from './model';
+import { toPathInfo } from './path-transforming';
+import { readFile }from 'fs/promises';
 
 const runFilesInstruction = (
   instruction: MicroInstruction
@@ -6,12 +8,20 @@ const runFilesInstruction = (
   const {
     params: { targetFiles },
   } = instruction;
-  return targetFiles.map( path => { path, tags: []});
+  return targetFiles.map(toPathInfo);
 };
 
 const runLoadInstruction = async (
-  _instruction: MicroInstruction
+  instruction: MicroInstruction
 ): Promise<PathInfo[]> => {
+  const {
+    params: { targetFiles },
+  } = instruction;
+  Promise.all(targetFiles.map(file => {
+    return readFile(file, { encoding: 'utf8'});
+  })).then(fileContents => {
+    
+  })
   return await Promise.resolve([]);
 };
 
@@ -47,7 +57,7 @@ const runInstructions = async (
   const lintInstruction = instructions.find((instr) => instr.name === 'lint');
 
   const files = filesInstruction
-    ? await runFilesInstruction(filesInstruction)
+    ? runFilesInstruction(filesInstruction)
     : [];
   const loaded = loadInstruction
     ? await runLoadInstruction(loadInstruction)

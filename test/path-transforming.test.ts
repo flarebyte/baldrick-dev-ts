@@ -1,4 +1,4 @@
-import { toPathInfo } from '../src/path-transforming';
+import { toPathInfo, toPathInfos } from '../src/path-transforming';
 describe('toPathInfo', () => {
   it('should parse a filename followed by a tag', () => {
     const actual = toPathInfo('dir1/dir2/index.ts;@load');
@@ -24,5 +24,23 @@ describe('toPathInfo', () => {
     const actual = toPathInfo(' dir1/dir2/index.ts ; first second ');
     expect(actual.path).toStrictEqual('dir1/dir2/index.ts');
     expect(actual.tags).toStrictEqual(['first', 'second']);
+  });
+});
+
+describe('toPathInfos', () => {
+  it('should convert a content files ignoring empty lines and comments', () => {
+    const given = [
+      'dir1/dir2/index1.ts;@load',
+      ' ',
+      ' dir1/dir2/index2.ts ; first second ',
+      '',
+      '# ignore/me',
+      'dir1/dir2/index3.ts;',
+    ].join('\n');
+    const actual = toPathInfos(given);
+    expect(actual).toHaveLength(3);
+    expect(actual[0].path).toStrictEqual('dir1/dir2/index1.ts');
+    expect(actual[1].path).toStrictEqual('dir1/dir2/index2.ts');
+    expect(actual[2].path).toStrictEqual('dir1/dir2/index3.ts');
   });
 });
