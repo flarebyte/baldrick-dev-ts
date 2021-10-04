@@ -1,8 +1,19 @@
-import { PathInfo } from "./model";
+import { PathInfo } from './model';
 
-export const asPath = (pathInfo: PathInfo): string => pathInfo.path
+export const asPath = (pathInfo: PathInfo): string => pathInfo.path;
 
-export const toPathInfo = (pathAndTags: string): PathInfo => ({
-    path: pathAndTags.split(';')[0],
-    tags: []
-})
+const splitBySpace = (value: string): string[] =>
+  value
+    .trim()
+    .split(' ')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+
+export const toPathInfo = (pathAndTags: string): PathInfo => {
+  const [pathStr, tagsStr] = pathAndTags.split(';', 2);
+  const tags = tagsStr ? splitBySpace(tagsStr) : [];
+  return {
+    path: pathStr.trim(),
+    tags,
+  };
+};

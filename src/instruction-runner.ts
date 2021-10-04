@@ -1,9 +1,12 @@
 import { MicroInstruction, PathInfo } from './model';
 
-const runFilesInstruction = async (
-  _instruction: MicroInstruction
-): Promise<PathInfo[]> => {
-  return await Promise.resolve([]);
+const runFilesInstruction = (
+  instruction: MicroInstruction
+): PathInfo[] => {
+  const {
+    params: { targetFiles },
+  } = instruction;
+  return targetFiles.map( path => { path, tags: []});
 };
 
 const runLoadInstruction = async (
