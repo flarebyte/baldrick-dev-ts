@@ -27,3 +27,14 @@ export const toPathInfos = (content: string): PathInfo[] => {
   const pathInfos = lines.map(toPathInfo);
   return pathInfos;
 };
+
+const noDuplicatePathInfo = (
+  pathInfo: PathInfo,
+  index: number,
+  pathInfos: PathInfo[]
+): boolean => pathInfos.findIndex((pi) => pi.path === pathInfo.path) === index;
+
+export const toMergedPathInfos = (contents: string[]): PathInfo[] => {
+  const pathInfos = contents.flatMap(toPathInfos).filter(noDuplicatePathInfo);
+  return pathInfos;
+};
