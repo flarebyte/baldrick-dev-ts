@@ -1,15 +1,16 @@
 import { MicroInstruction, PathInfo } from './model';
-import { toPathInfo } from './path-transforming';
-import { readFile }from 'fs/promises';
+import { toMergedPathInfos, toPathInfo } from './path-transforming';
+import { readFile } from 'fs/promises';
 
-const runFilesInstruction = (
-  instruction: MicroInstruction
-): PathInfo[] => {
+const runFilesInstruction = (instruction: MicroInstruction): PathInfo[] => {
   const {
     params: { targetFiles },
   } = instruction;
   return targetFiles.map(toPathInfo);
 };
+
+const readUtf8File = (filename: string) =>
+  readFile(filename, { encoding: 'utf8' });
 
 const runLoadInstruction = async (
   instruction: MicroInstruction
@@ -17,12 +18,9 @@ const runLoadInstruction = async (
   const {
     params: { targetFiles },
   } = instruction;
-  Promise.all(targetFiles.map(file => {
-    return readFile(file, { encoding: 'utf8'});
-  })).then(fileContents => {
-    
-  })
-  return await Promise.resolve([]);
+  const contents = await Promise.all(targetFiles.map(readUtf8File));
+  const pathInfos = toMergedPathInfos(contents);
+  return pathInfos;
 };
 
 const runGlobInstruction = async (
@@ -56,9 +54,7 @@ const runInstructions = async (
   );
   const lintInstruction = instructions.find((instr) => instr.name === 'lint');
 
-  const files = filesInstruction
-    ? runFilesInstruction(filesInstruction)
-    : [];
+  const files = filesInstruction ? runFilesInstruction(filesInstruction) : [];
   const loaded = loadInstruction
     ? await runLoadInstruction(loadInstruction)
     : [];
