@@ -30,9 +30,13 @@ const runGlobInstruction = async (
 };
 
 const runFilterInstruction = (
-  _instruction: MicroInstruction,
+  instruction: MicroInstruction,
   pathInfos: PathInfo[]
 ): PathInfo[] => {
+  const {
+    params: { query },
+  } = instruction;
+  
   return pathInfos;
 };
 
