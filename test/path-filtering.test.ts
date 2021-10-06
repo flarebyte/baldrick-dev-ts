@@ -206,4 +206,13 @@ describe('filtering To commander strings and back', () => {
       expect(cmdStrings).toStrictEqual(convExample);
     }
   );
+  it('should tolerate missing parameters', () => {
+    const actual = commanderStringsToFiltering([
+      '--with-path-starting',
+      'src1',
+      '--without-tag',
+    ]);
+    expect(actual.withPathStarting).toStrictEqual(['src1']);
+    expect(actual.withoutTag).toStrictEqual([]);
+  });
 });
