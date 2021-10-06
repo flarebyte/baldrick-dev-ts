@@ -124,7 +124,7 @@ export const commanderStringsToFiltering = (
     valIdx[0].startsWith('--')
   );
 
-  const endIdx = cmdStrings.length - 1;
+  const endIdx = cmdStrings.length;
 
   const useEndIndex = (idx: number): boolean =>
     idx === cmdStringsIdxKeys.length - 1;
