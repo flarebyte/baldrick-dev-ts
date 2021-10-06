@@ -1,6 +1,7 @@
 import { FileFiltering, PathInfo } from '../src/model';
 import {
   byFileQuery,
+  commanderStringsToFiltering,
   emptyFileFiltering,
   filteringToCommanderStrings,
 } from '../src/path-filtering';
@@ -145,6 +146,27 @@ describe('Path filtering', () => {
       expect(label).toBeDefined();
       const actual = examples.filter(byFileQuery(given));
       expect(actual.map(asPath)).toEqual(expectedPaths);
+    }
+  );
+});
+
+const convExamples: [string, string[]][] = [
+  ['one param', ['--with-path-starting', 'src1', 'src2']],
+  [
+    'two params',
+    ['--with-path-starting', 'src1', 'src2', '--with-extension', '.ts'],
+  ],
+];
+
+describe('filtering To commander strings and back', () => {
+  test.each(convExamples)(
+    'should convert back and forth %s',
+    (label, convExample) => {
+      expect(label).toBeDefined();
+      const filterObj = commanderStringsToFiltering(convExample);
+      console.log(filterObj)
+      const cmdStrings = filteringToCommanderStrings(filterObj);
+      expect(cmdStrings).toStrictEqual(convExample);
     }
   );
 });

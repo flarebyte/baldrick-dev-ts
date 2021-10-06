@@ -34,8 +34,8 @@ export const byFileQuery =
           pathInfo.path.includes(segment)
         ) ||
         query.withTag.some((tag) => pathInfo.tags.includes(tag)) ||
-        query.withTagStarting.some(
-          (start) => pathInfo.tags.some((tag) => tag.startsWith(start))
+        query.withTagStarting.some((start) =>
+          pathInfo.tags.some((tag) => tag.startsWith(start))
         )) &&
       !(
         query.withoutPathStarting.some((start) =>
@@ -111,4 +111,66 @@ export const filteringToCommanderStrings = (
     ...withoutTag,
     ...withoutTagStarting,
   ];
+};
+
+export const commanderStringsToFiltering = (
+  cmdStrings: string[]
+): FileFiltering => {
+  const cmdStringsIdx: [string, number][] = cmdStrings.map((str, idx) => [
+    str,
+    idx,
+  ]);
+  const cmdStringsIdxKeys: [string, number][] = cmdStringsIdx.filter((valIdx) =>
+    valIdx[0].startsWith('--')
+  );
+
+  const endIdx = cmdStrings.length - 1;
+
+  const useEndIndex = (idx: number): boolean =>
+    idx === cmdStringsIdxKeys.length - 1;
+
+  const cmdkeyRanges: [string, number, number][] = cmdStringsIdxKeys.map(
+    (valIdx, idx, others) => [
+      valIdx[0],
+      valIdx[1]+1,
+      useEndIndex(idx) ? endIdx : others[idx + 1][1],
+    ]
+  );
+
+  const findValuesbyName = (name: string): string[] => {
+    const found = cmdkeyRanges.find(
+      (keyRange) => keyRange[0].substring(2) === name
+    );
+    return found ? cmdStrings.slice(found[1], found[2]) : [];
+  };
+
+  const filtering = {
+    withPathStarting: findValuesbyName(
+      cmdLintFilterOptions.withPathStarting.longFlag
+    ),
+    withoutPathStarting: findValuesbyName(
+      cmdLintFilterOptions.withoutPathStarting.longFlag
+    ),
+    withExtension: findValuesbyName(
+      cmdLintFilterOptions.withExtension.longFlag
+    ),
+    withoutExtension: findValuesbyName(
+      cmdLintFilterOptions.withoutExtension.longFlag
+    ),
+    withPathSegment: findValuesbyName(
+      cmdLintFilterOptions.withPathSegment.longFlag
+    ),
+    withoutPathSegment: findValuesbyName(
+      cmdLintFilterOptions.withPathSegment.longFlag
+    ),
+    withTag: findValuesbyName(cmdLintFilterOptions.withTag.longFlag),
+    withoutTag: findValuesbyName(cmdLintFilterOptions.withoutTag.longFlag),
+    withTagStarting: findValuesbyName(
+      cmdLintFilterOptions.withTagStarting.longFlag
+    ),
+    withoutTagStarting: findValuesbyName(
+      cmdLintFilterOptions.withoutTagStarting.longFlag
+    ),
+  };
+  return filtering;
 };
