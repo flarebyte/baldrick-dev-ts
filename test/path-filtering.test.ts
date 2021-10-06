@@ -151,10 +151,48 @@ describe('Path filtering', () => {
 });
 
 const convExamples: [string, string[]][] = [
-  ['one param', ['--with-path-starting', 'src1', 'src2']],
+  ['with-path-starting', ['--with-path-starting', 'src1', 'src2']],
+  ['without-path-starting', ['--without-path-starting', 'src1']],
   [
-    'two params',
+    'with-extension',
     ['--with-path-starting', 'src1', 'src2', '--with-extension', '.ts'],
+  ],
+  [
+    'with-path-segment',
+    [
+      '--with-path-starting',
+      'src1',
+      '--with-path-segment',
+      'fixture/',
+      'data/',
+    ],
+  ],
+  ['with-tag', ['--with-path-starting', 'src1', '--with-tag', 'one']],
+  [
+    'with-tag-starting',
+    ['--with-path-starting', 'src1', '--with-tag-starting', 'year:'],
+  ],
+  [
+    'without-extension',
+    ['--with-path-starting', 'src1', '--without-extension', '.txt', '.md'],
+  ],
+  [
+    'without-path-segment',
+    ['--with-path-starting', 'src1', '--without-path-segment', 'fixture/'],
+  ],
+  [
+    'without-tag',
+    ['--with-path-starting', 'src1', '--without-tag', 'one', 'two'],
+  ],
+  [
+    'without-tag-starting',
+    [
+      '--with-path-starting',
+      'src1',
+      '--without-tag-starting',
+      'year:',
+      'month:',
+    ],
   ],
 ];
 
@@ -164,7 +202,6 @@ describe('filtering To commander strings and back', () => {
     (label, convExample) => {
       expect(label).toBeDefined();
       const filterObj = commanderStringsToFiltering(convExample);
-      console.log(filterObj)
       const cmdStrings = filteringToCommanderStrings(filterObj);
       expect(cmdStrings).toStrictEqual(convExample);
     }

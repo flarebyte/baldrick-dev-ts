@@ -132,7 +132,7 @@ export const commanderStringsToFiltering = (
   const cmdkeyRanges: [string, number, number][] = cmdStringsIdxKeys.map(
     (valIdx, idx, others) => [
       valIdx[0],
-      valIdx[1]+1,
+      valIdx[1] + 1,
       useEndIndex(idx) ? endIdx : others[idx + 1][1],
     ]
   );
@@ -161,7 +161,7 @@ export const commanderStringsToFiltering = (
       cmdLintFilterOptions.withPathSegment.longFlag
     ),
     withoutPathSegment: findValuesbyName(
-      cmdLintFilterOptions.withPathSegment.longFlag
+      cmdLintFilterOptions.withoutPathSegment.longFlag
     ),
     withTag: findValuesbyName(cmdLintFilterOptions.withTag.longFlag),
     withoutTag: findValuesbyName(cmdLintFilterOptions.withoutTag.longFlag),
