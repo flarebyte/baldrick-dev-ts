@@ -1,6 +1,7 @@
-import { MicroInstruction, PathInfo } from './model';
+import { MicroInstruction, PathInfo, RunnerContext } from './model';
 import { toMergedPathInfos, toPathInfo } from './path-transforming';
 import { readFile } from 'fs/promises';
+import path from 'path';
 
 const runFilesInstruction = (instruction: MicroInstruction): PathInfo[] => {
   const {
@@ -9,16 +10,19 @@ const runFilesInstruction = (instruction: MicroInstruction): PathInfo[] => {
   return targetFiles.map(toPathInfo);
 };
 
-const readUtf8File = (filename: string) =>
-  readFile(filename, { encoding: 'utf8' });
+const readUtf8File = (currentPath: string) => (filename: string) =>
+  readFile(path.join(currentPath, filename), { encoding: 'utf8' });
 
-const runLoadInstruction = async (
+export const runLoadInstruction = async (
+  ctx: RunnerContext,
   instruction: MicroInstruction
 ): Promise<PathInfo[]> => {
   const {
     params: { targetFiles },
   } = instruction;
-  const contents = await Promise.all(targetFiles.map(readUtf8File));
+  const contents = await Promise.all(
+    targetFiles.map(readUtf8File(ctx.currentPath))
+  );
   const pathInfos = toMergedPathInfos(contents);
   return pathInfos;
 };
@@ -36,7 +40,7 @@ const runFilterInstruction = (
   const {
     params: { query },
   } = instruction;
-  
+
   return pathInfos;
 };
 
@@ -47,9 +51,10 @@ const runLintInstruction = async (
   return await Promise.resolve('123');
 };
 
-const runInstructions = async (
+export const runInstructions = async (
+  ctx: RunnerContext,
   instructions: MicroInstruction[]
-): Promise<void> => {
+): Promise<string> => {
   const filesInstruction = instructions.find((instr) => instr.name === 'files');
   const loadInstruction = instructions.find((instr) => instr.name === 'load');
   const globInstruction = instructions.find((instr) => instr.name === 'glob');
@@ -60,7 +65,7 @@ const runInstructions = async (
 
   const files = filesInstruction ? runFilesInstruction(filesInstruction) : [];
   const loaded = loadInstruction
-    ? await runLoadInstruction(loadInstruction)
+    ? await runLoadInstruction(ctx, loadInstruction)
     : [];
   const globed = globInstruction
     ? await runGlobInstruction(globInstruction)
@@ -73,4 +78,5 @@ const runInstructions = async (
   const linted = lintInstruction
     ? await runLintInstruction(lintInstruction, filtered)
     : false;
+  return linted ? linted : 'not linted';
 };

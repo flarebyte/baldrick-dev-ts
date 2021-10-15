@@ -154,6 +154,10 @@ export interface MicroInstruction {
   params: InstructionParams;
 }
 
+export interface RunnerContext {
+  currentPath: string;
+}
+
 export interface LintActionOpts {
   searchMode: string;
   pathInfos: PathInfo[];
