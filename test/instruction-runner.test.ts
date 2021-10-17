@@ -15,6 +15,7 @@ import {
 import { simpleToolOptions } from './fixture-tool-opts';
 import {
   runFilesInstruction,
+  runFilterInstruction,
   runGlobInstruction,
   runLoadInstruction,
 } from '../src/instruction-runner';
@@ -90,6 +91,24 @@ describe('Run instructions', () => {
       expect(loaded[0].path).toBe('src/index.ts');
       expect(loaded[1].path).toBe('src/problematic.ts');
       expect(loaded[2].path).toBe('test/index.test.ts');
+    });
+  });
+  describe('runFilterInstruction', () => {
+    it('filter files using advanced filtering', () => {
+      const instruction: MicroInstruction = {
+        name: 'filter',
+        params: { query: ['--with-path-starting', 'src/'] },
+      };
+      const loaded = runFilterInstruction(
+        { currentPath: 'path/not-used-here' },
+        instruction,
+        [
+          { path: 'src/this.ts', tags: [] },
+          { path: 'other/that.ts', tags: [] },
+        ]
+      );
+      expect(loaded).toHaveLength(1);
+      expect(loaded[0].path).toBe('src/this.ts');
     });
   });
 });

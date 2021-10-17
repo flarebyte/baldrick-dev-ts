@@ -49,7 +49,8 @@ export const runGlobInstruction = async (
   return matchedFiles.flat().map(toPathInfo);
 };
 
-const runFilterInstruction = (
+export const runFilterInstruction = (
+  _ctx: RunnerContext,
   instruction: MicroInstruction,
   pathInfos: PathInfo[]
 ): PathInfo[] => {
@@ -91,7 +92,7 @@ export const runInstructions = async (
 
   const allFileInfos = [...files, ...loaded, ...globed];
   const filtered = filterInstruction
-    ? runFilterInstruction(filterInstruction, allFileInfos)
+    ? runFilterInstruction(ctx, filterInstruction, allFileInfos)
     : allFileInfos;
   const linted = lintInstruction
     ? await runLintInstruction(lintInstruction, filtered)
