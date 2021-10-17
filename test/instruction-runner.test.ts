@@ -41,11 +41,17 @@ describe('Run instructions', () => {
     it('load one file', async () => {
       const instruction: MicroInstruction = {
         name: 'load',
-        params: { targetFiles: [
-          'load.txt'
-        ] },
-      }
-      runLoadInstruction({ currentPath: modulePath}, instruction);
+        params: { targetFiles: ['load.txt'] },
+      };
+      expect.assertions(4);
+      const loaded = await runLoadInstruction(
+        { currentPath: modulePath },
+        instruction
+      );
+      expect(loaded).toHaveLength(2);
+      expect(loaded[0].path).toBe('src/index.ts');
+      expect(loaded[1].path).toBe('src/problematic.ts');
+      expect(loaded[1].tags).toContain('buggy');
     });
   });
 });

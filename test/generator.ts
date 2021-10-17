@@ -242,5 +242,5 @@ export const authorList = (names: string[]) =>
 
 export const loadSelection: FileContent = createFileContent(
   'load.txt',
-  ['src/index.ts', 'src/problematic.ts'].join('\n')
+  ['src/index.ts', 'src/problematic.ts;buggy'].join('\n')
 );
