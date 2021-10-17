@@ -4,7 +4,10 @@ import { readFile } from 'fs/promises';
 import path from 'path';
 import { byFileQuery, commanderStringsToFiltering } from './path-filtering';
 
-const runFilesInstruction = (instruction: MicroInstruction): PathInfo[] => {
+export const runFilesInstruction = (
+  _ctx: RunnerContext,
+  instruction: MicroInstruction
+): PathInfo[] => {
   const {
     params: { targetFiles },
   } = instruction;
@@ -41,7 +44,7 @@ const runFilterInstruction = (
   const {
     params: { query },
   } = instruction;
-  const filtering = commanderStringsToFiltering(query)
+  const filtering = commanderStringsToFiltering(query);
   return pathInfos.filter(byFileQuery(filtering));
 };
 
@@ -64,7 +67,9 @@ export const runInstructions = async (
   );
   const lintInstruction = instructions.find((instr) => instr.name === 'lint');
 
-  const files = filesInstruction ? runFilesInstruction(filesInstruction) : [];
+  const files = filesInstruction
+    ? runFilesInstruction(ctx, filesInstruction)
+    : [];
   const loaded = loadInstruction
     ? await runLoadInstruction(ctx, loadInstruction)
     : [];

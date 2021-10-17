@@ -13,7 +13,10 @@ import {
   tsconfigNode,
 } from './generator';
 import { simpleToolOptions } from './fixture-tool-opts';
-import { runLoadInstruction } from '../src/instruction-runner';
+import {
+  runFilesInstruction,
+  runLoadInstruction,
+} from '../src/instruction-runner';
 import { MicroInstruction } from '../src/model';
 
 const someToolOptions = { ...simpleToolOptions };
@@ -52,6 +55,22 @@ describe('Run instructions', () => {
       expect(loaded[0].path).toBe('src/index.ts');
       expect(loaded[1].path).toBe('src/problematic.ts');
       expect(loaded[1].tags).toContain('buggy');
+    });
+  });
+  describe('runFilesInstruction', () => {
+    it('accept files directly', () => {
+      const instruction: MicroInstruction = {
+        name: 'files',
+        params: { targetFiles: ['src/file1.ts', 'src/file2.ts;tag2'] },
+      };
+      const loaded = runFilesInstruction(
+        { currentPath: 'path/not-used-here' },
+        instruction
+      );
+      expect(loaded).toHaveLength(2);
+      expect(loaded[0].path).toBe('src/file1.ts');
+      expect(loaded[1].path).toBe('src/file2.ts');
+      expect(loaded[1].tags).toContain('tag2');
     });
   });
 });
