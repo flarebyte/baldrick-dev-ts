@@ -41,10 +41,12 @@ export const runGlobInstruction = async (
   } = instruction;
   const opts = {
     cwd: ctx.currentPath,
-    filesOnly: true
-  }
-  const matchedFiles = await glob(targetFiles[0], opts);
-  return matchedFiles.map(toPathInfo);
+    filesOnly: true,
+  };
+  const globWithOpts = async (globString: string) =>
+    await glob(globString, opts);
+  const matchedFiles = await Promise.all(targetFiles.map(globWithOpts));
+  return matchedFiles.flat().map(toPathInfo);
 };
 
 const runFilterInstruction = (

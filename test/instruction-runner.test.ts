@@ -79,16 +79,17 @@ describe('Run instructions', () => {
     it('run glob', async () => {
       const instruction: MicroInstruction = {
         name: 'glob',
-        params: { targetFiles: ['src/**/*'] },
+        params: { targetFiles: ['src/**/*', 'test/**/*'] },
       };
-      expect.assertions(3);
+      expect.assertions(4);
       const loaded = await runGlobInstruction(
         { currentPath: modulePath },
         instruction
       );
-      expect(loaded).toHaveLength(2);
+      expect(loaded).toHaveLength(3);
       expect(loaded[0].path).toBe('src/index.ts');
       expect(loaded[1].path).toBe('src/problematic.ts');
+      expect(loaded[2].path).toBe('test/index.test.ts');
     });
   });
 });
