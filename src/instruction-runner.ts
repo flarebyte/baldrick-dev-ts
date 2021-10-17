@@ -3,6 +3,7 @@ import { toMergedPathInfos, toPathInfo } from './path-transforming';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import { byFileQuery, commanderStringsToFiltering } from './path-filtering';
+import glob from 'tiny-glob';
 
 export const runFilesInstruction = (
   _ctx: RunnerContext,
@@ -31,10 +32,19 @@ export const runLoadInstruction = async (
   return pathInfos;
 };
 
-const runGlobInstruction = async (
-  _instruction: MicroInstruction
+export const runGlobInstruction = async (
+  ctx: RunnerContext,
+  instruction: MicroInstruction
 ): Promise<PathInfo[]> => {
-  return await Promise.resolve([]);
+  const {
+    params: { targetFiles },
+  } = instruction;
+  const opts = {
+    cwd: ctx.currentPath,
+    filesOnly: true
+  }
+  const matchedFiles = await glob(targetFiles[0], opts);
+  return matchedFiles.map(toPathInfo);
 };
 
 const runFilterInstruction = (
@@ -74,7 +84,7 @@ export const runInstructions = async (
     ? await runLoadInstruction(ctx, loadInstruction)
     : [];
   const globed = globInstruction
-    ? await runGlobInstruction(globInstruction)
+    ? await runGlobInstruction(ctx, globInstruction)
     : [];
 
   const allFileInfos = [...files, ...loaded, ...globed];
