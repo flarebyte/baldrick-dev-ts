@@ -239,3 +239,8 @@ export const authorList = (names: string[]) =>
     'author-list.csv',
     names.map((lastName) => `data/author-${lastName}.json`).join('\n')
   );
+
+export const loadSelection: FileContent = createFileContent(
+  'load.txt',
+  ['src/index.ts', 'src/problematic.ts'].join('\n')
+);

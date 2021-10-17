@@ -6,6 +6,7 @@ import {
   editorConfig,
   indexTestTs,
   indexTs,
+  loadSelection,
   prettierContent,
   problematicTs,
   readmeMd,
@@ -27,6 +28,7 @@ const createProjectDir = () => {
     readmeMd,
     editorConfig,
     prettierContent,
+    loadSelection,
     tsconfigNode('node14'),
   ];
   createTestingFilesSync(tempDir, fileContents);
@@ -36,7 +38,7 @@ const createProjectDir = () => {
 describe('Run instructions', () => {
   describe('runLoadInstruction', () => {
     const modulePath = createProjectDir();
-    it('run linting check', async () => {
+    it('load one file', async () => {
       const instruction: MicroInstruction = {
         name: 'load',
         params: { targetFiles: [

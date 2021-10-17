@@ -2,6 +2,7 @@ import { MicroInstruction, PathInfo, RunnerContext } from './model';
 import { toMergedPathInfos, toPathInfo } from './path-transforming';
 import { readFile } from 'fs/promises';
 import path from 'path';
+import { byFileQuery, commanderStringsToFiltering } from './path-filtering';
 
 const runFilesInstruction = (instruction: MicroInstruction): PathInfo[] => {
   const {
@@ -40,8 +41,8 @@ const runFilterInstruction = (
   const {
     params: { query },
   } = instruction;
-
-  return pathInfos;
+  const filtering = commanderStringsToFiltering(query)
+  return pathInfos.filter(byFileQuery(filtering));
 };
 
 const runLintInstruction = async (
