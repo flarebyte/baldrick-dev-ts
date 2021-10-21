@@ -1,9 +1,10 @@
-import { MicroInstruction, PathInfo, RunnerContext } from './model';
+import { LintResolvedOpts, MicroInstruction, PathInfo, RunnerContext } from './model';
 import { toMergedPathInfos, toPathInfo } from './path-transforming';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import { byFileQuery, commanderStringsToFiltering } from './path-filtering';
 import glob from 'tiny-glob';
+import { createESLint, lintCommand } from './eslint-command';
 
 export const runFilesInstruction = (
   _ctx: RunnerContext,
@@ -62,10 +63,21 @@ export const runFilterInstruction = (
 };
 
 const runLintInstruction = async (
-  _instruction: MicroInstruction,
+  ctx: RunnerContext,
+  instruction: MicroInstruction,
   _pathInfos: PathInfo[]
 ): Promise<string> => {
-  return await Promise.resolve('123');
+  const {
+    params: { targetFiles },
+  } = instruction;
+  const lintOpts: LintResolvedOpts = {
+    modulePath: ctx.currentPath,
+    mode: 'fix',
+    folders: targetFiles,
+  };
+  const handle = await createESLint(lintOpts);
+  const results = await lintCommand(handle);
+  return await results;
 };
 
 export const runInstructions = async (
@@ -95,7 +107,7 @@ export const runInstructions = async (
     ? runFilterInstruction(ctx, filterInstruction, allFileInfos)
     : allFileInfos;
   const linted = lintInstruction
-    ? await runLintInstruction(lintInstruction, filtered)
+    ? await runLintInstruction(ctx, lintInstruction, filtered)
     : false;
   return linted ? linted : 'not linted';
 };

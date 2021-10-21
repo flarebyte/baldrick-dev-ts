@@ -111,4 +111,22 @@ describe('Run instructions', () => {
       expect(loaded[0].path).toBe('src/this.ts');
     });
   });
+  describe('runLintInstruction', () => {
+    const modulePath = createProjectDir();
+    it('run lint', async () => {
+      const instruction: MicroInstruction = {
+        name: 'lint',
+        params: { targetFiles: ['src/**/*', 'test/**/*'], extensions: [] },
+      };
+      expect.assertions(4);
+      const loaded = await runGlobInstruction(
+        { currentPath: modulePath },
+        instruction
+      );
+      expect(loaded).toHaveLength(3);
+      expect(loaded[0].path).toBe('src/index.ts');
+      expect(loaded[1].path).toBe('src/problematic.ts');
+      expect(loaded[2].path).toBe('test/index.test.ts');
+    });
+  });
 });

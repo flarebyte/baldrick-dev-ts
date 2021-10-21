@@ -1,6 +1,7 @@
-import { computeEsLintConfig } from "./eslint-config";
-import { LintResolvedOpts } from "./model";
-import { ESLint } from "eslint";
+import { computeEsLintConfig } from './eslint-config';
+import { LintResolvedOpts } from './model';
+import { ESLint } from 'eslint';
+import path from 'path';
 
 export interface ESLintHandle {
   eslint: ESLint;
@@ -15,16 +16,16 @@ export const createESLint = async (
 ): Promise<ESLintHandle> => {
   const options = computeEsLintConfig(opts);
   const eslint = new ESLint(options);
-  const formatter = await eslint.loadFormatter("stylish");
-  const jsonFormatter = await eslint.loadFormatter("json");
+  const formatter = await eslint.loadFormatter('stylish');
+  const jsonFormatter = await eslint.loadFormatter('json');
   return { eslint, opts, options, formatter, jsonFormatter };
 };
 
 export const lintCommand = async (
   handle: ESLintHandle
 ): Promise<ESLint.LintResult[]> => {
-  const files = handle.opts.folders.map(
-    (folder) => `${handle.opts.modulePath}/${folder}/`
+  const files = handle.opts.folders.map((folder) =>
+    path.join(handle.opts.modulePath, folder)
   );
   return await handle.eslint.lintFiles(files);
 };
