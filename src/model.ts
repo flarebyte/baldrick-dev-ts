@@ -1,3 +1,5 @@
+import { ESLint } from "eslint";
+
 export type ObjectWithKeys = { [key: string]: any };
 
 export interface PackageJson {
@@ -152,6 +154,15 @@ export type InstructionParams = { [paramName: string]: string[] };
 export interface MicroInstruction {
   name: MicroInstructionName;
   params: InstructionParams;
+}
+
+export type LintInstructionStatus = 'ok' | 'ko'| 'warning';
+
+export interface LintInstructionResult {
+  text: string;
+  json: string;
+  status: LintInstructionStatus;
+  lintResults: ESLint.LintResult[];
 }
 
 export interface RunnerContext {

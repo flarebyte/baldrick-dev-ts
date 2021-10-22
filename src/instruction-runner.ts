@@ -1,4 +1,10 @@
-import { LintResolvedOpts, MicroInstruction, PathInfo, RunnerContext } from './model';
+import {
+  LintInstructionResult,
+  LintResolvedOpts,
+  MicroInstruction,
+  PathInfo,
+  RunnerContext,
+} from './model';
 import { toMergedPathInfos, toPathInfo } from './path-transforming';
 import { readFile } from 'fs/promises';
 import path from 'path';
@@ -62,28 +68,30 @@ export const runFilterInstruction = (
   return pathInfos.filter(byFileQuery(filtering));
 };
 
-const runLintInstruction = async (
+export const runLintInstruction = async (
   ctx: RunnerContext,
   instruction: MicroInstruction,
   _pathInfos: PathInfo[]
-): Promise<string> => {
+): Promise<LintInstructionResult> => {
   const {
     params: { targetFiles },
   } = instruction;
   const lintOpts: LintResolvedOpts = {
     modulePath: ctx.currentPath,
-    mode: 'fix',
+    mode: 'check',
     folders: targetFiles,
   };
   const handle = await createESLint(lintOpts);
-  const results = await lintCommand(handle);
-  return await results;
+  const lintResults = await lintCommand(handle);
+  const text = handle.formatter.format(lintResults);
+  const json = handle.jsonFormatter.format(lintResults);
+  return { text, json, status: 'ok', lintResults };
 };
 
 export const runInstructions = async (
   ctx: RunnerContext,
   instructions: MicroInstruction[]
-): Promise<string> => {
+): Promise<any> => {
   const filesInstruction = instructions.find((instr) => instr.name === 'files');
   const loadInstruction = instructions.find((instr) => instr.name === 'load');
   const globInstruction = instructions.find((instr) => instr.name === 'glob');

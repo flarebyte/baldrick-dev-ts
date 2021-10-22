@@ -17,6 +17,7 @@ import {
   runFilesInstruction,
   runFilterInstruction,
   runGlobInstruction,
+  runLintInstruction,
   runLoadInstruction,
 } from '../src/instruction-runner';
 import { MicroInstruction } from '../src/model';
@@ -39,6 +40,9 @@ const createProjectDir = () => {
   createTestingFilesSync(tempDir, fileContents);
   return tempDir;
 };
+
+const toLastPartOfFile = (longPath: string): string =>
+  longPath.split('/').reverse()[0];
 
 describe('Run instructions', () => {
   describe('runLoadInstruction', () => {
@@ -113,20 +117,33 @@ describe('Run instructions', () => {
   });
   describe('runLintInstruction', () => {
     const modulePath = createProjectDir();
-    it('run lint', async () => {
+    it('run lint check', async () => {
       const instruction: MicroInstruction = {
         name: 'lint',
-        params: { targetFiles: ['src/**/*', 'test/**/*'], extensions: [] },
+        params: { targetFiles: ['src', 'test'], extensions: [] },
       };
-      expect.assertions(4);
-      const loaded = await runGlobInstruction(
+      expect.assertions(7);
+      const actual = await runLintInstruction(
         { currentPath: modulePath },
-        instruction
+        instruction,
+        [
+          { path: 'src/this.ts', tags: [] },
+          { path: 'other/that.ts', tags: [] },
+        ]
       );
-      expect(loaded).toHaveLength(3);
-      expect(loaded[0].path).toBe('src/index.ts');
-      expect(loaded[1].path).toBe('src/problematic.ts');
-      expect(loaded[2].path).toBe('test/index.test.ts');
+      expect(actual.text).toContain('Missing return type');
+      expect(actual.text).toContain('Missing return type');
+      expect(actual.lintResults.map((r) => r.errorCount)).toEqual([3, 5, 1]);
+      expect(actual.lintResults.map((r) => r.warningCount)).toEqual([2, 1, 0]);
+      expect(
+        actual.lintResults.map((r) => toLastPartOfFile(r.filePath))
+      ).toEqual(['index.ts', 'problematic.ts', 'index.test.ts']);
+      expect(actual.lintResults.map((r) => r.fixableErrorCount)).toEqual([
+        3, 4, 1,
+      ]);
+      expect(actual.lintResults.map((r) => r.fixableWarningCount)).toEqual([
+        0, 0, 0,
+      ]);
     });
   });
 });
