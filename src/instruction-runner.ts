@@ -1,5 +1,6 @@
 import {
   LintInstructionResult,
+  LintMode,
   LintResolvedOpts,
   MicroInstruction,
   PathInfo,
@@ -68,17 +69,30 @@ export const runFilterInstruction = (
   return pathInfos.filter(byFileQuery(filtering));
 };
 
+const knownLintFlags = ['lint:check', 'lint:fix', 'lint:ci'];
+
+const toLintFlag = (flags: string[]): LintMode => {
+  const lintFlag = flags.filter((flag) => knownLintFlags.includes(flag))[0];
+  if (lintFlag === 'lint:fix') {
+    return 'fix';
+  }
+  if (lintFlag === 'lint:ci') {
+    return 'ci';
+  }
+  return 'check';
+};
+
 export const runLintInstruction = async (
   ctx: RunnerContext,
   instruction: MicroInstruction,
   _pathInfos: PathInfo[]
 ): Promise<LintInstructionResult> => {
   const {
-    params: { targetFiles },
+    params: { targetFiles, flags },
   } = instruction;
   const lintOpts: LintResolvedOpts = {
     modulePath: ctx.currentPath,
-    mode: 'check',
+    mode: toLintFlag(flags),
     folders: targetFiles,
   };
   const handle = await createESLint(lintOpts);

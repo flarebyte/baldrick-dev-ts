@@ -120,7 +120,7 @@ describe('Run instructions', () => {
     it('run lint check', async () => {
       const instruction: MicroInstruction = {
         name: 'lint',
-        params: { targetFiles: ['src', 'test'], extensions: [] },
+        params: { targetFiles: ['src', 'test'], extensions: [], flags: [] },
       };
       expect.assertions(7);
       const actual = await runLintInstruction(
