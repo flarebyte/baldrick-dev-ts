@@ -93,7 +93,7 @@ export const runLintInstruction = async (
   const lintOpts: LintResolvedOpts = {
     modulePath: ctx.currentPath,
     mode: toLintFlag(flags),
-    folders: targetFiles,
+    pathPatterns: targetFiles,
   };
   const handle = await createESLint(lintOpts);
   const lintResults = await lintCommand(handle);

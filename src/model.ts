@@ -104,7 +104,7 @@ export type LintMode = 'check' | 'fix' | 'ci';
 export interface LintResolvedOpts {
   modulePath: string;
   mode: LintMode;
-  folders: string[];
+  pathPatterns: string[];
 }
 
 export interface PathInfo {

@@ -24,8 +24,8 @@ export const createESLint = async (
 export const lintCommand = async (
   handle: ESLintHandle
 ): Promise<ESLint.LintResult[]> => {
-  const files = handle.opts.folders.map((folder) =>
-    path.join(handle.opts.modulePath, folder)
+  const patterns = handle.opts.pathPatterns.map((pathPattern) =>
+    path.join(handle.opts.modulePath, pathPattern)
   );
-  return await handle.eslint.lintFiles(files);
+  return await handle.eslint.lintFiles(patterns);
 };
