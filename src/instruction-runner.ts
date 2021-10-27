@@ -6,7 +6,7 @@ import {
   PathInfo,
   RunnerContext,
 } from './model';
-import { toMergedPathInfos, toPathInfo } from './path-transforming';
+import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import { byFileQuery, commanderStringsToFiltering } from './path-filtering';
@@ -85,15 +85,15 @@ const toLintFlag = (flags: string[]): LintMode => {
 export const runLintInstruction = async (
   ctx: RunnerContext,
   instruction: MicroInstruction,
-  _pathInfos: PathInfo[]
+  pathInfos: PathInfo[]
 ): Promise<LintInstructionResult> => {
   const {
-    params: { targetFiles, flags },
+    params: { flags },
   } = instruction;
   const lintOpts: LintResolvedOpts = {
     modulePath: ctx.currentPath,
     mode: toLintFlag(flags),
-    pathPatterns: targetFiles,
+    pathPatterns: pathInfos.map(asPath),
   };
   const handle = await createESLint(lintOpts);
   const lintResults = await lintCommand(handle);

@@ -120,15 +120,15 @@ describe('Run instructions', () => {
     it('run lint check', async () => {
       const instruction: MicroInstruction = {
         name: 'lint',
-        params: { targetFiles: ['src', 'test'], extensions: [], flags: [] },
+        params: { extensions: [], flags: [] },
       };
       expect.assertions(7);
       const actual = await runLintInstruction(
         { currentPath: modulePath },
         instruction,
         [
-          { path: 'src/this.ts', tags: [] },
-          { path: 'other/that.ts', tags: [] },
+          { path: 'src', tags: [] },
+          { path: 'test', tags: [] },
         ]
       );
       expect(actual.text).toContain('Missing return type');
