@@ -21,6 +21,8 @@ import {
   runLoadInstruction,
 } from '../src/instruction-runner';
 import { MicroInstruction } from '../src/model';
+import fs from 'fs-extra';
+import { diffChars } from 'diff';
 
 const someToolOptions = { ...simpleToolOptions };
 const createProjectDir = () => {
@@ -41,6 +43,9 @@ const createProjectDir = () => {
   return tempDir;
 };
 
+const readTempFileAsync = (modulePath: string, filename: string): string => {
+  return fs.readFileSync(`${modulePath}/${filename}`, 'utf8');
+};
 const toLastPartOfFile = (longPath: string): string =>
   longPath.split('/').reverse()[0];
 
@@ -132,7 +137,7 @@ describe('Run instructions', () => {
         ]
       );
       expect(actual.text).toContain('Missing return type');
-      expect(actual.text).toContain('Missing return type');
+      expect(actual.json).toContain('Missing return type');
       expect(actual.lintResults.map((r) => r.errorCount)).toEqual([3, 5, 1]);
       expect(actual.lintResults.map((r) => r.warningCount)).toEqual([2, 1, 0]);
       expect(
@@ -144,6 +149,43 @@ describe('Run instructions', () => {
       expect(actual.lintResults.map((r) => r.fixableWarningCount)).toEqual([
         0, 0, 0,
       ]);
+    });
+    it('run lint fix', async () => {
+      const indexBefore = readTempFileAsync(modulePath, 'src/index.ts');
+      const instruction: MicroInstruction = {
+        name: 'lint',
+        params: { extensions: [], flags: ['lint:fix'] },
+      };
+      expect.assertions(3);
+      const actual = await runLintInstruction(
+        { currentPath: modulePath },
+        instruction,
+        [
+          { path: 'src', tags: [] },
+          { path: 'test', tags: [] },
+        ]
+      );
+      expect(actual.text).toContain('Missing return type');
+      expect(actual.json).toContain('Missing return type');
+      const indexAfter = readTempFileAsync(modulePath, 'src/index.ts');
+      const diffIndex = diffChars(indexBefore, indexAfter);
+      expect(diffIndex).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "count": 143,
+            "value": "
+        export const sum = (a: number, b: number) => {
+          return a + b;
+        };
+
+
+        export const addPrefix = (text: string) => {
+          return \\"prefix\\" + text;
+        };
+        ",
+          },
+        ]
+      `);
     });
   });
 });
