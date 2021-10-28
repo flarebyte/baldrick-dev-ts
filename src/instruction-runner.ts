@@ -11,7 +11,7 @@ import { readFile } from 'fs/promises';
 import path from 'path';
 import { byFileQuery, commanderStringsToFiltering } from './path-filtering';
 import glob from 'tiny-glob';
-import { createESLint, lintCommand } from './eslint-command';
+import { createESLint, lintCommand } from './eslint-helper';
 
 export const runFilesInstruction = (
   _ctx: RunnerContext,
