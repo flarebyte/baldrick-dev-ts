@@ -170,9 +170,8 @@ export interface RunnerContext {
 }
 
 export interface LintActionOpts {
-  searchMode: string;
-  pathInfos: PathInfo[];
-  fileFiltering: FileFiltering;
+  flags: string[];
+  fileSearching: FileSearching;
   ecmaVersion: number;
   report: LintReport[];
 }

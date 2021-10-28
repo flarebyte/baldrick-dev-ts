@@ -31,7 +31,7 @@ export class Commanding {
       .command('lint')
       .description('Lint the code')
       .addArgument(
-        new Argument('<mode>', 'mode').choices(['find', 'list', 'load'])
+        new Argument('<flags...>', 'flags').choices(['find', 'list', 'load'])
       )
       .argument('<paths...>', 'List of paths')
       .addOption(toCommanderOption(cmdLintFilterOptions.withPathStarting))
@@ -51,7 +51,7 @@ export class Commanding {
       )
       .action(
         (
-          mode: string,
+          flags: string[],
           paths: string[],
           withPathStarting: string[],
           withoutPathStarting: string[],
@@ -66,19 +66,21 @@ export class Commanding {
           ecmaVersion: number
         ) => {
           const lintOpts: LintActionOpts = {
-            searchMode: mode,
-            pathInfos: paths.map(toPathInfo),
-            fileFiltering: {
-              withPathStarting,
-              withoutPathStarting,
-              withExtension,
-              withoutExtension,
-              withPathSegment,
-              withoutPathSegment,
-              withTag,
-              withoutTag,
-              withTagStarting,
-              withoutTagStarting,
+            flags,
+            fileSearching: {
+              pathInfos: paths.map(toPathInfo),
+              filtering: {
+                withPathStarting,
+                withoutPathStarting,
+                withExtension,
+                withoutExtension,
+                withPathSegment,
+                withoutPathSegment,
+                withTag,
+                withoutTag,
+                withTagStarting,
+                withoutTagStarting,
+              },
             },
             ecmaVersion,
             report: [],

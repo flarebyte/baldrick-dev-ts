@@ -1,4 +1,4 @@
-import { FileSearching, MicroInstruction } from './model';
+import { FileSearching, LintActionOpts, MicroInstruction } from './model';
 import { byFileQuery, filteringToCommanderStrings } from './path-filtering';
 
 const moreThanStartAndExt = (fileSearching: FileSearching): boolean =>
@@ -88,17 +88,16 @@ const filterInstructions = (
     : [];
 };
 const configureLintInstructions = (
-  fileSearching: FileSearching,
-  flags: string[]
+  opts: LintActionOpts
 ): MicroInstruction[] => {
-  return isSimpleLint(fileSearching)
+  return isSimpleLint(opts.fileSearching)
     ? [
         {
           name: 'lint',
           params: {
-            targetFiles: fileSearching.filtering.withPathStarting,
-            extensions: fileSearching.filtering.withExtension,
-            flags,
+            targetFiles: opts.fileSearching.filtering.withPathStarting,
+            extensions: opts.fileSearching.filtering.withExtension,
+            flags: opts.flags,
           },
         },
       ]
@@ -108,20 +107,19 @@ const configureLintInstructions = (
           params: {
             targetFiles: [],
             extensions: [],
-            flags: ['globInputPaths:false', ...flags],
+            flags: ['globInputPaths:false', ...opts.flags],
           },
         },
       ];
 };
 export const toLintInstructions = (
-  fileSearching: FileSearching,
-  flags: string[]
+  opts: LintActionOpts
 ): MicroInstruction[] => {
   return [
-    ...filesInstructions(fileSearching),
-    ...loadInstructions(fileSearching),
-    ...globInstructions(fileSearching),
-    ...filterInstructions(fileSearching),
-    ...configureLintInstructions(fileSearching, flags),
+    ...filesInstructions(opts.fileSearching),
+    ...loadInstructions(opts.fileSearching),
+    ...globInstructions(opts.fileSearching),
+    ...filterInstructions(opts.fileSearching),
+    ...configureLintInstructions(opts),
   ];
 };
