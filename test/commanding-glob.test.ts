@@ -74,7 +74,7 @@ const createProjectDir = () => {
   return tempDir;
 };
 
-describe('Commands', () => {
+describe('Commands Glob', () => {
   it('rehearse parsing', () => {
     const commanding = new Commanding();
     commanding.declareGlobAction(jest.fn());
