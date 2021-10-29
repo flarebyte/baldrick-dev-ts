@@ -176,7 +176,7 @@ export interface LintActionOpts {
   report: LintReport[];
 }
 
-export type LintAction = (options: LintActionOpts) => void;
+export type LintAction = (ctx: RunnerContext, options: LintActionOpts) => Promise<void>;
 
 export interface CmdOption {
   shortFlag: string;

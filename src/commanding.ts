@@ -1,7 +1,7 @@
 import { Command, Argument } from 'commander';
 import { version } from './version';
 import { CommandingInstrumentation } from './commanding-instrumentation';
-import { GlobAction, LintAction, LintActionOpts } from './model';
+import { GlobAction, LintAction, LintActionOpts, RunnerContext } from './model';
 import { toPathInfo } from './path-transforming';
 import { parseEcma, toCommanderOption } from './commanding-helper';
 import { cmdLintFilterOptions } from './commanding-data';
@@ -50,7 +50,7 @@ export class Commanding {
         parseEcma
       )
       .action(
-        (
+       async (
           flags: string[],
           paths: string[],
           withPathStarting: string[],
@@ -85,8 +85,11 @@ export class Commanding {
             ecmaVersion,
             report: [],
           };
+          const ctx: RunnerContext = {
+            currentPath: process.cwd(),
+          };
           this._instr.lintActionStart(lintOpts);
-          lintAction(lintOpts);
+          await lintAction(ctx, lintOpts);
         }
       );
   }
