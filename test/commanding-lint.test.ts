@@ -1,4 +1,5 @@
 import { Commanding } from '../src/commanding';
+import { LintAction, LintActionOpts, RunnerContext } from '../src/model';
 
 interface Example {
   given: string[];
@@ -7,24 +8,26 @@ interface Example {
 const examples: Example[] = [
   {
     given: [
-      'find:',
-      'data/*.json',
-      'with-path-containing:',
-      'author',
-      'check-json-schema:',
-      'schemas/author.schema.json',
+      '--with-path-starting',
+      'src',
+      '--ecma-version',
+      '2018'
     ],
   },
 ];
+const mockLintAction: LintAction = async (_ctx: RunnerContext, _opts: LintActionOpts) => {
+  await Promise.resolve('does not matter')
+}
 
 describe('Commands Lint', () => {
   const commanding = new Commanding();
-  commanding.declareLintAction(jest.fn());
+  commanding.declareLintAction(mockLintAction);
 
   it.each(examples)('check each json with schemas $given', ({ given }) => {
     commanding.parse(['node', 'baldrick', 'lint', ...given]);
-    expect(commanding.getInstrumentation().getLastRecord().params).toEqual(
-      given
-    );
+    const { params } = commanding.getInstrumentation().getLastRecord()
+    expect(params).toHaveLength(2);
+    expect(params[0]).toContain('/baldrick-dev-ts')
+    expect(params[1]).toStrictEqual('{}')
   });
 });

@@ -1,8 +1,7 @@
-import { Command, Argument } from 'commander';
+import { Command } from 'commander';
 import { version } from './version';
 import { CommandingInstrumentation } from './commanding-instrumentation';
 import { GlobAction, LintAction, LintActionOpts, RunnerContext } from './model';
-import { toPathInfo } from './path-transforming';
 import { parseEcma, toCommanderOption } from './commanding-helper';
 import { cmdLintFilterOptions } from './commanding-data';
 
@@ -30,10 +29,6 @@ export class Commanding {
     this._program
       .command('lint')
       .description('Lint the code')
-      .addArgument(
-        new Argument('<flags...>', 'flags').choices(['find', 'list', 'load'])
-      )
-      .argument('<paths...>', 'List of paths')
       .addOption(toCommanderOption(cmdLintFilterOptions.withPathStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutPathStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.withExtension))
@@ -47,12 +42,11 @@ export class Commanding {
       .option(
         '-ecma, --ecma-version [ecmaVersion...]',
         'specify the ecma version',
-        parseEcma
+        parseEcma,
+        2020
       )
       .action(
        async (
-          flags: string[],
-          paths: string[],
           withPathStarting: string[],
           withoutPathStarting: string[],
           withExtension: string[],
@@ -63,12 +57,12 @@ export class Commanding {
           withoutTag: string[],
           withTagStarting: string[],
           withoutTagStarting: string[],
-          ecmaVersion: number
+          ecmaVersion: number,
         ) => {
           const lintOpts: LintActionOpts = {
-            flags,
+            flags: [`lint:check`],
             fileSearching: {
-              pathInfos: paths.map(toPathInfo),
+              pathInfos: [],
               filtering: {
                 withPathStarting,
                 withoutPathStarting,
@@ -88,7 +82,7 @@ export class Commanding {
           const ctx: RunnerContext = {
             currentPath: process.cwd(),
           };
-          this._instr.lintActionStart(lintOpts);
+          this._instr.lintActionStart(ctx, lintOpts);
           await lintAction(ctx, lintOpts);
         }
       );
