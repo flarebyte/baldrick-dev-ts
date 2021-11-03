@@ -186,4 +186,6 @@ export interface CmdOption {
   shortFlag: string;
   longFlag: string;
   description: string;
+  defaultValue: string | string[];
+  choices: string[];
 }

@@ -9,7 +9,6 @@ import {
   RunnerContext,
 } from './model';
 import {
-  toChoiceCommanderOption,
   toCommanderOption,
 } from './commanding-helper';
 import { cmdLintFilterOptions } from './commanding-data';
@@ -48,13 +47,7 @@ export class Commanding {
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutTag))
       .addOption(toCommanderOption(cmdLintFilterOptions.withTagStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutTagStarting))
-      .addOption(
-        toChoiceCommanderOption(
-          cmdLintFilterOptions.ecma,
-          ['2018', '2019', '2020', '2021'],
-          '2021'
-        )
-      )
+      .addOption(toCommanderOption(cmdLintFilterOptions.ecma))
       .action(async (options: LintActionRawOpts) => {
         const lintOpts: LintActionOpts = {
           flags: [`lint:check`],

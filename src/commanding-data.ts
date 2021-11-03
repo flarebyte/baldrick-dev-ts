@@ -13,7 +13,7 @@ interface CmdLintOptions {
   withoutTagStarting: CmdOption;
   ecma: CmdOption;
 }
-const option = (
+const stringsOption = (
   shortFlag: string,
   longFlag: string,
   description: string
@@ -21,19 +21,33 @@ const option = (
   shortFlag,
   longFlag,
   description,
+  choices: [],
+  defaultValue: []
+});
+
+const choiceOption = (
+  shortFlag: string,
+  longFlag: string,
+  description: string,
+  choices: string[],
+): CmdOption => ({
+  shortFlag,
+  longFlag,
+  description,
+  choices,
+  defaultValue: choices[0]
 });
 
 export const cmdLintFilterOptions: CmdLintOptions = {
-  withPathStarting: option('s', 'with-path-starting', 'Specify a list of expected prefixes for the path (any will match)'),
-  withoutPathStarting: option('S', 'without-path-starting', 'Exclude a list of unwanted prefixes for the path'),
-  withExtension: option('e', 'with-extension', 'Specify a list of expected suffixes for the path (any will match)'),
-  withoutExtension: option('E', 'without-extension', 'Exclude a list of unwanted suffixes for the path'),
-  withPathSegment: option('s', 'with-path-segment', 'Specify a list of expected texts that should be part of the path (any will match)'),
-  withoutPathSegment: option('S', 'without-path-segment', 'Exclude a list of unwanted texts that should not be part of the path'),
-  withTag: option('t', 'with-tag', 'Specify a list of expected tags (any will match)'),
-  withoutTag: option('T', 'without-tag', 'Exclude a list of unwanted tags'),
-  withTagStarting: option('p', 'with-tag-starting', 'Specify a list of expected prefixes for the tag (any will match)'),
-  withoutTagStarting: option('P', 'without-tag-starting', 'Exclude a list of unwanted prefixes for the tag'),
-  ecma: option('ecma', 'ecma-version', 'Specify the ecma version')
-
+  withPathStarting: stringsOption('s', 'with-path-starting', 'Specify a list of expected prefixes for the path (any will match)'),
+  withoutPathStarting: stringsOption('S', 'without-path-starting', 'Exclude a list of unwanted prefixes for the path'),
+  withExtension: stringsOption('e', 'with-extension', 'Specify a list of expected suffixes for the path (any will match)'),
+  withoutExtension: stringsOption('E', 'without-extension', 'Exclude a list of unwanted suffixes for the path'),
+  withPathSegment: stringsOption('s', 'with-path-segment', 'Specify a list of expected texts that should be part of the path (any will match)'),
+  withoutPathSegment: stringsOption('S', 'without-path-segment', 'Exclude a list of unwanted texts that should not be part of the path'),
+  withTag: stringsOption('t', 'with-tag', 'Specify a list of expected tags (any will match)'),
+  withoutTag: stringsOption('T', 'without-tag', 'Exclude a list of unwanted tags'),
+  withTagStarting: stringsOption('p', 'with-tag-starting', 'Specify a list of expected prefixes for the tag (any will match)'),
+  withoutTagStarting: stringsOption('P', 'without-tag-starting', 'Exclude a list of unwanted prefixes for the tag'),
+  ecma: choiceOption('ecma', 'ecma-version', 'Specify the ecma version', ['2021', '2020', '2019', '2018'])
 };

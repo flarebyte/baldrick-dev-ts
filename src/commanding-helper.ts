@@ -7,18 +7,10 @@ export const toCommanderOption = (option: CmdOption): Option => {
     option.longFlag
   )}...]`;
   const opts = new Option(flags, option.description);
-  opts.defaultValue = [];
-  opts.defaultValueDescription = 'none'
-  return opts;
-};
-
-export const toChoiceCommanderOption = (option: CmdOption, choices: string[], defaultValue: string): Option => {
-  const flags = `-${option.shortFlag}, --${option.longFlag} [${camelCase(
-    option.longFlag
-  )}...]`;
-  const opts = new Option(flags, option.description);
-  opts.defaultValue = defaultValue;
-  opts.choices(choices);
+  opts.defaultValue = option.defaultValue;
+  if (option.choices.length > 0) {
+    opts.choices(option.choices);
+  }
   return opts;
 };
 
