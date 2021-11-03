@@ -8,9 +8,7 @@ import {
   LintActionRawOpts,
   RunnerContext,
 } from './model';
-import {
-  toCommanderOption,
-} from './commanding-helper';
+import { toCommanderOption } from './commanding-helper';
 import { cmdLintFilterOptions } from './commanding-data';
 
 export class Commanding {
@@ -37,6 +35,7 @@ export class Commanding {
     this._program
       .command('lint')
       .description('Lint the code')
+      .addOption(toCommanderOption(cmdLintFilterOptions.aim))
       .addOption(toCommanderOption(cmdLintFilterOptions.withPathStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutPathStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.withExtension))
@@ -49,21 +48,34 @@ export class Commanding {
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutTagStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.ecma))
       .action(async (options: LintActionRawOpts) => {
+        const {
+          aim,
+          withPathStarting,
+          withoutPathStarting,
+          withExtension,
+          withoutExtension,
+          withPathSegment,
+          withoutPathSegment,
+          withTag,
+          withoutTag,
+          withTagStarting,
+          withoutTagStarting,
+        } = options;
         const lintOpts: LintActionOpts = {
-          flags: [`lint:check`],
+          flags: [`lint:${aim}`],
           fileSearching: {
             pathInfos: [],
             filtering: {
-              withPathStarting: options.withPathStarting,
-              withoutPathStarting: options.withoutPathStarting,
-              withExtension: options.withExtension,
-              withoutExtension: options.withoutExtension,
-              withPathSegment: options.withPathSegment,
-              withoutPathSegment: options.withoutPathSegment,
-              withTag: options.withTag,
-              withoutTag: options.withoutTag,
-              withTagStarting: options.withTagStarting,
-              withoutTagStarting: options.withoutTagStarting,
+              withPathStarting,
+              withoutPathStarting,
+              withExtension,
+              withoutExtension,
+              withPathSegment,
+              withoutPathSegment,
+              withTag,
+              withoutTag,
+              withTagStarting,
+              withoutTagStarting,
             },
           },
           ecmaVersion: parseInt(options.ecmaVersion),

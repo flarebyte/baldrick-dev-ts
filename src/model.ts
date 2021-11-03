@@ -1,4 +1,4 @@
-import { ESLint } from "eslint";
+import { ESLint } from 'eslint';
 
 export type ObjectWithKeys = { [key: string]: any };
 
@@ -147,7 +147,12 @@ export type LintReport =
 
 export type FileSearchMode = 'find' | 'list' | 'load';
 
-export type MicroInstructionName = 'lint' | 'files'| 'load' | 'glob' | 'filter';
+export type MicroInstructionName =
+  | 'lint'
+  | 'files'
+  | 'load'
+  | 'glob'
+  | 'filter';
 
 export type InstructionParams = { [paramName: string]: string[] };
 
@@ -156,7 +161,7 @@ export interface MicroInstruction {
   params: InstructionParams;
 }
 
-export type LintInstructionStatus = 'ok' | 'ko'| 'warning';
+export type LintInstructionStatus = 'ok' | 'ko' | 'warning';
 
 export interface LintInstructionResult {
   text: string;
@@ -169,7 +174,8 @@ export interface RunnerContext {
   currentPath: string;
 }
 
-export interface LintActionRawOpts extends FileFiltering{
+export interface LintActionRawOpts extends FileFiltering {
+  aim: string;
   ecmaVersion: string;
 }
 
@@ -180,7 +186,10 @@ export interface LintActionOpts {
   report: LintReport[];
 }
 
-export type LintAction = (ctx: RunnerContext, options: LintActionOpts) => Promise<void>;
+export type LintAction = (
+  ctx: RunnerContext,
+  options: LintActionOpts
+) => Promise<void>;
 
 export interface CmdOption {
   shortFlag: string;
