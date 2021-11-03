@@ -26,8 +26,7 @@ export class CommandingInstrumentation {
     });
   }
   lintActionStart(ctx: RunnerContext, lintOpts: LintActionOpts) {
-    console.log(lintOpts)
-    const optsStr = JSON.stringify({version: lintOpts.ecmaVersion}, null, 2)
+    const optsStr = JSON.stringify(lintOpts)
     this._statusRecords.push({
       title: 'lint action',
       message: 'run',

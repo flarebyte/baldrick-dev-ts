@@ -1,8 +1,17 @@
 import { Command } from 'commander';
 import { version } from './version';
 import { CommandingInstrumentation } from './commanding-instrumentation';
-import { GlobAction, LintAction, LintActionOpts, RunnerContext } from './model';
-import { parseEcma, toCommanderOption } from './commanding-helper';
+import {
+  GlobAction,
+  LintAction,
+  LintActionOpts,
+  LintActionRawOpts,
+  RunnerContext,
+} from './model';
+import {
+  toChoiceCommanderOption,
+  toCommanderOption,
+} from './commanding-helper';
 import { cmdLintFilterOptions } from './commanding-data';
 
 export class Commanding {
@@ -39,53 +48,40 @@ export class Commanding {
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutTag))
       .addOption(toCommanderOption(cmdLintFilterOptions.withTagStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutTagStarting))
-      .option(
-        '-ecma, --ecma-version [ecmaVersion...]',
-        'specify the ecma version',
-        parseEcma,
-        2020
+      .addOption(
+        toChoiceCommanderOption(
+          cmdLintFilterOptions.ecma,
+          ['2018', '2019', '2020', '2021'],
+          '2021'
+        )
       )
-      .action(
-       async (
-          withPathStarting: string[],
-          withoutPathStarting: string[],
-          withExtension: string[],
-          withoutExtension: string[],
-          withPathSegment: string[],
-          withoutPathSegment: string[],
-          withTag: string[],
-          withoutTag: string[],
-          withTagStarting: string[],
-          withoutTagStarting: string[],
-          ecmaVersion: number,
-        ) => {
-          const lintOpts: LintActionOpts = {
-            flags: [`lint:check`],
-            fileSearching: {
-              pathInfos: [],
-              filtering: {
-                withPathStarting,
-                withoutPathStarting,
-                withExtension,
-                withoutExtension,
-                withPathSegment,
-                withoutPathSegment,
-                withTag,
-                withoutTag,
-                withTagStarting,
-                withoutTagStarting,
-              },
+      .action(async (options: LintActionRawOpts) => {
+        const lintOpts: LintActionOpts = {
+          flags: [`lint:check`],
+          fileSearching: {
+            pathInfos: [],
+            filtering: {
+              withPathStarting: options.withPathStarting,
+              withoutPathStarting: options.withoutPathStarting,
+              withExtension: options.withExtension,
+              withoutExtension: options.withoutExtension,
+              withPathSegment: options.withPathSegment,
+              withoutPathSegment: options.withoutPathSegment,
+              withTag: options.withTag,
+              withoutTag: options.withoutTag,
+              withTagStarting: options.withTagStarting,
+              withoutTagStarting: options.withoutTagStarting,
             },
-            ecmaVersion,
-            report: [],
-          };
-          const ctx: RunnerContext = {
-            currentPath: process.cwd(),
-          };
-          this._instr.lintActionStart(ctx, lintOpts);
-          await lintAction(ctx, lintOpts);
-        }
-      );
+          },
+          ecmaVersion: parseInt(options.ecmaVersion),
+          report: [],
+        };
+        const ctx: RunnerContext = {
+          currentPath: process.cwd(),
+        };
+        this._instr.lintActionStart(ctx, lintOpts);
+        await lintAction(ctx, lintOpts);
+      });
   }
 
   parse(argv: string[]) {

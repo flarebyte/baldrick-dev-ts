@@ -169,6 +169,10 @@ export interface RunnerContext {
   currentPath: string;
 }
 
+export interface LintActionRawOpts extends FileFiltering{
+  ecmaVersion: string;
+}
+
 export interface LintActionOpts {
   flags: string[];
   fileSearching: FileSearching;

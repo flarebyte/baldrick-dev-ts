@@ -7,17 +7,15 @@ interface Example {
 
 const examples: Example[] = [
   {
-    given: [
-      '--with-path-starting',
-      'src',
-      '--ecma-version',
-      '2018'
-    ],
+    given: ['--with-path-starting', 'src', 'test', '--ecma-version', '2019'],
   },
 ];
-const mockLintAction: LintAction = async (_ctx: RunnerContext, _opts: LintActionOpts) => {
-  await Promise.resolve('does not matter')
-}
+const mockLintAction: LintAction = async (
+  _ctx: RunnerContext,
+  _opts: LintActionOpts
+) => {
+  await Promise.resolve('does not matter');
+};
 
 describe('Commands Lint', () => {
   const commanding = new Commanding();
@@ -25,9 +23,17 @@ describe('Commands Lint', () => {
 
   it.each(examples)('check each json with schemas $given', ({ given }) => {
     commanding.parse(['node', 'baldrick', 'lint', ...given]);
-    const { params } = commanding.getInstrumentation().getLastRecord()
+    const { params } = commanding.getInstrumentation().getLastRecord();
     expect(params).toHaveLength(2);
-    expect(params[0]).toContain('/baldrick-dev-ts')
-    expect(params[1]).toStrictEqual('{}')
+    expect(params[0]).toContain('/baldrick-dev-ts');
+    const latest = JSON.parse(params[1]);
+    expect(latest).toMatchObject({
+      fileSearching: {
+        filtering: {
+          withPathStarting: ['src', 'test'],
+        },
+      },
+      ecmaVersion: 2019,
+    });
   });
 });

@@ -1,6 +1,6 @@
 import { CmdOption } from './model';
 
-interface CmdLintFilterOptions {
+interface CmdLintOptions {
   withPathStarting: CmdOption;
   withoutPathStarting: CmdOption;
   withExtension: CmdOption;
@@ -11,6 +11,7 @@ interface CmdLintFilterOptions {
   withoutTag: CmdOption;
   withTagStarting: CmdOption;
   withoutTagStarting: CmdOption;
+  ecma: CmdOption;
 }
 const option = (
   shortFlag: string,
@@ -22,8 +23,7 @@ const option = (
   description,
 });
 
-
-export const cmdLintFilterOptions: CmdLintFilterOptions = {
+export const cmdLintFilterOptions: CmdLintOptions = {
   withPathStarting: option('s', 'with-path-starting', 'Specify a list of expected prefixes for the path (any will match)'),
   withoutPathStarting: option('S', 'without-path-starting', 'Exclude a list of unwanted prefixes for the path'),
   withExtension: option('e', 'with-extension', 'Specify a list of expected suffixes for the path (any will match)'),
@@ -34,4 +34,6 @@ export const cmdLintFilterOptions: CmdLintFilterOptions = {
   withoutTag: option('T', 'without-tag', 'Exclude a list of unwanted tags'),
   withTagStarting: option('p', 'with-tag-starting', 'Specify a list of expected prefixes for the tag (any will match)'),
   withoutTagStarting: option('P', 'without-tag-starting', 'Exclude a list of unwanted prefixes for the tag'),
+  ecma: option('ecma', 'ecma-version', 'Specify the ecma version')
+
 };
