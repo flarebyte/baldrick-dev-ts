@@ -12,6 +12,7 @@ import path from 'path';
 import { byFileQuery, commanderStringsToFiltering } from './path-filtering';
 import glob from 'tiny-glob';
 import { createESLint, lintCommand } from './eslint-helper';
+import { flagsToEcmaVersion } from './eslint-config';
 
 export const runFilesInstruction = (
   _ctx: RunnerContext,
@@ -94,6 +95,7 @@ export const runLintInstruction = async (
     modulePath: ctx.currentPath,
     mode: toLintFlag(flags),
     pathPatterns: pathInfos.map(asPath),
+    ecmaVersion: flagsToEcmaVersion(flags)
   };
   const handle = await createESLint(lintOpts);
   const lintResults = await lintCommand(handle);

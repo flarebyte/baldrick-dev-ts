@@ -12,7 +12,11 @@
   "scripts": {
     "lint": "tsdx lint",
     "test": "tsdx test",
+    "build": "tsdx build --target node",
     "reset": "rm -rf temp"
+  },
+  "bin": {
+    "baldrick": "./dist/cli.js"
   },
   "dependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",

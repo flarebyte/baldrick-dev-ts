@@ -62,7 +62,7 @@ export class Commanding {
           withoutTagStarting,
         } = options;
         const lintOpts: LintActionOpts = {
-          flags: [`lint:${aim}`],
+          flags: [`lint:${aim}`, `ecma:${options.ecmaVersion}`],
           fileSearching: {
             pathInfos: [],
             filtering: {

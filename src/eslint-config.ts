@@ -1,13 +1,27 @@
-import { LintResolvedOpts } from './model';
+import { LintResolvedOpts, SupportedEcmaVersion } from './model';
 import { ESLint, Linter } from 'eslint';
 
 // https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md
 
-const defaultConfig: Linter.Config = {
+export const flagsToEcmaVersion = (flags: string[]): SupportedEcmaVersion => {
+  if (flags.includes('ecma:2018')) {
+    return 2018;
+  }
+  if (flags.includes('ecma:2019')) {
+    return 2019;
+  }
+  if (flags.includes('ecma:2020')) {
+    return 2020;
+  }
+  return 2021;
+};
+
+
+const defaultConfig = (ecmaVersion: SupportedEcmaVersion): Linter.Config => ({
   root: true,
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion,
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint', 'prettier', 'jest', 'import'],
@@ -23,12 +37,12 @@ const defaultConfig: Linter.Config = {
   rules: {
     'prettier/prettier': 'error',
   },
-};
+});
 
 export const computeEsLintConfig = (opts: LintResolvedOpts): ESLint.Options => {
   return {
     baseConfig: {
-      ...defaultConfig,
+      ...defaultConfig(opts.ecmaVersion),
     },
     extensions: ['.ts', '.json'],
     fix: opts.mode === 'fix',

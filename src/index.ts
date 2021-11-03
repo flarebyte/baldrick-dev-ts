@@ -1,3 +1,7 @@
-import { program } from './commanding'
+import { Commanding } from "./commanding";
+import { cmdLintAction } from "./commanding-action";
 
-program.parse(process.argv)
+const commanding = new Commanding()
+commanding.declareLintAction(cmdLintAction)
+
+commanding.parse(process.argv)
