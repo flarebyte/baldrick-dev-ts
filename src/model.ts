@@ -172,8 +172,19 @@ export interface LintInstructionResult {
   lintResults: ESLint.LintResult[];
 }
 
+export type TermFormatterKind = 'intro' | 'info'
+
+export interface TermFormatterParams {
+  title: string;
+  detail: string;
+  kind: TermFormatterKind;
+}
+
+export type TermFormatter = (params: TermFormatterParams) => void
+
 export interface RunnerContext {
   currentPath: string;
+  termFormatter: TermFormatter;
 }
 
 export interface LintActionRawOpts extends FileFiltering {
@@ -200,3 +211,4 @@ export interface CmdOption {
   defaultValue: string | string[];
   choices: string[];
 }
+

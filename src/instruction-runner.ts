@@ -5,6 +5,7 @@ import {
   MicroInstruction,
   PathInfo,
   RunnerContext,
+  TermFormatterParams,
 } from './model';
 import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming';
 import { readFile } from 'fs/promises';
@@ -14,10 +15,17 @@ import glob from 'tiny-glob';
 import { createESLint, lintCommand } from './eslint-helper';
 import { flagsToEcmaVersion } from './eslint-config';
 
+const instructionToTermIntro = (instruction: MicroInstruction): TermFormatterParams => ({
+    kind: 'intro',
+    title: `Starting ${instruction.name} ...`,
+    detail: JSON.stringify(instruction.params)
+})
+
 export const runFilesInstruction = (
-  _ctx: RunnerContext,
+  ctx: RunnerContext,
   instruction: MicroInstruction
 ): PathInfo[] => {
+  ctx.termFormatter(instructionToTermIntro(instruction))
   const {
     params: { targetFiles },
   } = instruction;
@@ -31,6 +39,7 @@ export const runLoadInstruction = async (
   ctx: RunnerContext,
   instruction: MicroInstruction
 ): Promise<PathInfo[]> => {
+  ctx.termFormatter(instructionToTermIntro(instruction))
   const {
     params: { targetFiles },
   } = instruction;
@@ -45,6 +54,7 @@ export const runGlobInstruction = async (
   ctx: RunnerContext,
   instruction: MicroInstruction
 ): Promise<PathInfo[]> => {
+  ctx.termFormatter(instructionToTermIntro(instruction))
   const {
     params: { targetFiles },
   } = instruction;
@@ -59,10 +69,11 @@ export const runGlobInstruction = async (
 };
 
 export const runFilterInstruction = (
-  _ctx: RunnerContext,
+  ctx: RunnerContext,
   instruction: MicroInstruction,
   pathInfos: PathInfo[]
 ): PathInfo[] => {
+  ctx.termFormatter(instructionToTermIntro(instruction))
   const {
     params: { query },
   } = instruction;
@@ -88,6 +99,7 @@ export const runLintInstruction = async (
   instruction: MicroInstruction,
   pathInfos: PathInfo[]
 ): Promise<LintInstructionResult> => {
+  ctx.termFormatter(instructionToTermIntro(instruction))
   const {
     params: { flags },
   } = instruction;

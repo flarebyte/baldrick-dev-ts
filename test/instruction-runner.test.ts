@@ -21,8 +21,12 @@ import {
   runLoadInstruction,
 } from '../src/instruction-runner';
 import { MicroInstruction } from '../src/model';
+import { basicFormatter } from '../src/term-formatter';
+
 import fs from 'fs-extra';
 import { diffChars } from 'diff';
+
+const termFormatter = basicFormatter;
 
 const someToolOptions = { ...simpleToolOptions };
 const createProjectDir = () => {
@@ -59,7 +63,7 @@ describe('Run instructions', () => {
       };
       expect.assertions(4);
       const loaded = await runLoadInstruction(
-        { currentPath: modulePath },
+        { currentPath: modulePath, termFormatter },
         instruction
       );
       expect(loaded).toHaveLength(2);
@@ -75,7 +79,7 @@ describe('Run instructions', () => {
         params: { targetFiles: ['src/file1.ts', 'src/file2.ts;tag2'] },
       };
       const loaded = runFilesInstruction(
-        { currentPath: 'path/not-used-here' },
+        { currentPath: 'path/not-used-here', termFormatter },
         instruction
       );
       expect(loaded).toHaveLength(2);
@@ -93,7 +97,7 @@ describe('Run instructions', () => {
       };
       expect.assertions(4);
       const loaded = await runGlobInstruction(
-        { currentPath: modulePath },
+        { currentPath: modulePath, termFormatter },
         instruction
       );
       expect(loaded).toHaveLength(3);
@@ -109,7 +113,7 @@ describe('Run instructions', () => {
         params: { query: ['--with-path-starting', 'src/'] },
       };
       const loaded = runFilterInstruction(
-        { currentPath: 'path/not-used-here' },
+        { currentPath: 'path/not-used-here', termFormatter },
         instruction,
         [
           { path: 'src/this.ts', tags: [] },
@@ -129,7 +133,7 @@ describe('Run instructions', () => {
       };
       expect.assertions(7);
       const actual = await runLintInstruction(
-        { currentPath: modulePath },
+        { currentPath: modulePath, termFormatter },
         instruction,
         [
           { path: 'src', tags: [] },
@@ -158,7 +162,7 @@ describe('Run instructions', () => {
       };
       expect.assertions(3);
       const actual = await runLintInstruction(
-        { currentPath: modulePath },
+        { currentPath: modulePath, termFormatter },
         instruction,
         [
           { path: 'src', tags: [] },
