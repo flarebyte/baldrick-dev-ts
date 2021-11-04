@@ -7,6 +7,6 @@ commanding.declareLintAction(cmdLintAction);
 async function main() {
   await commanding.parseAsync(process.argv);
 }
-async () => {
+(async () => {
   await main();
-};
+})();
