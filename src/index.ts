@@ -1,7 +1,12 @@
-import { Commanding } from "./commanding";
-import { cmdLintAction } from "./commanding-action";
+import { Commanding } from './commanding';
+import { cmdLintAction } from './commanding-action';
 
-const commanding = new Commanding()
-commanding.declareLintAction(cmdLintAction)
+const commanding = new Commanding();
+commanding.declareLintAction(cmdLintAction);
 
-commanding.parse(process.argv)
+async function main() {
+  await commanding.parseAsync(process.argv);
+}
+async () => {
+  await main();
+};

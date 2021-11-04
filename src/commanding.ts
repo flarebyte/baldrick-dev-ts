@@ -10,6 +10,7 @@ import {
 } from './model';
 import { toCommanderOption } from './commanding-helper';
 import { cmdLintFilterOptions } from './commanding-data';
+import { basicFormatter } from '../src/term-formatter';
 
 export class Commanding {
   _instr: CommandingInstrumentation = new CommandingInstrumentation();
@@ -83,13 +84,14 @@ export class Commanding {
         };
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
+          termFormatter: basicFormatter
         };
         this._instr.lintActionStart(ctx, lintOpts);
         await lintAction(ctx, lintOpts);
       });
   }
 
-  parse(argv: string[]) {
-    this._program.parse(argv, { from: 'node' });
+  async parseAsync(argv: string[]) {
+    await this._program.parseAsync(argv, { from: 'node' });
   }
 }

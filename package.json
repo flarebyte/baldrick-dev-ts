@@ -10,6 +10,7 @@
     "node": ">=14"
   },
   "scripts": {
+    "tsdx": "tsdx",
     "lint": "tsdx lint",
     "test": "tsdx test",
     "build": "tsdx build --target node",

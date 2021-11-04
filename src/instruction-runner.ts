@@ -113,6 +113,7 @@ export const runLintInstruction = async (
   const lintResults = await lintCommand(handle);
   const text = handle.formatter.format(lintResults);
   const json = handle.jsonFormatter.format(lintResults);
+  ctx.termFormatter({ title: 'Linting', detail: text, kind: 'info'})
   return { text, json, status: 'ok', lintResults };
 };
 
