@@ -2,23 +2,28 @@
   "name": "baldrick-dev-ts",
   "version": "1.0.0",
   "description": "CLI for TypeScript package development",
-  "main": "index.js",
+  "main": "./dist/baldrick-dev-ts.esm.mjs",
+  "typings": "dist/index.d.ts",
   "repository": "git@github.com:flarebyte/baldrick-dev-ts.git",
   "author": "Olivier Huin <olih@users.noreply.github.com>",
   "license": "MIT",
   "engines": {
     "node": ">=14"
   },
+  "type": "module",
   "scripts": {
     "tsdx": "tsdx",
     "lint": "tsdx lint",
     "test": "tsdx test",
-    "build": "tsdx build --target node",
+    "build": "tsdx build --target node --format es",
     "reset": "rm -rf temp"
   },
   "bin": {
-    "baldrick": "./dist/cli.js"
+    "baldrick": "dist/baldrick-dev-ts.esm.mjs"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-json": "^4.1.0",

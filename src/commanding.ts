@@ -85,6 +85,7 @@ export class Commanding {
           currentPath: process.cwd(),
           termFormatter: basicFormatter
         };
+        console.log('path: ', ctx.currentPath)
         this._instr.lintActionStart(ctx, lintOpts);
         await lintAction(ctx, lintOpts);
       });
