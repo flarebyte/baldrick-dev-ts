@@ -27,7 +27,6 @@ export class Commanding {
       .argument('[script...]')
       .description('Run a glob script')
       .action((script: string[]) => {
-        console.log('>>inside', script);
         this._instr.globActionStart(script);
         globAction(script);
       });
