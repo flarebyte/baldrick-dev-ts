@@ -2,7 +2,7 @@
   "name": "baldrick-dev-ts",
   "version": "1.0.0",
   "description": "CLI for TypeScript package development",
-  "main": "./dist/baldrick-dev-ts.esm.mjs",
+  "main": "./dist/baldrick-dev-ts.esm.js",
   "typings": "dist/index.d.ts",
   "repository": "git@github.com:flarebyte/baldrick-dev-ts.git",
   "author": "Olivier Huin <olih@users.noreply.github.com>",
@@ -19,7 +19,7 @@
     "reset": "rm -rf temp"
   },
   "bin": {
-    "baldrick": "dist/baldrick-dev-ts.esm.mjs"
+    "baldrick": "dist/baldrick-dev-ts.esm.js"
   },
   "files": [
     "dist"
