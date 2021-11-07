@@ -101,14 +101,20 @@ export const runLintInstruction = async (
 ): Promise<LintInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction))
   const {
-    params: { flags },
+    params: { targetFiles, flags },
   } = instruction;
+  const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)]
   const lintOpts: LintResolvedOpts = {
     modulePath: ctx.currentPath,
     mode: toLintFlag(flags),
-    pathPatterns: pathInfos.map(asPath),
+    pathPatterns,
     ecmaVersion: flagsToEcmaVersion(flags)
   };
+  ctx.termFormatter({
+    title: 'Linting - final opts',
+    detail: JSON.stringify(lintOpts),
+    kind: 'info'
+  });
   const handle = await createESLint(lintOpts);
   const lintResults = await lintCommand(handle);
   const text = handle.formatter.format(lintResults);
