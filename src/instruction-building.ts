@@ -1,4 +1,9 @@
-import { FileSearching, LintActionOpts, MicroInstruction } from './model';
+import {
+  FileSearching,
+  LintActionOpts,
+  MicroInstruction,
+  TestActionOpts,
+} from './model';
 import { byFileQuery, filteringToCommanderStrings } from './path-filtering';
 
 const moreThanStartAndExt = (fileSearching: FileSearching): boolean =>
@@ -97,6 +102,7 @@ const configureLintInstructions = (
           params: {
             targetFiles: opts.fileSearching.filtering.withPathStarting,
             extensions: opts.fileSearching.filtering.withExtension,
+            reportBase: [opts.reportBase],
             flags: opts.flags,
           },
         },
@@ -107,6 +113,35 @@ const configureLintInstructions = (
           params: {
             targetFiles: [],
             extensions: [],
+            reportBase: [opts.reportBase],
+            flags: ['globInputPaths:false', ...opts.flags],
+          },
+        },
+      ];
+};
+
+const configureTestInstructions = (
+  opts: TestActionOpts
+): MicroInstruction[] => {
+  return isSimpleLint(opts.fileSearching)
+    ? [
+        {
+          name: 'test',
+          params: {
+            targetFiles: opts.fileSearching.filtering.withPathStarting,
+            extensions: opts.fileSearching.filtering.withExtension,
+            reportBase: [opts.reportBase],
+            flags: opts.flags,
+          },
+        },
+      ]
+    : [
+        {
+          name: 'test',
+          params: {
+            targetFiles: [],
+            extensions: [],
+            reportBase: [opts.reportBase],
             flags: ['globInputPaths:false', ...opts.flags],
           },
         },
@@ -121,5 +156,17 @@ export const toLintInstructions = (
     ...globInstructions(opts.fileSearching),
     ...filterInstructions(opts.fileSearching),
     ...configureLintInstructions(opts),
+  ];
+};
+
+export const toTestInstructions = (
+  opts: TestActionOpts
+): MicroInstruction[] => {
+  return [
+    ...filesInstructions(opts.fileSearching),
+    ...loadInstructions(opts.fileSearching),
+    ...globInstructions(opts.fileSearching),
+    ...filterInstructions(opts.fileSearching),
+    ...configureTestInstructions(opts),
   ];
 };

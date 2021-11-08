@@ -7,9 +7,12 @@ import {
   LintActionOpts,
   LintActionRawOpts,
   RunnerContext,
+  TestAction,
+  TestActionOpts,
+  TestActionRawOpts,
 } from './model';
 import { toCommanderOption } from './commanding-helper';
-import { cmdLintFilterOptions } from './commanding-data';
+import { cmdLintFilterOptions, cmdTestFilterOptions } from './commanding-data';
 import { basicFormatter } from '../src/term-formatter';
 
 export class Commanding {
@@ -36,6 +39,7 @@ export class Commanding {
       .command('lint')
       .description('Lint the code')
       .addOption(toCommanderOption(cmdLintFilterOptions.aim))
+      .addOption(toCommanderOption(cmdLintFilterOptions.reportBase))
       .addOption(toCommanderOption(cmdLintFilterOptions.withPathStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutPathStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.withExtension))
@@ -50,6 +54,7 @@ export class Commanding {
       .action(async (options: LintActionRawOpts) => {
         const {
           aim,
+          reportBase,
           withPathStarting,
           withoutPathStarting,
           withExtension,
@@ -79,7 +84,7 @@ export class Commanding {
             },
           },
           ecmaVersion: parseInt(options.ecmaVersion),
-          report: [],
+          reportBase,
         };
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
@@ -87,6 +92,65 @@ export class Commanding {
         };
         this._instr.lintActionStart(ctx, lintOpts);
         await lintAction(ctx, lintOpts);
+      });
+  }
+
+  declareTestAction(testAction: TestAction) {
+    this._program
+      .command('test')
+      .description('Test the code')
+      .addOption(toCommanderOption(cmdTestFilterOptions.aim))
+      .addOption(toCommanderOption(cmdTestFilterOptions.reportBase))
+      .addOption(toCommanderOption(cmdTestFilterOptions.withPathStarting))
+      .addOption(toCommanderOption(cmdTestFilterOptions.withoutPathStarting))
+      .addOption(toCommanderOption(cmdTestFilterOptions.withExtension))
+      .addOption(toCommanderOption(cmdTestFilterOptions.withoutExtension))
+      .addOption(toCommanderOption(cmdTestFilterOptions.withPathSegment))
+      .addOption(toCommanderOption(cmdTestFilterOptions.withoutPathSegment))
+      .addOption(toCommanderOption(cmdTestFilterOptions.withTag))
+      .addOption(toCommanderOption(cmdTestFilterOptions.withoutTag))
+      .addOption(toCommanderOption(cmdTestFilterOptions.withTagStarting))
+      .addOption(toCommanderOption(cmdTestFilterOptions.withoutTagStarting))
+      .action(async (options: TestActionRawOpts) => {
+        const {
+          aim,
+          reportBase,
+          withPathStarting,
+          withoutPathStarting,
+          withExtension,
+          withoutExtension,
+          withPathSegment,
+          withoutPathSegment,
+          withTag,
+          withoutTag,
+          withTagStarting,
+          withoutTagStarting,
+        } = options;
+        const testOpts: TestActionOpts = {
+          flags: [`test:${aim}`],
+          fileSearching: {
+            pathInfos: [],
+            filtering: {
+              withPathStarting,
+              withoutPathStarting,
+              withExtension,
+              withoutExtension,
+              withPathSegment,
+              withoutPathSegment,
+              withTag,
+              withoutTag,
+              withTagStarting,
+              withoutTagStarting,
+            },
+          },
+          reportBase,
+        };
+        const ctx: RunnerContext = {
+          currentPath: process.cwd(),
+          termFormatter: basicFormatter,
+        };
+        this._instr.testActionStart(ctx, testOpts);
+        await testAction(ctx, testOpts);
       });
   }
 

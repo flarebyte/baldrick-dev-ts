@@ -1,4 +1,4 @@
-import { LintActionOpts, RunnerContext, StatusRecord } from './model';
+import { LintActionOpts, RunnerContext, StatusRecord, TestActionOpts } from './model';
 const unknown: StatusRecord = {
   title: 'unknown',
   message: 'no record yet',
@@ -29,6 +29,15 @@ export class CommandingInstrumentation {
     const optsStr = JSON.stringify(lintOpts)
     this._statusRecords.push({
       title: 'lint action',
+      message: 'run',
+      params: [ctx.currentPath, optsStr],
+      status: 'before',
+    });
+  }
+  testActionStart(ctx: RunnerContext, testOpts: TestActionOpts) {
+    const optsStr = JSON.stringify(testOpts)
+    this._statusRecords.push({
+      title: 'Test action',
       message: 'run',
       params: [ctx.currentPath, optsStr],
       status: 'before',

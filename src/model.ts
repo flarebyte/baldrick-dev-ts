@@ -151,6 +151,7 @@ export type FileSearchMode = 'find' | 'list' | 'load';
 
 export type MicroInstructionName =
   | 'lint'
+  | 'test'
   | 'files'
   | 'load'
   | 'glob'
@@ -163,14 +164,14 @@ export interface MicroInstruction {
   params: InstructionParams;
 }
 
-export type LintInstructionStatus = 'ok' | 'ko' | 'warning';
+export type InstructionStatus = 'ok' | 'ko' | 'warning';
 
 export interface LintInstructionResult {
   text: string;
   json: string;
   junitXml: string;
   compact: string;
-  status: LintInstructionStatus;
+  status: InstructionStatus;
   lintResults: ESLint.LintResult[];
 }
 
@@ -189,8 +190,10 @@ export interface RunnerContext {
   termFormatter: TermFormatter;
 }
 
+// Lint
 export interface LintActionRawOpts extends FileFiltering {
   aim: string;
+  reportBase: string;
   ecmaVersion: string;
 }
 
@@ -198,12 +201,29 @@ export interface LintActionOpts {
   flags: string[];
   fileSearching: FileSearching;
   ecmaVersion: number;
-  report: LintReport[];
+  reportBase: string;
 }
 
 export type LintAction = (
   ctx: RunnerContext,
   options: LintActionOpts
+) => Promise<void>;
+
+// Test
+export interface TestActionRawOpts extends FileFiltering {
+  aim: string;
+  reportBase: string;
+}
+
+export interface TestActionOpts {
+  flags: string[];
+  fileSearching: FileSearching;
+  reportBase: string;
+}
+
+export type TestAction = (
+  ctx: RunnerContext,
+  options: TestActionOpts
 ) => Promise<void>;
 
 export interface CmdOption {

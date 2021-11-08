@@ -1,5 +1,6 @@
 import {
   LintInstructionResult,
+  InstructionStatus,
   LintMode,
   LintResolvedOpts,
   MicroInstruction,
@@ -14,6 +15,8 @@ import { byFileQuery, commanderStringsToFiltering } from './path-filtering';
 import glob from 'tiny-glob';
 import { createESLint, lintCommand } from './eslint-helper';
 import { flagsToEcmaVersion } from './eslint-config';
+import { outputFile } from 'fs-extra';
+import { ESLint } from 'eslint';
 
 const instructionToTermIntro = (
   instruction: MicroInstruction
@@ -96,6 +99,14 @@ const toLintFlag = (flags: string[]): LintMode => {
   return 'check';
 };
 
+const toEslintStatus = (
+  lintResults: ESLint.LintResult[]
+): InstructionStatus => {
+  const hasError = lintResults.some((res) => res.errorCount > 0);
+  const hasWarning = lintResults.some((res) => res.warningCount > 0);
+  return hasError ? 'ko' : hasWarning ? 'warning' : 'ok';
+};
+
 export const runLintInstruction = async (
   ctx: RunnerContext,
   instruction: MicroInstruction,
@@ -103,8 +114,9 @@ export const runLintInstruction = async (
 ): Promise<LintInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
-    params: { targetFiles, flags },
+    params: { targetFiles, reportBase, flags },
   } = instruction;
+  const isCI = flags.includes('lint:ci');
   const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)];
   const lintOpts: LintResolvedOpts = {
     modulePath: ctx.currentPath,
@@ -123,15 +135,58 @@ export const runLintInstruction = async (
   const json = handle.jsonFormatter.format(lintResults);
   const junitXml = handle.junitFormatter.format(lintResults);
   const compact = handle.compactFormatter.format(lintResults);
-  const detail = flags.includes('lint:ci') ? compact : text;
+  const detail = isCI ? compact : text;
   ctx.termFormatter({ title: 'Linting', detail, kind: 'info' });
-  return { text, json, junitXml, compact, status: 'ok', lintResults };
+  if (isCI) {
+    await outputFile(`${reportBase[0]}.json`, json, 'utf8');
+    await outputFile(`${reportBase[0]}.junit.xml`, junitXml, 'utf8');
+  }
+  const status = toEslintStatus(lintResults);
+  return { text, json, junitXml, compact, status, lintResults };
+};
+
+export const runTestInstruction = async (
+  ctx: RunnerContext,
+  instruction: MicroInstruction,
+  pathInfos: PathInfo[]
+): Promise<LintInstructionResult> => {
+  ctx.termFormatter(instructionToTermIntro(instruction));
+  const {
+    params: { targetFiles, reportBase, flags },
+  } = instruction;
+  const isCI = flags.includes('lint:ci');
+  const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)];
+  const lintOpts: LintResolvedOpts = {
+    modulePath: ctx.currentPath,
+    mode: toLintFlag(flags),
+    pathPatterns,
+    ecmaVersion: flagsToEcmaVersion(flags),
+  };
+  ctx.termFormatter({
+    title: 'Linting - final opts',
+    detail: JSON.stringify(lintOpts),
+    kind: 'info',
+  });
+  const handle = await createESLint(lintOpts);
+  const lintResults = await lintCommand(handle);
+  const text = handle.formatter.format(lintResults);
+  const json = handle.jsonFormatter.format(lintResults);
+  const junitXml = handle.junitFormatter.format(lintResults);
+  const compact = handle.compactFormatter.format(lintResults);
+  const detail = isCI ? compact : text;
+  ctx.termFormatter({ title: 'Linting', detail, kind: 'info' });
+  if (isCI) {
+    await outputFile(`${reportBase[0]}.json`, json, 'utf8');
+    await outputFile(`${reportBase[0]}.junit.xml`, junitXml, 'utf8');
+  }
+  const status = toEslintStatus(lintResults);
+  return { text, json, junitXml, compact, status, lintResults };
 };
 
 export const runInstructions = async (
   ctx: RunnerContext,
   instructions: MicroInstruction[]
-): Promise<any> => {
+): Promise<InstructionStatus> => {
   const filesInstruction = instructions.find((instr) => instr.name === 'files');
   const loadInstruction = instructions.find((instr) => instr.name === 'load');
   const globInstruction = instructions.find((instr) => instr.name === 'glob');
@@ -139,6 +194,7 @@ export const runInstructions = async (
     (instr) => instr.name === 'filter'
   );
   const lintInstruction = instructions.find((instr) => instr.name === 'lint');
+  const testInstruction = instructions.find((instr) => instr.name === 'test');
 
   const files = filesInstruction
     ? runFilesInstruction(ctx, filesInstruction)
@@ -157,5 +213,10 @@ export const runInstructions = async (
   const linted = lintInstruction
     ? await runLintInstruction(ctx, lintInstruction, filtered)
     : false;
-  return linted ? linted : 'not linted';
+
+  const tested = testInstruction
+    ? await runLintInstruction(ctx, testInstruction, filtered)
+    : false;
+
+  return linted ? linted.status : tested ? tested.status : 'ko';
 };
