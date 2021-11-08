@@ -1,7 +1,8 @@
 import { Commanding } from './commanding';
-import { cmdLintAction } from './commanding-action';
+import { cmdLintAction, cmdTestAction } from './commanding-action';
 
 const commanding = new Commanding();
 commanding.declareLintAction(cmdLintAction);
+commanding.declareTestAction(cmdTestAction);
 
 export { commanding }
