@@ -15,17 +15,19 @@ import glob from 'tiny-glob';
 import { createESLint, lintCommand } from './eslint-helper';
 import { flagsToEcmaVersion } from './eslint-config';
 
-const instructionToTermIntro = (instruction: MicroInstruction): TermFormatterParams => ({
-    kind: 'intro',
-    title: `Starting ${instruction.name} ...`,
-    detail: JSON.stringify(instruction.params)
-})
+const instructionToTermIntro = (
+  instruction: MicroInstruction
+): TermFormatterParams => ({
+  kind: 'intro',
+  title: `Starting ${instruction.name} ...`,
+  detail: JSON.stringify(instruction.params),
+});
 
 export const runFilesInstruction = (
   ctx: RunnerContext,
   instruction: MicroInstruction
 ): PathInfo[] => {
-  ctx.termFormatter(instructionToTermIntro(instruction))
+  ctx.termFormatter(instructionToTermIntro(instruction));
   const {
     params: { targetFiles },
   } = instruction;
@@ -39,7 +41,7 @@ export const runLoadInstruction = async (
   ctx: RunnerContext,
   instruction: MicroInstruction
 ): Promise<PathInfo[]> => {
-  ctx.termFormatter(instructionToTermIntro(instruction))
+  ctx.termFormatter(instructionToTermIntro(instruction));
   const {
     params: { targetFiles },
   } = instruction;
@@ -54,7 +56,7 @@ export const runGlobInstruction = async (
   ctx: RunnerContext,
   instruction: MicroInstruction
 ): Promise<PathInfo[]> => {
-  ctx.termFormatter(instructionToTermIntro(instruction))
+  ctx.termFormatter(instructionToTermIntro(instruction));
   const {
     params: { targetFiles },
   } = instruction;
@@ -73,7 +75,7 @@ export const runFilterInstruction = (
   instruction: MicroInstruction,
   pathInfos: PathInfo[]
 ): PathInfo[] => {
-  ctx.termFormatter(instructionToTermIntro(instruction))
+  ctx.termFormatter(instructionToTermIntro(instruction));
   const {
     params: { query },
   } = instruction;
@@ -99,28 +101,31 @@ export const runLintInstruction = async (
   instruction: MicroInstruction,
   pathInfos: PathInfo[]
 ): Promise<LintInstructionResult> => {
-  ctx.termFormatter(instructionToTermIntro(instruction))
+  ctx.termFormatter(instructionToTermIntro(instruction));
   const {
     params: { targetFiles, flags },
   } = instruction;
-  const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)]
+  const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)];
   const lintOpts: LintResolvedOpts = {
     modulePath: ctx.currentPath,
     mode: toLintFlag(flags),
     pathPatterns,
-    ecmaVersion: flagsToEcmaVersion(flags)
+    ecmaVersion: flagsToEcmaVersion(flags),
   };
   ctx.termFormatter({
     title: 'Linting - final opts',
     detail: JSON.stringify(lintOpts),
-    kind: 'info'
+    kind: 'info',
   });
   const handle = await createESLint(lintOpts);
   const lintResults = await lintCommand(handle);
   const text = handle.formatter.format(lintResults);
   const json = handle.jsonFormatter.format(lintResults);
-  ctx.termFormatter({ title: 'Linting', detail: text, kind: 'info'})
-  return { text, json, status: 'ok', lintResults };
+  const junitXml = handle.junitFormatter.format(lintResults);
+  const compact = handle.compactFormatter.format(lintResults);
+  const detail = flags.includes('lint:ci') ? compact : text;
+  ctx.termFormatter({ title: 'Linting', detail, kind: 'info' });
+  return { text, json, junitXml, compact, status: 'ok', lintResults };
 };
 
 export const runInstructions = async (

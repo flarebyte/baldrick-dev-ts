@@ -9,6 +9,8 @@ export interface ESLintHandle {
   options: ESLint.Options;
   formatter: ESLint.Formatter;
   jsonFormatter: ESLint.Formatter;
+  junitFormatter: ESLint.Formatter;
+  compactFormatter: ESLint.Formatter;
 }
 
 export const createESLint = async (
@@ -18,7 +20,17 @@ export const createESLint = async (
   const eslint = new ESLint(options);
   const formatter = await eslint.loadFormatter('stylish');
   const jsonFormatter = await eslint.loadFormatter('json');
-  return { eslint, opts, options, formatter, jsonFormatter };
+  const junitFormatter = await eslint.loadFormatter('junit');
+  const compactFormatter = await eslint.loadFormatter('compact');
+  return {
+    eslint,
+    opts,
+    options,
+    formatter,
+    jsonFormatter,
+    junitFormatter,
+    compactFormatter,
+  };
 };
 
 export const lintCommand = async (

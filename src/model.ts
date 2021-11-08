@@ -168,6 +168,8 @@ export type LintInstructionStatus = 'ok' | 'ko' | 'warning';
 export interface LintInstructionResult {
   text: string;
   json: string;
+  junitXml: string;
+  compact: string;
   status: LintInstructionStatus;
   lintResults: ESLint.LintResult[];
 }
