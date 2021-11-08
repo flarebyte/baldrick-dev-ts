@@ -1,5 +1,6 @@
-import { TermFormatterParams } from "./model";
+import { TermFormatterParams } from './model';
 
 export const basicFormatter = (params: TermFormatterParams) => {
-    console.info(params.title, params.detail)
-}
+  console.info(` ★ ${params.title} ★`);
+  console.info(params.detail);
+};
