@@ -83,15 +83,18 @@ export class Commanding {
         };
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
-          termFormatter: basicFormatter
+          termFormatter: basicFormatter,
         };
-        console.log('path: ', ctx.currentPath)
         this._instr.lintActionStart(ctx, lintOpts);
         await lintAction(ctx, lintOpts);
       });
   }
 
   async parseAsync(argv: string[]) {
-    await this._program.parseAsync(argv, { from: 'node' });
+    return await this._program.parseAsync(argv, { from: 'node' });
+  }
+
+  async parseAsyncArgv() {
+    return await this.parseAsync(process.argv);
   }
 }
