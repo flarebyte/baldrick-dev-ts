@@ -19,7 +19,7 @@
     "reset": "rm -rf temp"
   },
   "bin": {
-    "baldrick": "dist/baldrick-dev-ts.esm.js"
+    "baldrick": "bin/baldrick.mjs"
   },
   "files": [
     "dist"
