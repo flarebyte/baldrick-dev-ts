@@ -7,6 +7,8 @@ import {
   PathInfo,
   RunnerContext,
   TermFormatterParams,
+  TestResolvedOpts,
+  TestMode,
 } from './model';
 import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming';
 import { readFile } from 'fs/promises';
@@ -17,6 +19,8 @@ import { createESLint, lintCommand } from './eslint-helper';
 import { flagsToEcmaVersion } from './eslint-config';
 import { outputFile } from 'fs-extra';
 import { ESLint } from 'eslint';
+import { computeJestConfig } from './jest-config';
+import { createJest, jestCommand } from './jest-helper';
 
 const instructionToTermIntro = (
   instruction: MicroInstruction
@@ -99,6 +103,19 @@ const toLintFlag = (flags: string[]): LintMode => {
   return 'check';
 };
 
+const knownTestFlags = ['test:check', 'test:fix', 'test:ci'];
+
+const toTestFlag = (flags: string[]): TestMode => {
+  const testFlag = flags.filter((flag) => knownTestFlags.includes(flag))[0];
+  if (testFlag === 'test:fix') {
+    return 'fix';
+  }
+  if (testFlag === 'test:ci') {
+    return 'ci';
+  }
+  return 'check';
+};
+
 const toEslintStatus = (
   lintResults: ESLint.LintResult[]
 ): InstructionStatus => {
@@ -154,33 +171,34 @@ export const runTestInstruction = async (
   const {
     params: { targetFiles, reportBase, flags },
   } = instruction;
-  const isCI = flags.includes('lint:ci');
+
+  const isCI = flags.includes('test:ci');
+
   const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)];
-  const lintOpts: LintResolvedOpts = {
+  const testOpts: TestResolvedOpts = {
     modulePath: ctx.currentPath,
-    mode: toLintFlag(flags),
+    mode: toTestFlag(flags),
     pathPatterns,
-    ecmaVersion: flagsToEcmaVersion(flags),
   };
+
   ctx.termFormatter({
-    title: 'Linting - final opts',
-    detail: JSON.stringify(lintOpts),
+    title: 'Testing - final opts',
+    detail: JSON.stringify(testOpts),
     kind: 'info',
   });
-  const handle = await createESLint(lintOpts);
-  const lintResults = await lintCommand(handle);
-  const text = handle.formatter.format(lintResults);
-  const json = handle.jsonFormatter.format(lintResults);
-  const junitXml = handle.junitFormatter.format(lintResults);
-  const compact = handle.compactFormatter.format(lintResults);
-  const detail = isCI ? compact : text;
-  ctx.termFormatter({ title: 'Linting', detail, kind: 'info' });
-  if (isCI) {
-    await outputFile(`${reportBase[0]}.json`, json, 'utf8');
-    await outputFile(`${reportBase[0]}.junit.xml`, junitXml, 'utf8');
-  }
-  const status = toEslintStatus(lintResults);
-  return { text, json, junitXml, compact, status, lintResults };
+
+  const handle = createJest(testOpts);
+
+  ctx.termFormatter({
+    title: 'Testing - jest config',
+    detail: handle.config,
+    kind: 'info',
+  });
+
+  const testResults = await jestCommand(handle);
+  
+  
+  return { status, testResults };
 };
 
 export const runInstructions = async (

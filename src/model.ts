@@ -109,6 +109,14 @@ export interface LintResolvedOpts {
   ecmaVersion: SupportedEcmaVersion;
 }
 
+export type TestMode = 'check' | 'fix' | 'ci';
+
+export interface TestResolvedOpts {
+  modulePath: string;
+  mode: TestMode;
+  pathPatterns: string[];
+}
+
 export interface PathInfo {
   path: string;
   tags: string[];

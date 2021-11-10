@@ -2,7 +2,7 @@ import sade from "sade";
 import fs from "fs-extra";
 
 import * as jest from "jest";
-import { computeJestConfig } from "./jest-config";
+import { computeJestConfig } from "./jest-config-old";
 import { readPackageJsonSync } from "./package-json";
 import { version } from "./version";
 import { computeEsLintConfig } from "./eslint-config";
