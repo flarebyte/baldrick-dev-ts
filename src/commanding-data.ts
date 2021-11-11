@@ -143,7 +143,9 @@ export const cmdLintFilterOptions: CmdLintOptions = {
 export const cmdTestFilterOptions: CmdTestOptions = {
   aim: choiceOption('a', 'aim', 'Specify the aim for testing', [
     'check',
+    'cov',
     'watch',
+    'fix',
     'ci',
   ]),
   reportBase: stringOption(

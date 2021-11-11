@@ -109,7 +109,7 @@ export interface LintResolvedOpts {
   ecmaVersion: SupportedEcmaVersion;
 }
 
-export type TestMode = 'check' | 'fix' | 'ci';
+export type TestMode = 'check' | 'cov'| 'fix' | 'ci' | 'watch';
 
 export interface TestResolvedOpts {
   modulePath: string;
@@ -181,6 +181,10 @@ export interface LintInstructionResult {
   compact: string;
   status: InstructionStatus;
   lintResults: ESLint.LintResult[];
+}
+
+export interface TestInstructionResult {
+  status: InstructionStatus;
 }
 
 export type TermFormatterKind = 'intro' | 'info'

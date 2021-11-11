@@ -9,6 +9,7 @@ import {
   TermFormatterParams,
   TestResolvedOpts,
   TestMode,
+  TestInstructionResult,
 } from './model';
 import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming';
 import { readFile } from 'fs/promises';
@@ -19,7 +20,6 @@ import { createESLint, lintCommand } from './eslint-helper';
 import { flagsToEcmaVersion } from './eslint-config';
 import { outputFile } from 'fs-extra';
 import { ESLint } from 'eslint';
-import { computeJestConfig } from './jest-config';
 import { createJest, jestCommand } from './jest-helper';
 
 const instructionToTermIntro = (
@@ -103,7 +103,7 @@ const toLintFlag = (flags: string[]): LintMode => {
   return 'check';
 };
 
-const knownTestFlags = ['test:check', 'test:fix', 'test:ci'];
+const knownTestFlags = ['test:check', 'test:fix', 'test:ci', 'test:cov'];
 
 const toTestFlag = (flags: string[]): TestMode => {
   const testFlag = flags.filter((flag) => knownTestFlags.includes(flag))[0];
@@ -112,6 +112,10 @@ const toTestFlag = (flags: string[]): TestMode => {
   }
   if (testFlag === 'test:ci') {
     return 'ci';
+  }
+
+  if (testFlag === 'test:cov') {
+    return 'cov';
   }
   return 'check';
 };
@@ -166,13 +170,13 @@ export const runTestInstruction = async (
   ctx: RunnerContext,
   instruction: MicroInstruction,
   pathInfos: PathInfo[]
-): Promise<LintInstructionResult> => {
+): Promise<TestInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
-    params: { targetFiles, reportBase, flags },
+    params: { targetFiles, flags },
   } = instruction;
 
-  const isCI = flags.includes('test:ci');
+  // const isCI = flags.includes('test:ci');
 
   const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)];
   const testOpts: TestResolvedOpts = {
@@ -195,10 +199,15 @@ export const runTestInstruction = async (
     kind: 'info',
   });
 
-  const testResults = await jestCommand(handle);
+  ctx.termFormatter({
+    title: 'Testing - jest argv',
+    detail: handle.argv.join(' '),
+    kind: 'info',
+  });
+
+  await jestCommand(handle);
   
-  
-  return { status, testResults };
+  return { status: 'ok' };
 };
 
 export const runInstructions = async (
@@ -233,7 +242,7 @@ export const runInstructions = async (
     : false;
 
   const tested = testInstruction
-    ? await runLintInstruction(ctx, testInstruction, filtered)
+    ? await runTestInstruction(ctx, testInstruction, filtered)
     : false;
 
   return linted ? linted.status : tested ? tested.status : 'ko';
