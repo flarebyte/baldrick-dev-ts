@@ -101,6 +101,7 @@ export class Commanding {
       .description('Test the code')
       .addOption(toCommanderOption(cmdTestFilterOptions.aim))
       .addOption(toCommanderOption(cmdTestFilterOptions.reportBase))
+      .addOption(toCommanderOption(cmdTestFilterOptions.displayName))
       .addOption(toCommanderOption(cmdTestFilterOptions.withPathStarting))
       .addOption(toCommanderOption(cmdTestFilterOptions.withoutPathStarting))
       .addOption(toCommanderOption(cmdTestFilterOptions.withExtension))
@@ -115,6 +116,7 @@ export class Commanding {
         const {
           aim,
           reportBase,
+          displayName,
           withPathStarting,
           withoutPathStarting,
           withExtension,
@@ -144,6 +146,7 @@ export class Commanding {
             },
           },
           reportBase,
+          displayName
         };
         const ctx: RunnerContext = {
           currentPath: process.cwd(),

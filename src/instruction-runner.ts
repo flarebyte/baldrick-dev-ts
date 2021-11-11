@@ -22,6 +22,11 @@ import { outputFile } from 'fs-extra';
 import { ESLint } from 'eslint';
 import { createJest, jestCommand } from './jest-helper';
 
+const toHumanJson = (value: object): string => JSON.stringify(value).replace('"', '')
+
+const toHumanString = (value: string): string => value.replace('"', '')
+
+
 const instructionToTermIntro = (
   instruction: MicroInstruction
 ): TermFormatterParams => ({
@@ -173,13 +178,13 @@ export const runTestInstruction = async (
 ): Promise<TestInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
-    params: { targetFiles, reportBase, flags },
+    params: { targetFiles, reportBase, displayName, flags },
   } = instruction;
 
   // const isCI = flags.includes('test:ci');
 
-  const outputDirectory =  path.dirname(reportBase[0])
-  const outputName = `${path.basename(reportBase[0])}-junit.xml`
+  const outputDirectory = path.dirname(reportBase[0]);
+  const outputName = `${path.basename(reportBase[0])}-junit.xml`;
 
   const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)];
   const testOpts: TestResolvedOpts = {
@@ -187,12 +192,13 @@ export const runTestInstruction = async (
     mode: toTestFlag(flags),
     pathPatterns,
     outputDirectory,
-    outputName
+    outputName,
+    displayName: displayName[0],
   };
 
   ctx.termFormatter({
     title: 'Testing - final opts',
-    detail: JSON.stringify(testOpts),
+    detail: toHumanJson(testOpts),
     kind: 'info',
   });
 
@@ -200,7 +206,7 @@ export const runTestInstruction = async (
 
   ctx.termFormatter({
     title: 'Testing - jest config',
-    detail: handle.config,
+    detail: toHumanString(handle.config),
     kind: 'info',
   });
 
@@ -211,7 +217,7 @@ export const runTestInstruction = async (
   });
 
   await jestCommand(handle);
-  
+
   return { status: 'ok' };
 };
 

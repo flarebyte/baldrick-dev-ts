@@ -117,6 +117,7 @@ export interface TestResolvedOpts {
   pathPatterns: string[];
   outputDirectory: string;
   outputName: string;
+  displayName: string;
 }
 
 export interface PathInfo {
@@ -227,12 +228,14 @@ export type LintAction = (
 export interface TestActionRawOpts extends FileFiltering {
   aim: string;
   reportBase: string;
+  displayName: string;
 }
 
 export interface TestActionOpts {
   flags: string[];
   fileSearching: FileSearching;
   reportBase: string;
+  displayName: string;
 }
 
 export type TestAction = (

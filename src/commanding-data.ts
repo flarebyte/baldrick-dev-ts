@@ -19,7 +19,9 @@ interface CmdLintOptions extends CmdOptions {
   ecma: CmdOption;
 }
 
-interface CmdTestOptions extends CmdOptions {}
+interface CmdTestOptions extends CmdOptions {
+  displayName: CmdOption;
+}
 
 const stringsOption = (
   shortFlag: string,
@@ -153,6 +155,12 @@ export const cmdTestFilterOptions: CmdTestOptions = {
     'report-base',
     'Specify the base name for reporting',
     'report/test-report'
+  ),
+  displayName: stringOption(
+    'name',
+    'display-name',
+    'Allows for a label to be printed alongside a test while it is running',
+    'main'
   ),
   withPathStarting,
   withoutPathStarting,
