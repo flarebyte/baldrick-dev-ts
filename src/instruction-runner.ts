@@ -173,16 +173,21 @@ export const runTestInstruction = async (
 ): Promise<TestInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
-    params: { targetFiles, flags },
+    params: { targetFiles, reportBase, flags },
   } = instruction;
 
   // const isCI = flags.includes('test:ci');
+
+  const outputDirectory =  path.dirname(reportBase[0])
+  const outputName = `${path.basename(reportBase[0])}-junit.xml`
 
   const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)];
   const testOpts: TestResolvedOpts = {
     modulePath: ctx.currentPath,
     mode: toTestFlag(flags),
     pathPatterns,
+    outputDirectory,
+    outputName
   };
 
   ctx.termFormatter({

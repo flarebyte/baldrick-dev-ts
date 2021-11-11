@@ -6,7 +6,7 @@ type JestConfigOptions = Partial<Config.InitialOptions>;
 export const computeJestConfig = (opts: TestResolvedOpts) => {
   const jestUnitReport: Config.ReporterConfig = [
     'jest-junit',
-    { outputDirectory: 'report' },
+    { outputDirectory: opts.outputDirectory, outputName: opts.outputName },
   ];
   const ciReporters = opts.mode === 'ci' ? [jestUnitReport] : [];
   const reporters = ['default', ...ciReporters];

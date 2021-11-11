@@ -115,6 +115,8 @@ export interface TestResolvedOpts {
   modulePath: string;
   mode: TestMode;
   pathPatterns: string[];
+  outputDirectory: string;
+  outputName: string;
 }
 
 export interface PathInfo {
