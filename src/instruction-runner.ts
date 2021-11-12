@@ -22,17 +22,13 @@ import { outputFile } from 'fs-extra';
 import { ESLint } from 'eslint';
 import { createJest, jestCommand } from './jest-helper';
 
-const toHumanJson = (value: object): string => JSON.stringify(value).replace('"', '')
-
-const toHumanString = (value: string): string => value.replace('"', '')
-
-
 const instructionToTermIntro = (
   instruction: MicroInstruction
 ): TermFormatterParams => ({
   kind: 'intro',
   title: `Starting ${instruction.name} ...`,
-  detail: JSON.stringify(instruction.params),
+  detail: instruction.params,
+  format: 'human',
 });
 
 export const runFilesInstruction = (
@@ -152,8 +148,9 @@ export const runLintInstruction = async (
   };
   ctx.termFormatter({
     title: 'Linting - final opts',
-    detail: JSON.stringify(lintOpts),
+    detail: lintOpts,
     kind: 'info',
+    format: 'human',
   });
   const handle = await createESLint(lintOpts);
   const lintResults = await lintCommand(handle);
@@ -162,7 +159,12 @@ export const runLintInstruction = async (
   const junitXml = handle.junitFormatter.format(lintResults);
   const compact = handle.compactFormatter.format(lintResults);
   const detail = isCI ? compact : text;
-  ctx.termFormatter({ title: 'Linting', detail, kind: 'info' });
+  ctx.termFormatter({
+    title: 'Linting',
+    detail,
+    kind: 'info',
+    format: 'default',
+  });
   if (isCI) {
     await outputFile(`${reportBase[0]}.json`, json, 'utf8');
     await outputFile(`${reportBase[0]}.junit.xml`, junitXml, 'utf8');
@@ -198,22 +200,25 @@ export const runTestInstruction = async (
 
   ctx.termFormatter({
     title: 'Testing - final opts',
-    detail: toHumanJson(testOpts),
+    detail: testOpts,
     kind: 'info',
+    format: 'human',
   });
 
   const handle = createJest(testOpts);
 
   ctx.termFormatter({
     title: 'Testing - jest config',
-    detail: toHumanString(handle.config),
+    detail: handle.config,
     kind: 'info',
+    format: 'human',
   });
 
   ctx.termFormatter({
     title: 'Testing - jest argv',
     detail: handle.argv.join(' '),
     kind: 'info',
+    format: 'default',
   });
 
   await jestCommand(handle);

@@ -3,7 +3,7 @@ import { TestResolvedOpts } from './model';
 import jest from 'jest';
 
 export interface JestHandle {
-  config: string;
+  config: object;
   argv: string[];
 }
 
@@ -14,7 +14,7 @@ export const createJest = (opts: TestResolvedOpts): JestHandle => {
   const cfgArg = ['--config', config];
   // const ciArg = opts.mode === 'ci' ? ['--ci', '--reporters=default', '--reporters=jest-junit']: []
   const argv = [...cfgArg]
-  return { config, argv };
+  return { config: jestConfig, argv };
 };
 
 export const jestCommand = async (handle: JestHandle): Promise<void> => {

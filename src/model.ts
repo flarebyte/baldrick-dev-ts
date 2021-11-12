@@ -191,11 +191,13 @@ export interface TestInstructionResult {
 }
 
 export type TermFormatterKind = 'intro' | 'info'
+export type TermFormatterFormat = 'default' | 'human'
 
 export interface TermFormatterParams {
   title: string;
-  detail: string;
+  detail: string | object;
   kind: TermFormatterKind;
+  format: TermFormatterFormat;
 }
 
 export type TermFormatter = (params: TermFormatterParams) => void
