@@ -186,7 +186,7 @@ export const runTestInstruction = async (
   // const isCI = flags.includes('test:ci');
 
   const outputDirectory = path.dirname(reportBase[0]);
-  const outputName = `${path.basename(reportBase[0])}-junit.xml`;
+  const outputName = path.basename(reportBase[0]);
 
   const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)];
   const testOpts: TestResolvedOpts = {
