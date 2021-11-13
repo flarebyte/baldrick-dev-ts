@@ -8,7 +8,7 @@ import { version } from "./version";
 import { computeEsLintConfig } from "./eslint-config";
 import { BuildOpts, JestOpts, LintOpts } from "./model";
 import { CLIEngine } from "eslint";
-import { cleanDistFolder, computeRollupConfig, writeCjsEntryFile } from "./rollup-config";
+import { cleanDistFolder, computeRollupConfig, writeCjsEntryFile } from "./rollup-config-old";
 import logError from "./log-error";
 import {
   rollup,
