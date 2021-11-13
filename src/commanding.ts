@@ -11,7 +11,7 @@ import {
   TestActionOpts,
   TestActionRawOpts,
 } from './model';
-import { toCommanderOption } from './commanding-helper';
+import { toCommanderArgument, toCommanderOption } from './commanding-helper';
 import { cmdLintFilterOptions, cmdTestFilterOptions } from './commanding-data';
 import { basicFormatter } from '../src/term-formatter';
 
@@ -38,7 +38,7 @@ export class Commanding {
     this._program
       .command('lint')
       .description('Lint the code')
-      .addOption(toCommanderOption(cmdLintFilterOptions.aim))
+      .addArgument(toCommanderArgument(cmdLintFilterOptions.aim))
       .addOption(toCommanderOption(cmdLintFilterOptions.reportBase))
       .addOption(toCommanderOption(cmdLintFilterOptions.withPathStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutPathStarting))
@@ -51,9 +51,8 @@ export class Commanding {
       .addOption(toCommanderOption(cmdLintFilterOptions.withTagStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutTagStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.ecma))
-      .action(async (options: LintActionRawOpts) => {
+      .action(async (aim, options: LintActionRawOpts) => {
         const {
-          aim,
           reportBase,
           withPathStarting,
           withoutPathStarting,
@@ -99,7 +98,7 @@ export class Commanding {
     this._program
       .command('test')
       .description('Test the code')
-      .addOption(toCommanderOption(cmdTestFilterOptions.aim))
+      .addArgument(toCommanderArgument(cmdTestFilterOptions.aim))
       .addOption(toCommanderOption(cmdTestFilterOptions.reportBase))
       .addOption(toCommanderOption(cmdTestFilterOptions.displayName))
       .addOption(toCommanderOption(cmdTestFilterOptions.withPathStarting))
@@ -112,9 +111,8 @@ export class Commanding {
       .addOption(toCommanderOption(cmdTestFilterOptions.withoutTag))
       .addOption(toCommanderOption(cmdTestFilterOptions.withTagStarting))
       .addOption(toCommanderOption(cmdTestFilterOptions.withoutTagStarting))
-      .action(async (options: TestActionRawOpts) => {
+      .action(async (aim, options: TestActionRawOpts) => {
         const {
-          aim,
           reportBase,
           displayName,
           withPathStarting,
@@ -146,7 +144,7 @@ export class Commanding {
             },
           },
           reportBase,
-          displayName
+          displayName,
         };
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
