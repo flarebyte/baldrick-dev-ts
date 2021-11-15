@@ -1,6 +1,6 @@
-import { toLintInstructions, toTestInstructions } from './instruction-building';
+import { toBuildInstructions, toLintInstructions, toTestInstructions } from './instruction-building';
 import { runInstructions } from './instruction-runner';
-import { LintAction, LintActionOpts, RunnerContext, TestAction, TestActionOpts } from './model';
+import { BuildAction, BuildActionOpts, LintAction, LintActionOpts, RunnerContext, TestAction, TestActionOpts } from './model';
 
 export const cmdLintAction: LintAction = async (
   ctx: RunnerContext,
@@ -21,5 +21,16 @@ export const cmdTestAction: TestAction = async (
   const status = await runInstructions(ctx, instructions);
   if (status === 'ko') {
     throw Error('Test action did fail !')
+  }
+};
+
+export const cmdBuildAction: BuildAction = async (
+  ctx: RunnerContext,
+  options: BuildActionOpts
+) => {
+  const instructions = toBuildInstructions(options);
+  const status = await runInstructions(ctx, instructions);
+  if (status === 'ko') {
+    throw Error('Build action did fail !')
   }
 };

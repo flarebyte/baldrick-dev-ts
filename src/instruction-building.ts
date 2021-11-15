@@ -1,4 +1,5 @@
 import {
+  BuildActionOpts,
   FileSearching,
   LintActionOpts,
   MicroInstruction,
@@ -149,6 +150,34 @@ const configureTestInstructions = (
         },
       ];
 };
+
+const configureBuildInstructions = (
+  opts: BuildActionOpts
+): MicroInstruction[] => {
+  return isSimpleLint(opts.fileSearching)
+    ? [
+        {
+          name: 'build',
+          params: {
+            targetFiles: opts.fileSearching.filtering.withPathStarting,
+            extensions: opts.fileSearching.filtering.withExtension,
+            reportBase: [opts.reportBase],
+            flags: opts.flags,
+          },
+        },
+      ]
+    : [
+        {
+          name: 'build',
+          params: {
+            targetFiles: [],
+            extensions: [],
+            reportBase: [opts.reportBase],
+            flags: ['globInputPaths:false', ...opts.flags],
+          },
+        },
+      ];
+};
 export const toLintInstructions = (
   opts: LintActionOpts
 ): MicroInstruction[] => {
@@ -170,5 +199,17 @@ export const toTestInstructions = (
     ...globInstructions(opts.fileSearching),
     ...filterInstructions(opts.fileSearching),
     ...configureTestInstructions(opts),
+  ];
+};
+
+export const toBuildInstructions = (
+  opts: BuildActionOpts
+): MicroInstruction[] => {
+  return [
+    ...filesInstructions(opts.fileSearching),
+    ...loadInstructions(opts.fileSearching),
+    ...globInstructions(opts.fileSearching),
+    ...filterInstructions(opts.fileSearching),
+    ...configureBuildInstructions(opts),
   ];
 };

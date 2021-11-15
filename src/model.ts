@@ -99,27 +99,6 @@ export interface LocalSetup {
   toolOptions: ToolOptions;
 }
 
-export type LintMode = 'check' | 'fix' | 'ci';
-export type SupportedEcmaVersion = 2018| 2019 | 2020 | 2021;
-
-export interface LintResolvedOpts {
-  modulePath: string;
-  mode: LintMode;
-  pathPatterns: string[];
-  ecmaVersion: SupportedEcmaVersion;
-}
-
-export type TestMode = 'check' | 'cov'| 'fix' | 'ci' | 'watch';
-
-export interface TestResolvedOpts {
-  modulePath: string;
-  mode: TestMode;
-  pathPatterns: string[];
-  outputDirectory: string;
-  outputName: string;
-  displayName: string;
-}
-
 export interface PathInfo {
   path: string;
   tags: string[];
@@ -166,7 +145,8 @@ export type MicroInstructionName =
   | 'files'
   | 'load'
   | 'glob'
-  | 'filter';
+  | 'filter'
+  | 'build';
 
 export type InstructionParams = { [paramName: string]: string[] };
 
@@ -177,21 +157,8 @@ export interface MicroInstruction {
 
 export type InstructionStatus = 'ok' | 'ko' | 'warning';
 
-export interface LintInstructionResult {
-  text: string;
-  json: string;
-  junitXml: string;
-  compact: string;
-  status: InstructionStatus;
-  lintResults: ESLint.LintResult[];
-}
-
-export interface TestInstructionResult {
-  status: InstructionStatus;
-}
-
-export type TermFormatterKind = 'intro' | 'info'
-export type TermFormatterFormat = 'default' | 'human'
+export type TermFormatterKind = 'intro' | 'info';
+export type TermFormatterFormat = 'default' | 'human';
 
 export interface TermFormatterParams {
   title: string;
@@ -200,11 +167,19 @@ export interface TermFormatterParams {
   format: TermFormatterFormat;
 }
 
-export type TermFormatter = (params: TermFormatterParams) => void
+export type TermFormatter = (params: TermFormatterParams) => void;
 
 export interface RunnerContext {
   currentPath: string;
   termFormatter: TermFormatter;
+}
+
+export interface CmdOption {
+  shortFlag: string;
+  longFlag: string;
+  description: string;
+  defaultValue: string | string[];
+  choices: string[];
 }
 
 // Lint
@@ -226,6 +201,25 @@ export type LintAction = (
   options: LintActionOpts
 ) => Promise<void>;
 
+export type LintMode = 'check' | 'fix' | 'ci';
+export type SupportedEcmaVersion = 2018 | 2019 | 2020 | 2021;
+
+export interface LintResolvedOpts {
+  modulePath: string;
+  mode: LintMode;
+  pathPatterns: string[];
+  ecmaVersion: SupportedEcmaVersion;
+}
+
+export interface LintInstructionResult {
+  text: string;
+  json: string;
+  junitXml: string;
+  compact: string;
+  status: InstructionStatus;
+  lintResults: ESLint.LintResult[];
+}
+
 // Test
 export interface TestActionRawOpts extends FileFiltering {
   aim: string;
@@ -245,11 +239,48 @@ export type TestAction = (
   options: TestActionOpts
 ) => Promise<void>;
 
-export interface CmdOption {
-  shortFlag: string;
-  longFlag: string;
-  description: string;
-  defaultValue: string | string[];
-  choices: string[];
+export type TestMode = 'check' | 'cov' | 'fix' | 'ci' | 'watch';
+
+export interface TestResolvedOpts {
+  modulePath: string;
+  mode: TestMode;
+  pathPatterns: string[];
+  outputDirectory: string;
+  outputName: string;
+  displayName: string;
 }
 
+export interface TestInstructionResult {
+  status: InstructionStatus;
+}
+
+// Build
+export interface BuildActionRawOpts extends FileFiltering {
+  aim: string;
+  reportBase: string;
+}
+
+export interface BuildActionOpts {
+  flags: string[];
+  fileSearching: FileSearching;
+  reportBase: string;
+}
+
+export type BuildAction = (
+  ctx: RunnerContext,
+  options: TestActionOpts
+) => Promise<void>;
+
+export type BuildMode = 'check';
+
+export interface BuildResolvedOpts {
+  modulePath: string;
+  mode: BuildMode;
+  pathPatterns: string[];
+  outputDirectory: string;
+  outputName: string;
+}
+
+export interface BuildInstructionResult {
+  status: InstructionStatus;
+}

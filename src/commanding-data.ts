@@ -23,6 +23,9 @@ interface CmdTestOptions extends CmdOptions {
   displayName: CmdOption;
 }
 
+interface CmdBuildOptions extends CmdOptions {
+}
+
 const stringsOption = (
   shortFlag: string,
   longFlag: string,
@@ -173,3 +176,26 @@ export const cmdTestFilterOptions: CmdTestOptions = {
   withTagStarting,
   withoutTagStarting,
 };
+
+export const cmdBuildFilterOptions: CmdBuildOptions = {
+  aim: choiceOption('a', 'aim', 'Specify the aim for build', [
+    'check'
+  ]),
+  reportBase: stringOption(
+    'rb',
+    'report-base',
+    'Specify the base name for reporting',
+    'report/build-report'
+  ),
+  withPathStarting,
+  withoutPathStarting,
+  withExtension,
+  withoutExtension,
+  withPathSegment,
+  withoutPathSegment,
+  withTag,
+  withoutTag,
+  withTagStarting,
+  withoutTagStarting,
+};
+
