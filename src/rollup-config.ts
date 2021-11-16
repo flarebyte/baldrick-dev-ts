@@ -1,28 +1,26 @@
 import {
-  BuildOpts,
   ModuleFormat,
   NormalizedOpts,
-  PackageJson,
   TsdxOptions,
   WatchOpts,
-} from "./model";
-import { resolveApp } from "./resolve-app";
-import glob from "tiny-glob/sync";
-import path from "path";
-import fs from "fs-extra";
-import { paths } from "./path-helper";
-import { RollupOptions } from "rollup";
-import ts from "typescript";
-import camelCase from "camelcase";
+} from './model';
+import { resolveApp } from './resolve-app';
+import glob from 'tiny-glob/sync';
+import path from 'path';
+import fs from 'fs-extra';
+import { paths } from './path-helper';
+import { RollupOptions } from 'rollup';
+import ts from 'typescript';
+import camelCase from 'camelcase';
 import resolve, {
   DEFAULTS as RESOLVE_DEFAULTS,
-} from "@rollup/plugin-node-resolve";
-import commonjs from "@rollup/plugin-commonjs";
-import typescript from "rollup-plugin-typescript2";
-import json from "@rollup/plugin-json";
-import sourceMaps from "rollup-plugin-sourcemaps";
-import { terser } from "rollup-plugin-terser";
-import replace from "@rollup/plugin-replace";
+} from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import typescript from 'rollup-plugin-typescript2';
+import json from '@rollup/plugin-json';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import { terser } from 'rollup-plugin-terser';
+import replace from '@rollup/plugin-replace';
 
 export type Many<T> = T | T[];
 
@@ -36,7 +34,7 @@ export function concatAllArray<T>(array: Many<T>[]) {
       push.apply(ret, value);
     } else if (value != null) {
       throw new TypeError(
-        "concatAllArray: All items in the array must be an array or null, " +
+        'concatAllArray: All items in the array must be an array or null, ' +
           'got "' +
           value +
           '" at index "' +
@@ -55,48 +53,38 @@ export const isDir = (name: string) =>
     .catch(() => false);
 
 async function getInputs(
-  entries?: string | string[],
-  source?: string
+  sourceDir: string,
+  entries?: string | string[]
 ): Promise<string[]> {
   return concatAllArray(
     ([] as any[])
       .concat(
-        entries && entries.length
-          ? entries
-          : (source && resolveApp(source)) || (await isDir(resolveApp("src")))
+        entries && entries.length ? entries : await isDir(resolveApp(sourceDir))
       )
       .map((file) => glob(file))
   );
 }
 
-export async function cleanDistFolder() {
-  await fs.remove(paths.appDist);
-}
-
-// Remove the package name scope if it exists
-export const removeScope = (name: string) => name.replace(/^@.*\//, "");
+export const removeScope = (name: string) => name.replace(/^@.*\//, '');
 
 const safeVariableName = (name: string) =>
   camelCase(
     removeScope(name)
       .toLowerCase()
-      .replace(/((^[^a-zA-Z]+)|[^\w.-])|([^a-zA-Z0-9]+$)/g, "")
+      .replace(/((^[^a-zA-Z]+)|[^\w.-])|([^a-zA-Z0-9]+$)/g, '')
   );
 
 async function normalizeOpts(
-  appPackageJson: PackageJson,
-  opts: WatchOpts
+  sourceDir: string,
+  name: string,
+  opts: WatchOpts,
+  entries?: string | string[]
 ): Promise<NormalizedOpts> {
   return {
     ...opts,
-    name: opts.name || appPackageJson.name,
-    input: await getInputs(opts.entry, appPackageJson.source),
-    format: opts.format.split(",").map((format: string) => {
-      if (format === "es") {
-        return "esm";
-      }
-      return format;
-    }) as [ModuleFormat, ...ModuleFormat[]],
+    name,
+    input: await getInputs(sourceDir, entries),
+    format: opts.format.split(',') as [ModuleFormat, ...ModuleFormat[]],
   };
 }
 async function createRollupConfig(
@@ -104,19 +92,19 @@ async function createRollupConfig(
   outputNum: number
 ): Promise<RollupOptions> {
   const shouldMinify =
-    opts.minify !== undefined ? opts.minify : opts.env === "production";
+    opts.minify !== undefined ? opts.minify : opts.env === 'production';
 
   const outputName = [
     `${paths.appDist}/${safePackageName(opts.name)}`,
     opts.format,
     opts.env,
-    shouldMinify ? "min" : "",
-    "js",
+    shouldMinify ? 'min' : '',
+    'js',
   ]
     .filter(Boolean)
-    .join(".");
+    .join('.');
 
-  const external = (id: string) => !id.startsWith(".") && !path.isAbsolute(id);
+  const external = (id: string) => !id.startsWith('.') && !path.isAbsolute(id);
 
   const tsconfigPath = opts.tsconfig || paths.tsconfigJson;
   // borrowed from https://github.com/facebook/create-react-app/pull/7248
@@ -125,7 +113,7 @@ async function createRollupConfig(
   const tsCompilerOptions = ts.parseJsonConfigFileContent(
     tsconfigJSON,
     ts.sys,
-    "./"
+    './'
   ).options;
 
   return {
@@ -134,7 +122,7 @@ async function createRollupConfig(
     // Tell Rollup which packages to ignore
     external: (id: string) => {
       // bundle in polyfills as TSDX can't (yet) ensure they're installed as deps
-      if (id.startsWith("regenerator-runtime")) {
+      if (id.startsWith('regenerator-runtime')) {
         return false;
       }
 
@@ -174,23 +162,23 @@ async function createRollupConfig(
       esModule: Boolean(tsCompilerOptions?.esModuleInterop),
       name: opts.name || safeVariableName(opts.name),
       sourcemap: true,
-      globals: { react: "React", "react-native": "ReactNative" },
-      exports: "named",
+      globals: { react: 'React', 'react-native': 'ReactNative' },
+      exports: 'named',
     },
     plugins: [
       resolve({
         mainFields: [
-          "module",
-          "main",
-          opts.target !== "node" ? "browser" : undefined,
+          'module',
+          'main',
+          opts.target !== 'node' ? 'browser' : undefined,
         ].filter(Boolean) as string[],
-        extensions: [...RESOLVE_DEFAULTS.extensions, ".jsx"],
+        extensions: [...RESOLVE_DEFAULTS.extensions, '.jsx'],
       }),
       // all bundled external modules need to be converted from CJS to ESM
       commonjs({
         // use a regex to make sure to include eventual hoisted packages
         include:
-          opts.format === "umd"
+          opts.format === 'umd'
             ? /\/node_modules\//
             : /\/regenerator-runtime\//,
       }),
@@ -201,26 +189,26 @@ async function createRollupConfig(
         tsconfigDefaults: {
           exclude: [
             // all TS test files, regardless whether co-located or in test/ etc
-            "**/*.spec.ts",
-            "**/*.test.ts",
-            "**/*.spec.tsx",
-            "**/*.test.tsx",
+            '**/*.spec.ts',
+            '**/*.test.ts',
+            '**/*.spec.tsx',
+            '**/*.test.tsx',
             // TS defaults below
-            "node_modules",
-            "bower_components",
-            "jspm_packages",
+            'node_modules',
+            'bower_components',
+            'jspm_packages',
             paths.appDist,
           ],
           compilerOptions: {
             sourceMap: true,
             declaration: true,
-            jsx: "react",
+            jsx: 'react',
           },
         },
         tsconfigOverride: {
           compilerOptions: {
             // TS -> esnext, then leave the rest to babel-preset-env
-            target: "esnext",
+            target: 'esnext',
             // don't output declarations more than once
             ...(outputNum > 0
               ? { declaration: false, declarationMap: false }
@@ -232,7 +220,7 @@ async function createRollupConfig(
       }),
       opts.env !== undefined &&
         replace({
-          "process.env.NODE_ENV": JSON.stringify(opts.env),
+          'process.env.NODE_ENV': JSON.stringify(opts.env),
         }),
       sourceMaps(),
       shouldMinify &&
@@ -244,7 +232,7 @@ async function createRollupConfig(
             passes: 10,
           },
           ecma: 5,
-          toplevel: opts.format === "cjs",
+          toplevel: opts.format === 'cjs',
         }),
     ],
   };
@@ -255,41 +243,41 @@ function createAllFormats(
   input: string
 ): [TsdxOptions, ...TsdxOptions[]] {
   return [
-    opts.format.includes("cjs") && {
+    opts.format.includes('cjs') && {
       ...opts,
-      format: "cjs",
-      env: "development",
+      format: 'cjs',
+      env: 'development',
       input,
     },
-    opts.format.includes("cjs") && {
+    opts.format.includes('cjs') && {
       ...opts,
-      format: "cjs",
-      env: "production",
+      format: 'cjs',
+      env: 'production',
       input,
     },
-    opts.format.includes("esm") && { ...opts, format: "esm", input },
-    opts.format.includes("umd") && {
+    opts.format.includes('esm') && { ...opts, format: 'esm', input },
+    opts.format.includes('umd') && {
       ...opts,
-      format: "umd",
-      env: "development",
+      format: 'umd',
+      env: 'development',
       input,
     },
-    opts.format.includes("umd") && {
+    opts.format.includes('umd') && {
       ...opts,
-      format: "umd",
-      env: "production",
+      format: 'umd',
+      env: 'production',
       input,
     },
-    opts.format.includes("system") && {
+    opts.format.includes('system') && {
       ...opts,
-      format: "system",
-      env: "development",
+      format: 'system',
+      env: 'development',
       input,
     },
-    opts.format.includes("system") && {
+    opts.format.includes('system') && {
       ...opts,
-      format: "system",
-      env: "production",
+      format: 'system',
+      env: 'production',
       input,
     },
   ].filter(Boolean) as [TsdxOptions, ...TsdxOptions[]];
@@ -306,9 +294,7 @@ if (fs.existsSync(paths.appConfig)) {
   tsdxConfig = require(paths.appConfig);
 }
 
-export async function createBuildConfigs(
-  opts: NormalizedOpts
-) {
+export async function createBuildConfigs(opts: NormalizedOpts) {
   const allInputs = concatAllArray(
     opts.input.map((input: string) =>
       createAllFormats(opts, input).map(
@@ -331,28 +317,12 @@ export async function createBuildConfigs(
   );
 }
 export const computeRollupConfig = async (
-  appPackageJson: PackageJson,
-  dirtyOpts: BuildOpts
+  sourceDir: string,
+  name: string,
+  opts: WatchOpts,
+  entries?: string | string[]
 ) => {
-  const opts = await normalizeOpts(appPackageJson, dirtyOpts);
-  const buildConfigs = await createBuildConfigs(opts);
+  const newOpts = await normalizeOpts(sourceDir, name, opts, entries);
+  const buildConfigs = await createBuildConfigs(newOpts);
   return buildConfigs;
 };
-
-const safePackageName = (name: string) =>
-  name
-    .toLowerCase()
-    .replace(/(^@.*\/)|((^[^a-zA-Z]+)|[^\w.-])|([^a-zA-Z0-9]+$)/g, "");
-
-export function writeCjsEntryFile(name: string) {
-  const baseLine = `module.exports = require('./${safePackageName(name)}`;
-  const contents = `
-'use strict'
-if (process.env.NODE_ENV === 'production') {
-  ${baseLine}.cjs.production.min.js')
-} else {
-  ${baseLine}.cjs.development.js')
-}
-`;
-  return fs.outputFile(path.join(paths.appDist, "index.js"), contents);
-}

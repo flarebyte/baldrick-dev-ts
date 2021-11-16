@@ -1,5 +1,5 @@
-import fs from "fs-extra";
-import path from "path";
+import fs from 'fs-extra';
+import path from 'path';
 
 export const appDirectory = fs.realpathSync(process.cwd());
 export const resolveApp = function (relativePath: string) {

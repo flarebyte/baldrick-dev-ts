@@ -24,6 +24,8 @@ import { flagsToEcmaVersion } from './eslint-config';
 import { outputFile } from 'fs-extra';
 import { ESLint } from 'eslint';
 import { createJest, jestCommand } from './jest-helper';
+import { cleanDistFolder, writeCjsEntryFile } from './rollup-helper';
+import { computeRollupConfig } from './rollup-config';
 
 const instructionToTermIntro = (
   instruction: MicroInstruction
@@ -263,11 +265,16 @@ export const runBuildInstruction = async (
   };
 
   ctx.termFormatter({
-    title: 'Testing - final opts',
+    title: 'Building - final opts',
     detail: buildOpts,
     kind: 'info',
     format: 'human',
   });
+
+  const packageName = 'demo-name'
+  const distFolder = 'dist'
+  await cleanDistFolder(distFolder);
+  await writeCjsEntryFile(buildOpts.modulePath, distFolder, packageName)
 
   return { status: 'ok' };
 };
