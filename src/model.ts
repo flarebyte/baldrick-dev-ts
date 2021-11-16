@@ -30,7 +30,15 @@ export interface BuildOpts extends SharedOpts {
   target: 'browser';
 }
 
-export interface WatchOpts extends BuildOpts {
+export interface WatchOpts  {
+  target: 'node' | 'browser';
+  // Path to tsconfig file
+  tsconfig?: string;
+  // Is error extraction running?
+  extractErrors?: boolean;
+  name?: string;
+  entry?: string | string[];
+  format: 'cjs,esm';
   verbose?: boolean;
   noClean?: boolean;
   onFirstSuccess?: string;
@@ -56,7 +64,13 @@ export interface LintOpts {
   maxWarnings: number;
 }
 
-export interface TsdxOptions extends SharedOpts {
+export interface CoreRollupOptions {
+  target: 'node' | 'browser';
+  // Path to tsconfig file
+  tsconfig?: string;
+  // Is error extraction running?
+  extractErrors?: boolean;
+
   // Name of package
   name: string;
   // path to file

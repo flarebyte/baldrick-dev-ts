@@ -1,7 +1,7 @@
 import {
   ModuleFormat,
   NormalizedOpts,
-  TsdxOptions,
+  CoreRollupOptions,
   WatchOpts,
 } from './model';
 import { resolveApp } from './resolve-app';
@@ -46,6 +46,11 @@ export function concatAllArray<T>(array: Many<T>[]) {
   return ret;
 }
 
+export const safePackageName = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/(^@.*\/)|((^[^a-zA-Z]+)|[^\w.-])|([^a-zA-Z0-9]+$)/g, '');
+
 export const isDir = (name: string) =>
   fs
     .stat(name)
@@ -88,7 +93,7 @@ async function normalizeOpts(
   };
 }
 async function createRollupConfig(
-  opts: TsdxOptions,
+  opts: CoreRollupOptions,
   outputNum: number
 ): Promise<RollupOptions> {
   const shouldMinify =
@@ -238,10 +243,10 @@ async function createRollupConfig(
   };
 }
 
-function createAllFormats(
+const createAllFormats = (
   opts: NormalizedOpts,
   input: string
-): [TsdxOptions, ...TsdxOptions[]] {
+): [CoreRollupOptions, ...CoreRollupOptions[]] => {
   return [
     opts.format.includes('cjs') && {
       ...opts,
@@ -280,25 +285,14 @@ function createAllFormats(
       env: 'production',
       input,
     },
-  ].filter(Boolean) as [TsdxOptions, ...TsdxOptions[]];
-}
-
-// check for custom tsdx.config.js
-let tsdxConfig = {
-  rollup(config: RollupOptions, _options: TsdxOptions): RollupOptions {
-    return config;
-  },
+  ].filter(Boolean) as [CoreRollupOptions, ...CoreRollupOptions[]];
 };
-
-if (fs.existsSync(paths.appConfig)) {
-  tsdxConfig = require(paths.appConfig);
-}
 
 export async function createBuildConfigs(opts: NormalizedOpts) {
   const allInputs = concatAllArray(
     opts.input.map((input: string) =>
       createAllFormats(opts, input).map(
-        (options: TsdxOptions, index: number) => ({
+        (options: CoreRollupOptions, index: number) => ({
           ...options,
           // We want to know if this is the first run for each entryfile
           // for certain plugins (e.g. css)
@@ -309,10 +303,9 @@ export async function createBuildConfigs(opts: NormalizedOpts) {
   );
 
   return await Promise.all(
-    allInputs.map(async (options: TsdxOptions, index: number) => {
-      // pass the full rollup config to tsdx.config.js override
+    allInputs.map(async (options: CoreRollupOptions, index: number) => {
       const config = await createRollupConfig(options, index);
-      return tsdxConfig.rollup(config, options);
+      return config;
     })
   );
 }

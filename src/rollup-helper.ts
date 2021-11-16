@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { rollup, RollupOptions, OutputOptions } from 'rollup';
 
-const safePackageName = (name: string) =>
+export const safePackageName = (name: string) =>
   name
     .toLowerCase()
     .replace(/(^@.*\/)|((^[^a-zA-Z]+)|[^\w.-])|([^a-zA-Z0-9]+$)/g, '');
