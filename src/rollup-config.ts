@@ -4,8 +4,6 @@ import {
   CoreRollupOptions,
   WatchOpts,
 } from './model';
-import { resolveApp } from './resolve-app';
-import glob from 'tiny-glob/sync';
 import path from 'path';
 import fs from 'fs-extra';
 import { paths } from './path-helper';
@@ -57,19 +55,6 @@ export const isDir = (name: string) =>
     .then((stats) => stats.isDirectory())
     .catch(() => false);
 
-async function getInputs(
-  sourceDir: string,
-  entries?: string | string[]
-): Promise<string[]> {
-  return concatAllArray(
-    ([] as any[])
-      .concat(
-        entries && entries.length ? entries : await isDir(resolveApp(sourceDir))
-      )
-      .map((file) => glob(file))
-  );
-}
-
 export const removeScope = (name: string) => name.replace(/^@.*\//, '');
 
 const safeVariableName = (name: string) =>
@@ -80,15 +65,14 @@ const safeVariableName = (name: string) =>
   );
 
 async function normalizeOpts(
-  sourceDir: string,
   name: string,
   opts: WatchOpts,
-  entries?: string | string[]
+  entries: string[]
 ): Promise<NormalizedOpts> {
   return {
     ...opts,
     name,
-    input: await getInputs(sourceDir, entries),
+    input: entries,
     format: opts.format.split(',') as [ModuleFormat, ...ModuleFormat[]],
   };
 }
@@ -310,12 +294,11 @@ export async function createBuildConfigs(opts: NormalizedOpts) {
   );
 }
 export const computeRollupConfig = async (
-  sourceDir: string,
   name: string,
   opts: WatchOpts,
-  entries?: string | string[]
+  entries :string[]
 ) => {
-  const newOpts = await normalizeOpts(sourceDir, name, opts, entries);
+  const newOpts = await normalizeOpts(name, opts, entries);
   const buildConfigs = await createBuildConfigs(newOpts);
   return buildConfigs;
 };

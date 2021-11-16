@@ -278,7 +278,8 @@ export const runBuildInstruction = async (
     target: 'node',
     format: 'cjs,esm',
   };
-  const rollupConfig = await computeRollupConfig('src', packageName, watchOps);
+  const entries = ['src/index.ts']
+  const rollupConfig = await computeRollupConfig(packageName, watchOps, entries);
 
   ctx.termFormatter({
     title: 'Building - rollup config',
