@@ -13,6 +13,7 @@ import {
   BuildInstructionResult,
   BuildResolvedOpts,
   BuildMode,
+  WatchOpts,
 } from './model';
 import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming';
 import { readFile } from 'fs/promises';
@@ -271,10 +272,22 @@ export const runBuildInstruction = async (
     format: 'human',
   });
 
-  const packageName = 'demo-name'
-  const distFolder = 'dist'
+  const packageName = 'demo-name';
+  const distFolder = 'dist';
+  const watchOps: WatchOpts = {
+    target: 'node',
+    format: 'cjs,esm',
+  };
+  const rollupConfig = await computeRollupConfig('src', packageName, watchOps);
+
+  ctx.termFormatter({
+    title: 'Building - rollup config',
+    detail: rollupConfig,
+    kind: 'info',
+    format: 'human',
+  });
   await cleanDistFolder(distFolder);
-  await writeCjsEntryFile(buildOpts.modulePath, distFolder, packageName)
+  await writeCjsEntryFile(buildOpts.modulePath, distFolder, packageName);
 
   return { status: 'ok' };
 };
