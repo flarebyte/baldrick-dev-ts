@@ -2,6 +2,9 @@ import { Command } from 'commander';
 import { version } from './version';
 import { CommandingInstrumentation } from './commanding-instrumentation';
 import {
+  BuildAction,
+  BuildActionOpts,
+  BuildActionRawOpts,
   GlobAction,
   LintAction,
   LintActionOpts,
@@ -12,7 +15,11 @@ import {
   TestActionRawOpts,
 } from './model';
 import { toCommanderArgument, toCommanderOption } from './commanding-helper';
-import { cmdLintFilterOptions, cmdTestFilterOptions } from './commanding-data';
+import {
+  cmdBuildFilterOptions,
+  cmdLintFilterOptions,
+  cmdTestFilterOptions,
+} from './commanding-data';
 import { basicFormatter } from '../src/term-formatter';
 
 export class Commanding {
@@ -152,6 +159,63 @@ export class Commanding {
         };
         this._instr.testActionStart(ctx, testOpts);
         await testAction(ctx, testOpts);
+      });
+  }
+
+  declareBuildAction(buildAction: BuildAction) {
+    this._program
+      .command('build')
+      .description('Build the code')
+      .addArgument(toCommanderArgument(cmdBuildFilterOptions.aim))
+      .addOption(toCommanderOption(cmdBuildFilterOptions.reportBase))
+      .addOption(toCommanderOption(cmdBuildFilterOptions.withPathStarting))
+      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutPathStarting))
+      .addOption(toCommanderOption(cmdBuildFilterOptions.withExtension))
+      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutExtension))
+      .addOption(toCommanderOption(cmdBuildFilterOptions.withPathSegment))
+      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutPathSegment))
+      .addOption(toCommanderOption(cmdBuildFilterOptions.withTag))
+      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutTag))
+      .addOption(toCommanderOption(cmdBuildFilterOptions.withTagStarting))
+      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutTagStarting))
+      .action(async (aim, options: BuildActionRawOpts) => {
+        const {
+          reportBase,
+          withPathStarting,
+          withoutPathStarting,
+          withExtension,
+          withoutExtension,
+          withPathSegment,
+          withoutPathSegment,
+          withTag,
+          withoutTag,
+          withTagStarting,
+          withoutTagStarting,
+        } = options;
+        const buildOpts: BuildActionOpts = {
+          flags: [`build:${aim}`],
+          fileSearching: {
+            pathInfos: [],
+            filtering: {
+              withPathStarting,
+              withoutPathStarting,
+              withExtension,
+              withoutExtension,
+              withPathSegment,
+              withoutPathSegment,
+              withTag,
+              withoutTag,
+              withTagStarting,
+              withoutTagStarting,
+            },
+          },
+          reportBase,
+        };
+        const ctx: RunnerContext = {
+          currentPath: process.cwd(),
+          termFormatter: basicFormatter,
+        };
+        await buildAction(ctx, buildOpts);
       });
   }
 

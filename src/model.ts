@@ -268,10 +268,10 @@ export interface BuildActionOpts {
 
 export type BuildAction = (
   ctx: RunnerContext,
-  options: TestActionOpts
+  options: BuildActionOpts
 ) => Promise<void>;
 
-export type BuildMode = 'check';
+export type BuildMode = 'check' | 'prod';
 
 export interface BuildResolvedOpts {
   modulePath: string;

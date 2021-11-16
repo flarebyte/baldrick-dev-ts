@@ -10,6 +10,9 @@ import {
   TestResolvedOpts,
   TestMode,
   TestInstructionResult,
+  BuildInstructionResult,
+  BuildResolvedOpts,
+  BuildMode,
 } from './model';
 import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming';
 import { readFile } from 'fs/promises';
@@ -121,6 +124,17 @@ const toTestFlag = (flags: string[]): TestMode => {
   return 'check';
 };
 
+const knownBuildFlags = ['build:check', 'build:prod'];
+
+const toBuildFlag = (flags: string[]): BuildMode => {
+  const buildFlag = flags.filter((flag) => knownBuildFlags.includes(flag))[0];
+  if (buildFlag === 'build:prod') {
+    return 'prod';
+  }
+
+  return 'check';
+};
+
 const toEslintStatus = (
   lintResults: ESLint.LintResult[]
 ): InstructionStatus => {
@@ -226,6 +240,38 @@ export const runTestInstruction = async (
   return { status: 'ok' };
 };
 
+export const runBuildInstruction = async (
+  ctx: RunnerContext,
+  instruction: MicroInstruction,
+  pathInfos: PathInfo[]
+): Promise<BuildInstructionResult> => {
+  ctx.termFormatter(instructionToTermIntro(instruction));
+  const {
+    params: { targetFiles, reportBase, flags },
+  } = instruction;
+
+  const outputDirectory = path.dirname(reportBase[0]);
+  const outputName = path.basename(reportBase[0]);
+
+  const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)];
+  const buildOpts: BuildResolvedOpts = {
+    modulePath: ctx.currentPath,
+    mode: toBuildFlag(flags),
+    pathPatterns,
+    outputDirectory,
+    outputName,
+  };
+
+  ctx.termFormatter({
+    title: 'Testing - final opts',
+    detail: buildOpts,
+    kind: 'info',
+    format: 'human',
+  });
+
+  return { status: 'ok' };
+};
+
 export const runInstructions = async (
   ctx: RunnerContext,
   instructions: MicroInstruction[]
@@ -238,6 +284,7 @@ export const runInstructions = async (
   );
   const lintInstruction = instructions.find((instr) => instr.name === 'lint');
   const testInstruction = instructions.find((instr) => instr.name === 'test');
+  const buildInstruction = instructions.find((instr) => instr.name === 'build');
 
   const files = filesInstruction
     ? runFilesInstruction(ctx, filesInstruction)
@@ -261,5 +308,15 @@ export const runInstructions = async (
     ? await runTestInstruction(ctx, testInstruction, filtered)
     : false;
 
-  return linted ? linted.status : tested ? tested.status : 'ko';
+  const built = buildInstruction
+    ? await runBuildInstruction(ctx, buildInstruction, filtered)
+    : false;
+
+  return linted
+    ? linted.status
+    : tested
+    ? tested.status
+    : built
+    ? built.status
+    : 'ko';
 };
