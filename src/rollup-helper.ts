@@ -29,9 +29,7 @@ export async function cleanDistFolder(distFolder: string) {
   await fs.mkdir(distFolder);
 }
 
-export const buildBundle = async (
-  inputOptions: RollupOptions & { output: OutputOptions }
-) => {
+export const buildBundle = async (inputOptions: RollupOptions) => {
   const bundle = await rollup(inputOptions);
-  await bundle.write(inputOptions.output);
+  await bundle.write(inputOptions.output as OutputOptions);
 };

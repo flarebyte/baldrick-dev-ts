@@ -297,7 +297,7 @@ export const computeRollupConfig = async (
   name: string,
   opts: WatchOpts,
   entries :string[]
-) => {
+): Promise<RollupOptions[]> => {
   const newOpts = await normalizeOpts(name, opts, entries);
   const buildConfigs = await createBuildConfigs(newOpts);
   return buildConfigs;

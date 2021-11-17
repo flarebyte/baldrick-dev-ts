@@ -25,7 +25,11 @@ import { flagsToEcmaVersion } from './eslint-config';
 import { outputFile } from 'fs-extra';
 import { ESLint } from 'eslint';
 import { createJest, jestCommand } from './jest-helper';
-import { cleanDistFolder, writeCjsEntryFile } from './rollup-helper';
+import {
+  buildBundle,
+  cleanDistFolder,
+  writeCjsEntryFile,
+} from './rollup-helper';
 import { computeRollupConfig } from './rollup-config';
 
 const instructionToTermIntro = (
@@ -278,17 +282,27 @@ export const runBuildInstruction = async (
     target: 'node',
     format: 'cjs,esm',
   };
-  const entries = ['src/index.ts']
-  const rollupConfig = await computeRollupConfig(packageName, watchOps, entries);
+  const entries = ['src/index.ts'];
+  const rollupConfig = await computeRollupConfig(
+    packageName,
+    watchOps,
+    entries
+  );
 
   ctx.termFormatter({
     title: 'Building - rollup config',
     detail: rollupConfig,
     kind: 'info',
-    format: 'human',
+    format: 'default',
   });
+
   await cleanDistFolder(distFolder);
   await writeCjsEntryFile(buildOpts.modulePath, distFolder, packageName);
+  try {
+    await buildBundle(rollupConfig[0]);
+  } catch (err) {
+    console.log(err);
+  }
 
   return { status: 'ok' };
 };
