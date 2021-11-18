@@ -13,7 +13,7 @@ import {
   BuildInstructionResult,
   BuildResolvedOpts,
   BuildMode,
-  WatchOpts,
+  PresetRollupOptions,
 } from './model';
 import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming';
 import { readFile } from 'fs/promises';
@@ -30,7 +30,7 @@ import {
   cleanDistFolder,
   writeCjsEntryFile,
 } from './rollup-helper';
-import { computeRollupConfig } from './rollup-config';
+import { esmRollupPreset } from './rollup-config-preset';
 
 const instructionToTermIntro = (
   instruction: MicroInstruction
@@ -276,18 +276,14 @@ export const runBuildInstruction = async (
     format: 'human',
   });
 
-  const packageName = 'demo-name';
-  const distFolder = 'dist';
-  const watchOps: WatchOpts = {
-    target: 'node',
-    format: 'cjs,esm',
+  const presetOpts: PresetRollupOptions = {
+    buildFolder: 'dist',
+    name: 'demo-name',
+    input: 'src/index.ts',
+    strategy: 'production',
+    format: 'esm',
   };
-  const entries = ['src/index.ts'];
-  const rollupConfig = await computeRollupConfig(
-    packageName,
-    watchOps,
-    entries
-  );
+  const rollupConfig = esmRollupPreset(presetOpts);
 
   ctx.termFormatter({
     title: 'Building - rollup config',
@@ -296,10 +292,14 @@ export const runBuildInstruction = async (
     format: 'default',
   });
 
-  await cleanDistFolder(distFolder);
-  await writeCjsEntryFile(buildOpts.modulePath, distFolder, packageName);
+  await cleanDistFolder(presetOpts.buildFolder);
+  await writeCjsEntryFile(
+    buildOpts.modulePath,
+    presetOpts.buildFolder,
+    presetOpts.name
+  );
   try {
-    await buildBundle(rollupConfig[0]);
+    await buildBundle(presetOpts);
   } catch (err) {
     console.log(err);
   }

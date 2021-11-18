@@ -87,6 +87,16 @@ export interface CoreRollupOptions {
   transpileOnly?: boolean;
 }
 
+type PresetRollupOptionsStrategy = 'development' | 'production'
+
+export interface PresetRollupOptions {
+  buildFolder: string;
+  name: string;
+  input: string;
+  strategy: PresetRollupOptionsStrategy;
+  format: ModuleFormat;
+}
+
 export type ProfileName = 'ts-lib' | 'ts-cli';
 
 export interface Coverage {
