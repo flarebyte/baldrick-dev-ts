@@ -1,5 +1,11 @@
 import { RollupOptions } from 'rollup';
 import { PresetRollupOptions } from './model';
+import resolve from '@rollup/plugin-node-resolve';
+import json from '@rollup/plugin-json';
+import typescript from 'rollup-plugin-typescript2';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import { terser } from 'rollup-plugin-terser';
+import ts from 'typescript';
 
 export const esmRollupPreset = (opts: PresetRollupOptions): RollupOptions => {
   const outputName = [
@@ -10,6 +16,8 @@ export const esmRollupPreset = (opts: PresetRollupOptions): RollupOptions => {
   ]
     .filter(Boolean)
     .join('.');
+
+  const shouldMinify = false;
 
   return {
     input: opts.input,
@@ -26,21 +34,40 @@ export const esmRollupPreset = (opts: PresetRollupOptions): RollupOptions => {
       exports: 'named',
     },
     plugins: [
-      {
-        name: 'node-resolve',
-      },
-      {
-        name: 'commonjs',
-      },
-      {
-        name: 'json',
-      },
-      {
-        name: 'rpt2',
-      },
-      {
-        name: 'sourcemaps',
-      },
+      resolve(),
+      json(),
+      typescript({
+        typescript: ts,
+        tsconfigDefaults: {
+          exclude: [
+            '**/*.spec.ts',
+            '**/*.test.ts',
+            'node_modules',
+            opts.buildFolder,
+          ],
+          compilerOptions: {
+            sourceMap: true,
+            declaration: true,
+          },
+        },
+        tsconfigOverride: {
+          compilerOptions: {
+            target: 'esnext',
+          },
+        },
+      }),
+      sourceMaps(),
+      shouldMinify &&
+        terser({
+          output: { comments: false },
+          compress: {
+            keep_infinity: true,
+            pure_getters: true,
+            passes: 10,
+          },
+          ecma: 2018,
+          toplevel: false,
+        }),
     ],
   };
 };

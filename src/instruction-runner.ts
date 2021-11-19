@@ -28,7 +28,6 @@ import { createJest, jestCommand } from './jest-helper';
 import {
   buildBundle,
   cleanDistFolder,
-  writeCjsEntryFile,
 } from './rollup-helper';
 import { esmRollupPreset } from './rollup-config-preset';
 
@@ -293,13 +292,8 @@ export const runBuildInstruction = async (
   });
 
   await cleanDistFolder(presetOpts.buildFolder);
-  await writeCjsEntryFile(
-    buildOpts.modulePath,
-    presetOpts.buildFolder,
-    presetOpts.name
-  );
   try {
-    await buildBundle(presetOpts);
+    await buildBundle(rollupConfig);
   } catch (err) {
     console.log(err);
   }
