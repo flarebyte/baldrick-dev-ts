@@ -34,13 +34,6 @@ export interface FileSearching {
   filtering: FileFiltering;
 }
 
-export interface StatusRecord {
-  title: string;
-  message: string;
-  params: string[];
-  status: 'before' | 'success' | 'failure';
-}
-
 export type GlobAction = (script: string[]) => void;
 
 export type LintReport =

@@ -77,24 +77,25 @@ const createProjectDir = () => {
 describe('Commands Glob', () => {
   it('rehearse parsing', () => {
     const commanding = new Commanding();
-    commanding.declareGlobAction(jest.fn());
+    const mockedAction = jest.fn();
+    commanding.declareGlobAction(mockedAction);
     const given = ['find:', 'src/*.ts', '.eslint.json'];
     commanding.parseAsync(['node', 'baldrick', 'do', ...given]);
-    expect(commanding.getInstrumentation().getLastRecord().params).toEqual(
-      given
-    );
+    expect(mockedAction).toHaveBeenCalledWith(given);
   });
 
   describe('Managing json schema', () => {
     createProjectDir();
     const commanding = new Commanding();
-    commanding.declareGlobAction(jest.fn());
+    const mockedAction = jest.fn();
+    commanding.declareGlobAction(mockedAction);
 
-    it.each(authorExamples)('check each json with schemas $given', ({given}) => {
-      commanding.parseAsync(['node', 'baldrick', 'do', ...given]);
-      expect(commanding.getInstrumentation().getLastRecord().params).toEqual(
-        given
-      );
-    });
+    it.each(authorExamples)(
+      'check each json with schemas $given',
+      ({ given }) => {
+        commanding.parseAsync(['node', 'baldrick', 'do', ...given]);
+        expect(mockedAction).toHaveBeenCalledWith(given);
+      }
+    );
   });
 });

@@ -1,6 +1,5 @@
 import { Command } from 'commander';
 import { version } from './version';
-import { CommandingInstrumentation } from './commanding-instrumentation';
 import {
   BuildAction,
   BuildActionOpts,
@@ -23,13 +22,9 @@ import {
 import { basicFormatter } from '../src/term-formatter';
 
 export class Commanding {
-  _instr: CommandingInstrumentation = new CommandingInstrumentation();
   _program: Command = new Command();
   constructor() {
     this._program.version(version);
-  }
-  getInstrumentation() {
-    return this._instr;
   }
   declareGlobAction(globAction: GlobAction) {
     this._program
@@ -37,7 +32,6 @@ export class Commanding {
       .argument('[script...]')
       .description('Run a glob script')
       .action((script: string[]) => {
-        this._instr.globActionStart(script);
         globAction(script);
       });
   }
@@ -96,7 +90,6 @@ export class Commanding {
           currentPath: process.cwd(),
           termFormatter: basicFormatter,
         };
-        this._instr.lintActionStart(ctx, lintOpts);
         await lintAction(ctx, lintOpts);
       });
   }
@@ -157,7 +150,6 @@ export class Commanding {
           currentPath: process.cwd(),
           termFormatter: basicFormatter,
         };
-        this._instr.testActionStart(ctx, testOpts);
         await testAction(ctx, testOpts);
       });
   }
