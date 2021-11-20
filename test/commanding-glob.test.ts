@@ -79,7 +79,7 @@ describe('Commands Glob', () => {
     const commanding = new Commanding();
     commanding.declareGlobAction(jest.fn());
     const given = ['find:', 'src/*.ts', '.eslint.json'];
-    commanding.parse(['node', 'baldrick', 'do', ...given]);
+    commanding.parseAsync(['node', 'baldrick', 'do', ...given]);
     expect(commanding.getInstrumentation().getLastRecord().params).toEqual(
       given
     );

@@ -20,7 +20,7 @@ const createExample = (
       filtering: givenFiltering,
     },
     ecmaVersion: 2018,
-    report: [],
+    reportBase: 'report/lint-report'
   };
   return [JSON.stringify(given), given, expected];
 };

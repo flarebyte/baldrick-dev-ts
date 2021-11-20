@@ -1,5 +1,4 @@
 import fs from 'fs-extra';
-import { ToolOptions } from '../src/model';
 
 interface FileContent {
   path: string;
@@ -24,11 +23,6 @@ export const createPackageJson = (name: string): FileContent => ({
     null,
     2
   ),
-});
-
-export const createToolOptions = (toolOpts: ToolOptions): FileContent => ({
-  path: '.baldrick-dev.json',
-  content: JSON.stringify(toolOpts, null, 2),
 });
 
 const prettierConfig = {

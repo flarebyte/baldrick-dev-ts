@@ -1,15 +1,16 @@
-import { computeEsLintConfig } from "../src/eslint-config";
-import { simpleLintOpts } from "./fixture-linting";
-import { simpleToolOptions } from "./fixture-tool-opts";
+import { computeEsLintConfig } from '../src/eslint-config';
+import { LintResolvedOpts } from '../src/model';
 
-describe("eslint-config", () => {
-  it("should produce a valid config", () => {
-    const localSetup = {
-      modulePath: "module-path",
-      toolOptions: simpleToolOptions,
+describe('eslint-config', () => {
+  it('should produce a valid config', () => {
+    const resolvedOps: LintResolvedOpts = {
+      modulePath: 'module-path',
+      mode: 'check',
+      pathPatterns: [],
+      ecmaVersion: 2018,
     };
-    const opts = simpleLintOpts;
-    const actual = computeEsLintConfig(localSetup, opts);
+
+    const actual = computeEsLintConfig(resolvedOps);
     expect(actual).toMatchInlineSnapshot(
       `
       Object {

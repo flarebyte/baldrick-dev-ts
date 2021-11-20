@@ -2,7 +2,6 @@ import {
   createPackageJson,
   createTempDirsSync,
   createTestingFilesSync,
-  createToolOptions,
   editorConfig,
   indexTestTs,
   indexTs,
@@ -12,7 +11,6 @@ import {
   readmeMd,
   tsconfigNode,
 } from './generator';
-import { simpleToolOptions } from './fixture-tool-opts';
 import {
   runFilesInstruction,
   runFilterInstruction,
@@ -28,11 +26,9 @@ import { diffChars } from 'diff';
 
 const termFormatter = basicFormatter;
 
-const someToolOptions = { ...simpleToolOptions };
 const createProjectDir = () => {
   const tempDir = createTempDirsSync();
   const fileContents = [
-    createToolOptions(someToolOptions),
     createPackageJson('module-' + tempDir.replace('/', '-')),
     indexTs,
     problematicTs,
