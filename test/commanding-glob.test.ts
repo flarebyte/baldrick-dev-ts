@@ -91,7 +91,7 @@ describe('Commands Glob', () => {
     commanding.declareGlobAction(jest.fn());
 
     it.each(authorExamples)('check each json with schemas $given', ({given}) => {
-      commanding.parse(['node', 'baldrick', 'do', ...given]);
+      commanding.parseAsync(['node', 'baldrick', 'do', ...given]);
       expect(commanding.getInstrumentation().getLastRecord().params).toEqual(
         given
       );
