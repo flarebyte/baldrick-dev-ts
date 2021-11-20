@@ -1,164 +1,221 @@
-import {
-  FileFiltering,
-  LintActionOpts,
-  MicroInstruction,
-  PathInfo,
-} from '../src/model';
+import { LintActionOpts } from '../src/model';
 import { toLintInstructions } from '../src/instruction-building';
 import { emptyFileFiltering } from '../src/path-filtering';
 
-const createExample = (
-  givenPathInfos: PathInfo[],
-  flags: string[],
-  givenFiltering: FileFiltering,
-  expected: MicroInstruction[]
-): [string, LintActionOpts, MicroInstruction[]] => {
-  const given: LintActionOpts = {
-    flags,
-    fileSearching: {
-      pathInfos: givenPathInfos,
-      filtering: givenFiltering,
-    },
-    ecmaVersion: 2018,
-    reportBase: 'report/lint-report'
-  };
-  return [JSON.stringify(given), given, expected];
-};
-
 // https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions
 
-const givenExamples: [string, LintActionOpts, MicroInstruction[]][] = [
-  createExample(
-    [],
-    [],
-    { ...emptyFileFiltering, withPathStarting: ['src/', 'test/'] },
-    [
-      {
-        name: 'lint',
-        params: {
-          targetFiles: ['src/', 'test/'],
-          extensions: [],
-          flags: [],
-        },
-      },
-    ]
-  ),
-  createExample(
-    [],
-    [],
-    {
-      ...emptyFileFiltering,
-      withPathStarting: ['test/'],
-      withExtension: ['.specs.ts'],
-    },
-    [
-      {
-        name: 'lint',
-        params: {
-          targetFiles: ['test/'],
-          extensions: ['.specs.ts'],
-          flags: [],
-        },
-      },
-    ]
-  ),
-  createExample(
-    [
-      { path: 'gen/step1.ts', tags: ['phase1'] },
-      { path: 'gen/step2.ts', tags: ['phase2'] },
-    ],
-    [],
-    { ...emptyFileFiltering, withTag: ['phase1'] },
-    [
-      {
-        name: 'files',
-        params: {
-          targetFiles: ['gen/step1.ts'],
-        },
-      },
-      {
-        name: 'lint',
-        params: {
-          targetFiles: [],
-          extensions: [],
-          flags: ['globInputPaths:false'],
-        },
-      },
-    ]
-  ),
-  createExample(
-    [{ path: 'gen/schemas.csv', tags: ['@load'] }],
-    [],
-    { ...emptyFileFiltering, withTag: ['phase1'] },
-    [
-      {
-        name: 'load',
-        params: {
-          targetFiles: ['gen/schemas.csv'],
-        },
-      },
-      {
-        name: 'filter',
-        params: {
-          query: ['--with-tag', 'phase1'],
-        },
-      },
-      {
-        name: 'lint',
-        params: {
-          targetFiles: [],
-          extensions: [],
-          flags: ['globInputPaths:false'],
-        },
-      },
-    ]
-  ),
-  createExample(
-    [],
-    ['fix'],
-    {
-      ...emptyFileFiltering,
-      withPathStarting: ['src/', 'test/'],
-      withoutPathSegment: ['fixture'],
-    },
-    [
-      {
-        name: 'glob',
-        params: {
-          targetFiles: ['src/**/*', 'test/**/*'],
-        },
-      },
-      {
-        name: 'filter',
-        params: {
-          query: [
-            '--with-path-starting',
-            'src/',
-            'test/',
-            '--without-path-segment',
-            'fixture',
-          ],
-        },
-      },
-      {
-        name: 'lint',
-        params: {
-          targetFiles: [],
-          extensions: [],
-          flags: ['globInputPaths:false', 'fix'],
-        },
-      },
-    ]
-  ),
-];
+const defaultOpts = {
+  flags: [],
+  ecmaVersion: 2018,
+  reportBase: 'report/lint-report',
+};
 
 describe('Build instruction for linting', () => {
-  test.each(givenExamples)(
-    'should provide instruction for %s',
-    (label, given, expected) => {
-      expect(label).toBeDefined();
-      const actual = toLintInstructions(given);
-      expect(actual).toEqual(expected);
-    }
-  );
+  it('lint some sources', () => {
+    const given: LintActionOpts = {
+      ...defaultOpts,
+      fileSearching: {
+        pathInfos: [],
+        filtering: {
+          ...emptyFileFiltering,
+          withPathStarting: ['src/', 'test/'],
+        },
+      },
+    };
+
+    const actual = toLintInstructions(given);
+    expect(actual).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "name": "lint",
+          "params": Object {
+            "extensions": Array [],
+            "flags": Array [],
+            "reportBase": Array [
+              "report/lint-report",
+            ],
+            "targetFiles": Array [
+              "src/",
+              "test/",
+            ],
+          },
+        },
+      ]
+    `);
+  });
+  it('lint some sources with extension', () => {
+    const given: LintActionOpts = {
+      ...defaultOpts,
+      fileSearching: {
+        pathInfos: [],
+        filtering: {
+          ...emptyFileFiltering,
+          withPathStarting: ['test/'],
+          withExtension: ['.specs.ts'],
+        },
+      },
+    };
+
+    const actual = toLintInstructions(given);
+    expect(actual).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "name": "lint",
+          "params": Object {
+            "extensions": Array [
+              ".specs.ts",
+            ],
+            "flags": Array [],
+            "reportBase": Array [
+              "report/lint-report",
+            ],
+            "targetFiles": Array [
+              "test/",
+            ],
+          },
+        },
+      ]
+    `);
+  });
+  it('lint some sources using tags for selecting files', () => {
+    const given: LintActionOpts = {
+      ...defaultOpts,
+      fileSearching: {
+        pathInfos: [
+          { path: 'gen/step1.ts', tags: ['phase1'] },
+          { path: 'gen/step2.ts', tags: ['phase2'] },
+        ],
+        filtering: { ...emptyFileFiltering, withTag: ['phase1'] },
+      },
+    };
+
+    const actual = toLintInstructions(given);
+    expect(actual).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "name": "files",
+          "params": Object {
+            "targetFiles": Array [
+              "gen/step1.ts",
+            ],
+          },
+        },
+        Object {
+          "name": "lint",
+          "params": Object {
+            "extensions": Array [],
+            "flags": Array [
+              "globInputPaths:false",
+            ],
+            "reportBase": Array [
+              "report/lint-report",
+            ],
+            "targetFiles": Array [],
+          },
+        },
+      ]
+    `);
+  });
+
+  it('lint some sources loaded from a csv file', () => {
+    const given: LintActionOpts = {
+      ...defaultOpts,
+      fileSearching: {
+        pathInfos: [{ path: 'gen/schemas.csv', tags: ['@load'] }],
+        filtering: { ...emptyFileFiltering, withTag: ['phase1'] },
+      },
+    };
+
+    const actual = toLintInstructions(given);
+    expect(actual).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "name": "load",
+          "params": Object {
+            "targetFiles": Array [
+              "gen/schemas.csv",
+            ],
+          },
+        },
+        Object {
+          "name": "filter",
+          "params": Object {
+            "query": Array [
+              "--with-tag",
+              "phase1",
+            ],
+          },
+        },
+        Object {
+          "name": "lint",
+          "params": Object {
+            "extensions": Array [],
+            "flags": Array [
+              "globInputPaths:false",
+            ],
+            "reportBase": Array [
+              "report/lint-report",
+            ],
+            "targetFiles": Array [],
+          },
+        },
+      ]
+    `);
+  });
+
+  it('lint and fix some sources ', () => {
+    const given: LintActionOpts = {
+      ...defaultOpts,
+      flags: ['fix'],
+      fileSearching: {
+        pathInfos: [],
+        filtering: {
+          ...emptyFileFiltering,
+          withPathStarting: ['src/', 'test/'],
+          withoutPathSegment: ['fixture'],
+        },
+      },
+    };
+
+    const actual = toLintInstructions(given);
+    expect(actual).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "name": "glob",
+          "params": Object {
+            "targetFiles": Array [
+              "src/**/*",
+              "test/**/*",
+            ],
+          },
+        },
+        Object {
+          "name": "filter",
+          "params": Object {
+            "query": Array [
+              "--with-path-starting",
+              "src/",
+              "test/",
+              "--without-path-segment",
+              "fixture",
+            ],
+          },
+        },
+        Object {
+          "name": "lint",
+          "params": Object {
+            "extensions": Array [],
+            "flags": Array [
+              "globInputPaths:false",
+              "fix",
+            ],
+            "reportBase": Array [
+              "report/lint-report",
+            ],
+            "targetFiles": Array [],
+          },
+        },
+      ]
+    `);
+  });
 });
