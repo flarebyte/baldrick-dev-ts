@@ -11,26 +11,40 @@ describe('eslint-config', () => {
     };
 
     const actual = computeEsLintConfig(resolvedOps);
-    expect(actual).toMatchInlineSnapshot(
-      `
+    expect(actual).toMatchInlineSnapshot(`
       Object {
         "baseConfig": Object {
           "extends": Array [
-            "prettier/@typescript-eslint",
-            "plugin:prettier/recommended",
+            "eslint:recommended",
+            "plugin:@typescript-eslint/recommended",
+            "prettier",
+            "plugin:jest/recommended",
+            "plugin:import/recommended",
+            "plugin:import/typescript",
           ],
+          "parser": "@typescript-eslint/parser",
+          "parserOptions": Object {
+            "ecmaVersion": 2018,
+            "sourceType": "module",
+          },
+          "plugins": Array [
+            "@typescript-eslint",
+            "prettier",
+            "jest",
+            "import",
+          ],
+          "root": true,
+          "rules": Object {
+            "prettier/prettier": "error",
+          },
           "settings": Object {},
         },
         "extensions": Array [
           ".ts",
-          ".tsx",
+          ".json",
         ],
-        "fix": true,
-        "ignorePattern": Array [
-          "-generated",
-        ],
+        "fix": false,
       }
-    `
-    );
+    `);
   });
 });
