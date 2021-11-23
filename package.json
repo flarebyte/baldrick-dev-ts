@@ -1,0 +1,69 @@
+{
+  "name": "baldrick-dev-ts",
+  "version": "1.0.0",
+  "description": "CLI for TypeScript package development",
+  "main": "./dist/baldrick-dev-ts.esm.js",
+  "typings": "dist/index.d.ts",
+  "repository": "git@github.com:flarebyte/baldrick-dev-ts.git",
+  "author": "Olivier Huin <olih@users.noreply.github.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
+  "type": "module",
+  "scripts": {
+    "tsdx": "tsdx",
+    "lint": "tsdx lint",
+    "test": "tsdx test",
+    "build": "tsdx build --target node --format es",
+    "reset": "rm -rf temp"
+  },
+  "bin": {
+    "baldrick": "bin/baldrick.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-replace": "^3.0.0",
+    "@types/jest": "^27.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "baldrick-tsconfig-es2020": "^0.9.0",
+    "camelcase": "^6.2.1",
+    "commander": "^8.3.0",
+    "diff": "^5.0.0",
+    "eslint": "^8.2.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jest": "^25.2.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "fs-extra": "^10.0.0",
+    "jest": "^27.3.1",
+    "jest-junit": "^13.0.0",
+    "prettier": "^2.3.2",
+    "rollup": "^2.60.0",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.31.0",
+    "tiny-glob": "^0.2.9",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/diff": "^5.0.1",
+    "@types/eslint": "^8.2.0",
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^16.11.9",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.3.1"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  }
+}
