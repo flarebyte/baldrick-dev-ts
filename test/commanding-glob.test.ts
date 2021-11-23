@@ -62,7 +62,7 @@ const createProjectDir = () => {
     readmeMd,
     editorConfig,
     prettierContent,
-    tsconfigNode('node14'),
+    tsconfigNode('es2020'),
     personSchema,
     author('Oscar', 'Wilde', 21),
     author('Arthur', 'Miller', 22),

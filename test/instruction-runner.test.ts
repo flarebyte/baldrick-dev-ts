@@ -37,7 +37,7 @@ const createProjectDir = () => {
     editorConfig,
     prettierContent,
     loadSelection,
-    tsconfigNode('node14'),
+    tsconfigNode('es2020'),
   ];
   createTestingFilesSync(tempDir, fileContents);
   return tempDir;

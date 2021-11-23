@@ -154,12 +154,12 @@ export const tsconfigEsNext: FileContent = createFileContent(
   JSON.stringify(tsconfigEsNextJson, null, 2)
 );
 
-export const tsconfigNode = (configVersion: 'node14' | 'node16') =>
+export const tsconfigNode = (configVersion: 'es2020') =>
   createFileContent(
     'tsconfig.json',
     JSON.stringify(
       {
-        extends: `@tsconfig/${configVersion}/tsconfig.json`,
+        extends: `baldrick-tsconfig-${configVersion}`,
       },
       null,
       2
