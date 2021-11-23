@@ -14,6 +14,7 @@ import {
   BuildResolvedOpts,
   BuildMode,
   PresetRollupOptions,
+  BasicInstructionResult,
 } from './model';
 import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming';
 import { readFile } from 'fs/promises';
@@ -25,10 +26,7 @@ import { flagsToEcmaVersion } from './eslint-config';
 import { outputFile } from 'fs-extra';
 import { ESLint } from 'eslint';
 import { createJest, jestCommand } from './jest-helper';
-import {
-  buildBundle,
-  cleanDistFolder,
-} from './rollup-helper';
+import { buildBundle, cleanDistFolder } from './rollup-helper';
 import { esmRollupPreset } from './rollup-config-preset';
 
 const instructionToTermIntro = (
@@ -193,6 +191,23 @@ export const runLintInstruction = async (
   return { text, json, junitXml, compact, status, lintResults };
 };
 
+export const runLintInstructionWithCatch = async (
+  ctx: RunnerContext,
+  instruction: MicroInstruction,
+  pathInfos: PathInfo[]
+): Promise<BasicInstructionResult> => {
+  try {
+    await runLintInstruction(ctx, instruction, pathInfos);
+  } catch (err) {
+    ctx.errTermFormatter({
+      title: 'Linting - lint error',
+      detail: err,
+    });
+    return { status: 'ko' };
+  }
+  return { status: 'ok' };
+};
+
 export const runTestInstruction = async (
   ctx: RunnerContext,
   instruction: MicroInstruction,
@@ -246,7 +261,7 @@ export const runTestInstruction = async (
   return { status: 'ok' };
 };
 
-export const runBuildInstruction = async (
+const runBuildInstruction = async (
   ctx: RunnerContext,
   instruction: MicroInstruction,
   pathInfos: PathInfo[]
@@ -292,12 +307,25 @@ export const runBuildInstruction = async (
   });
 
   await cleanDistFolder(presetOpts.buildFolder);
-  try {
-    await buildBundle(rollupConfig);
-  } catch (err) {
-    console.log(err);
-  }
+  await buildBundle(rollupConfig);
 
+  return { status: 'ok' };
+};
+
+export const runBuildInstructionWithCatch = async (
+  ctx: RunnerContext,
+  instruction: MicroInstruction,
+  pathInfos: PathInfo[]
+): Promise<BasicInstructionResult> => {
+  try {
+    await runBuildInstruction(ctx, instruction, pathInfos);
+  } catch (err) {
+    ctx.errTermFormatter({
+      title: 'Building - build error',
+      detail: err,
+    });
+    return { status: 'ko' };
+  }
   return { status: 'ok' };
 };
 
@@ -330,7 +358,7 @@ export const runInstructions = async (
     ? runFilterInstruction(ctx, filterInstruction, allFileInfos)
     : allFileInfos;
   const linted = lintInstruction
-    ? await runLintInstruction(ctx, lintInstruction, filtered)
+    ? await runLintInstructionWithCatch(ctx, lintInstruction, filtered)
     : false;
 
   const tested = testInstruction
@@ -338,7 +366,7 @@ export const runInstructions = async (
     : false;
 
   const built = buildInstruction
-    ? await runBuildInstruction(ctx, buildInstruction, filtered)
+    ? await runBuildInstructionWithCatch(ctx, buildInstruction, filtered)
     : false;
 
   return linted
