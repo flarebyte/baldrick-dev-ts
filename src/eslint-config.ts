@@ -4,12 +4,6 @@ import { ESLint, Linter } from 'eslint';
 // https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md
 
 export const flagsToEcmaVersion = (flags: string[]): SupportedEcmaVersion => {
-  if (flags.includes('ecma:2018')) {
-    return 2018;
-  }
-  if (flags.includes('ecma:2019')) {
-    return 2019;
-  }
   if (flags.includes('ecma:2020')) {
     return 2020;
   }

@@ -23,8 +23,7 @@ interface CmdTestOptions extends CmdOptions {
   displayName: CmdOption;
 }
 
-interface CmdBuildOptions extends CmdOptions {
-}
+interface CmdBuildOptions extends CmdOptions {}
 
 const stringsOption = (
   shortFlag: string,
@@ -127,7 +126,7 @@ export const cmdLintFilterOptions: CmdLintOptions = {
     'Specify the base name for reporting',
     'report/lint-report'
   ),
-  withPathStarting,
+  withPathStarting: { ...withPathStarting, defaultValue: ['src'] },
   withoutPathStarting,
   withExtension,
   withoutExtension,
@@ -138,10 +137,8 @@ export const cmdLintFilterOptions: CmdLintOptions = {
   withTagStarting,
   withoutTagStarting,
   ecma: choiceOption('ecma', 'ecma-version', 'Specify the ECMAScript version', [
-    '2021',
     '2020',
-    '2019',
-    '2018',
+    '2021',
   ]),
 };
 
@@ -165,7 +162,7 @@ export const cmdTestFilterOptions: CmdTestOptions = {
     'Allows for a label to be printed alongside a test while it is running',
     'main'
   ),
-  withPathStarting,
+  withPathStarting : { ...withPathStarting, defaultValue: ['test'] },
   withoutPathStarting,
   withExtension,
   withoutExtension,
@@ -178,9 +175,7 @@ export const cmdTestFilterOptions: CmdTestOptions = {
 };
 
 export const cmdBuildFilterOptions: CmdBuildOptions = {
-  aim: choiceOption('a', 'aim', 'Specify the aim for build', [
-    'check'
-  ]),
+  aim: choiceOption('a', 'aim', 'Specify the aim for build', ['check']),
   reportBase: stringOption(
     'rb',
     'report-base',
@@ -198,4 +193,3 @@ export const cmdBuildFilterOptions: CmdBuildOptions = {
   withTagStarting,
   withoutTagStarting,
 };
-

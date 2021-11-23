@@ -203,7 +203,7 @@ export const runLintInstructionWithCatch = async (
       title: 'Linting - lint error',
       detail: err,
     });
-    return { status: 'ko' };
+    throw err;
   }
   return { status: 'ok' };
 };
@@ -324,7 +324,7 @@ export const runBuildInstructionWithCatch = async (
       title: 'Building - build error',
       detail: err,
     });
-    return { status: 'ko' };
+    throw err;
   }
   return { status: 'ok' };
 };
