@@ -197,7 +197,16 @@ export const runLintInstructionWithCatch = async (
   pathInfos: PathInfo[]
 ): Promise<BasicInstructionResult> => {
   try {
+    const started = new Date().getTime();
     await runLintInstruction(ctx, instruction, pathInfos);
+    const finished = new Date().getTime();
+    const delta_seconds = ((finished - started) / 1000).toFixed(1);
+    ctx.termFormatter({
+      title: 'Linting - finished',
+      detail: `Took ${delta_seconds} seconds`,
+      format: 'default',
+      kind: 'info',
+    });
   } catch (err) {
     ctx.errTermFormatter({
       title: 'Linting - lint error',
@@ -261,6 +270,32 @@ export const runTestInstruction = async (
   return { status: 'ok' };
 };
 
+export const runTestInstructionWithCatch = async (
+  ctx: RunnerContext,
+  instruction: MicroInstruction,
+  pathInfos: PathInfo[]
+): Promise<BasicInstructionResult> => {
+  try {
+    const started = new Date().getTime();
+    await runTestInstruction(ctx, instruction, pathInfos);
+    const finished = new Date().getTime();
+    const delta_seconds = ((finished - started) / 1000).toFixed(1);
+    ctx.termFormatter({
+      title: 'Testing - finished',
+      detail: `Took ${delta_seconds} seconds`,
+      format: 'default',
+      kind: 'info',
+    });
+  } catch (err) {
+    ctx.errTermFormatter({
+      title: 'Testing - build error',
+      detail: err,
+    });
+    throw err;
+  }
+  return { status: 'ok' };
+};
+
 const runBuildInstruction = async (
   ctx: RunnerContext,
   instruction: MicroInstruction,
@@ -318,7 +353,16 @@ export const runBuildInstructionWithCatch = async (
   pathInfos: PathInfo[]
 ): Promise<BasicInstructionResult> => {
   try {
+    const started = new Date().getTime();
     await runBuildInstruction(ctx, instruction, pathInfos);
+    const finished = new Date().getTime();
+    const delta_seconds = ((finished - started) / 1000).toFixed(1);
+    ctx.termFormatter({
+      title: 'Building - finished',
+      detail: `Took ${delta_seconds} seconds`,
+      format: 'default',
+      kind: 'info',
+    });
   } catch (err) {
     ctx.errTermFormatter({
       title: 'Building - build error',
@@ -362,7 +406,7 @@ export const runInstructions = async (
     : false;
 
   const tested = testInstruction
-    ? await runTestInstruction(ctx, testInstruction, filtered)
+    ? await runTestInstructionWithCatch(ctx, testInstruction, filtered)
     : false;
 
   const built = buildInstruction
