@@ -4,7 +4,6 @@ import resolve from '@rollup/plugin-node-resolve';
 import json from '@rollup/plugin-json';
 import typescript from 'rollup-plugin-typescript2';
 import sourceMaps from 'rollup-plugin-sourcemaps';
-import { terser } from 'rollup-plugin-terser';
 import ts from 'typescript';
 
 export const esmRollupPreset = (opts: PresetRollupOptions): RollupOptions => {
@@ -17,8 +16,6 @@ export const esmRollupPreset = (opts: PresetRollupOptions): RollupOptions => {
     .filter(Boolean)
     .join('.');
 
-  const shouldMinify = false;
-
   return {
     input: opts.input,
     treeshake: {
@@ -28,7 +25,7 @@ export const esmRollupPreset = (opts: PresetRollupOptions): RollupOptions => {
       file: outputName,
       format: opts.format,
       freeze: false,
-      esModule: false, //should be true
+      esModule: true,
       name: opts.name,
       sourcemap: true,
       exports: 'named',
@@ -50,24 +47,8 @@ export const esmRollupPreset = (opts: PresetRollupOptions): RollupOptions => {
             declaration: true,
           },
         },
-        tsconfigOverride: {
-          compilerOptions: {
-            target: 'esnext',
-          },
-        },
       }),
       sourceMaps(),
-      shouldMinify &&
-        terser({
-          output: { comments: false },
-          compress: {
-            keep_infinity: true,
-            pure_getters: true,
-            passes: 10,
-          },
-          ecma: 2018,
-          toplevel: false,
-        }),
     ],
   };
 };
