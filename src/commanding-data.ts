@@ -60,7 +60,7 @@ const choiceOption = (
   longFlag,
   description,
   choices,
-  defaultValue: choices[0],
+  defaultValue: choices[0] || '',
 });
 
 const withPathStarting = stringsOption(

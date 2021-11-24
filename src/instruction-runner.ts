@@ -46,7 +46,7 @@ export const runFilesInstruction = (
   const {
     params: { targetFiles },
   } = instruction;
-  return targetFiles.map(toPathInfo);
+  return (targetFiles || []).map(toPathInfo);
 };
 
 const readUtf8File = (currentPath: string) => (filename: string) =>
@@ -61,7 +61,7 @@ export const runLoadInstruction = async (
     params: { targetFiles },
   } = instruction;
   const contents = await Promise.all(
-    targetFiles.map(readUtf8File(ctx.currentPath))
+    (targetFiles || []).map(readUtf8File(ctx.currentPath))
   );
   const pathInfos = toMergedPathInfos(contents);
   return pathInfos;
@@ -81,7 +81,7 @@ export const runGlobInstruction = async (
   };
   const globWithOpts = async (globString: string) =>
     await glob(globString, opts);
-  const matchedFiles = await Promise.all(targetFiles.map(globWithOpts));
+  const matchedFiles = await Promise.all((targetFiles || []).map(globWithOpts));
   return matchedFiles.flat().map(toPathInfo);
 };
 
@@ -94,7 +94,7 @@ export const runFilterInstruction = (
   const {
     params: { query },
   } = instruction;
-  const filtering = commanderStringsToFiltering(query);
+  const filtering = commanderStringsToFiltering(query || []);
   return pathInfos.filter(byFileQuery(filtering));
 };
 
@@ -156,13 +156,14 @@ export const runLintInstruction = async (
   const {
     params: { targetFiles, reportBase, flags },
   } = instruction;
-  const isCI = flags.includes('lint:ci');
-  const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)];
+  const isCI = (flags || []).includes('lint:ci');
+  const targetFilesOrEmpty = targetFiles || [];
+  const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
   const lintOpts: LintResolvedOpts = {
     modulePath: ctx.currentPath,
-    mode: toLintFlag(flags),
+    mode: toLintFlag(flags || []),
     pathPatterns,
-    ecmaVersion: flagsToEcmaVersion(flags),
+    ecmaVersion: flagsToEcmaVersion(flags || []),
   };
   ctx.termFormatter({
     title: 'Linting - final opts',
@@ -184,8 +185,10 @@ export const runLintInstruction = async (
     format: 'default',
   });
   if (isCI) {
-    await outputFile(`${reportBase[0]}.json`, json, 'utf8');
-    await outputFile(`${reportBase[0]}.junit.xml`, junitXml, 'utf8');
+    const reportBasePrefix =
+      (reportBase && reportBase[0]) || 'report/lint-report';
+    await outputFile(`${reportBasePrefix}.json`, json, 'utf8');
+    await outputFile(`${reportBasePrefix}.junit.xml`, junitXml, 'utf8');
   }
   const status = toEslintStatus(lintResults);
   return { text, json, junitXml, compact, status, lintResults };
@@ -228,18 +231,19 @@ export const runTestInstruction = async (
   } = instruction;
 
   // const isCI = flags.includes('test:ci');
-
-  const outputDirectory = path.dirname(reportBase[0]);
-  const outputName = path.basename(reportBase[0]);
-
-  const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)];
+  const reportBasePrefix =
+    (reportBase && reportBase[0]) || 'report/test-report';
+  const outputDirectory = path.dirname(reportBasePrefix);
+  const outputName = path.basename(reportBasePrefix);
+  const targetFilesOrEmpty = targetFiles || [];
+  const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
   const testOpts: TestResolvedOpts = {
     modulePath: ctx.currentPath,
-    mode: toTestFlag(flags),
+    mode: toTestFlag(flags || []),
     pathPatterns,
     outputDirectory,
     outputName,
-    displayName: displayName[0],
+    displayName: (displayName && displayName[0]) || '',
   };
 
   ctx.termFormatter({
@@ -305,14 +309,17 @@ const runBuildInstruction = async (
   const {
     params: { targetFiles, reportBase, flags },
   } = instruction;
+  const reportBasePrefix =
+    (reportBase && reportBase[0]) || 'report/test-report';
 
-  const outputDirectory = path.dirname(reportBase[0]);
-  const outputName = path.basename(reportBase[0]);
+  const outputDirectory = path.dirname(reportBasePrefix);
+  const outputName = path.basename(reportBasePrefix);
 
-  const pathPatterns = [...targetFiles, ...pathInfos.map(asPath)];
+  const targetFilesOrEmpty = targetFiles || [];
+  const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
   const buildOpts: BuildResolvedOpts = {
     modulePath: ctx.currentPath,
-    mode: toBuildFlag(flags),
+    mode: toBuildFlag(flags || []),
     pathPatterns,
     outputDirectory,
     outputName,

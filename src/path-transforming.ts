@@ -13,7 +13,7 @@ export const toPathInfo = (pathAndTags: string): PathInfo => {
   const [pathStr, tagsStr] = pathAndTags.split(';', 2);
   const tags = tagsStr ? splitBySpace(tagsStr) : [];
   return {
-    path: pathStr.trim(),
+    path: (pathStr || '').trim(),
     tags,
   };
 };

@@ -1,3 +1,6 @@
 {
-  "extends": "baldrick-tsconfig-es2020"
+  "extends": "baldrick-tsconfig-es2020",
+  "compilerOptions": {
+    "moduleResolution": "Node"
+}
 }

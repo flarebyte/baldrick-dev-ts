@@ -129,11 +129,15 @@ export const commanderStringsToFiltering = (
   const useEndIndex = (idx: number): boolean =>
     idx === cmdStringsIdxKeys.length - 1;
 
+  const findByIdx = (values: [string, number][], idx: number): number => {
+    const found = values[idx];
+    return found ? found[1] || 0 : 0;
+  };
   const cmdkeyRanges: [string, number, number][] = cmdStringsIdxKeys.map(
-    (valIdx, idx, others) => [
-      valIdx[0],
-      valIdx[1] + 1,
-      useEndIndex(idx) ? endIdx : others[idx + 1][1],
+    ([a, b], idx, others) => [
+      a,
+      b + 1,
+      useEndIndex(idx) ? endIdx : findByIdx(others, idx + 1),
     ]
   );
 
