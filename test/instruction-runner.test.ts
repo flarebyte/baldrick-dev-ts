@@ -48,7 +48,7 @@ const readTempFileAsync = (modulePath: string, filename: string): string => {
   return fs.readFileSync(`${modulePath}/${filename}`, 'utf8');
 };
 const toLastPartOfFile = (longPath: string): string =>
-  longPath.split('/').reverse()[0];
+  longPath.split('/').reverse()[0] || '';
 
 describe('Run instructions', () => {
   describe('runLoadInstruction', () => {
@@ -64,9 +64,9 @@ describe('Run instructions', () => {
         instruction
       );
       expect(loaded).toHaveLength(2);
-      expect(loaded[0].path).toBe('src/index.ts');
-      expect(loaded[1].path).toBe('src/problematic.ts');
-      expect(loaded[1].tags).toContain('buggy');
+      expect(loaded[0]?.path).toBe('src/index.ts');
+      expect(loaded[1]?.path).toBe('src/problematic.ts');
+      expect(loaded[1]?.tags).toContain('buggy');
     });
   });
   describe('runFilesInstruction', () => {
@@ -80,9 +80,9 @@ describe('Run instructions', () => {
         instruction
       );
       expect(loaded).toHaveLength(2);
-      expect(loaded[0].path).toBe('src/file1.ts');
-      expect(loaded[1].path).toBe('src/file2.ts');
-      expect(loaded[1].tags).toContain('tag2');
+      expect(loaded[0]?.path).toBe('src/file1.ts');
+      expect(loaded[1]?.path).toBe('src/file2.ts');
+      expect(loaded[1]?.tags).toContain('tag2');
     });
   });
   describe('runGlobInstruction', () => {
@@ -98,9 +98,9 @@ describe('Run instructions', () => {
         instruction
       );
       expect(loaded).toHaveLength(3);
-      expect(loaded[0].path).toBe('src/index.ts');
-      expect(loaded[1].path).toBe('src/problematic.ts');
-      expect(loaded[2].path).toBe('test/index.test.ts');
+      expect(loaded[0]?.path).toBe('src/index.ts');
+      expect(loaded[1]?.path).toBe('src/problematic.ts');
+      expect(loaded[2]?.path).toBe('test/index.test.ts');
     });
   });
   describe('runFilterInstruction', () => {
@@ -118,7 +118,7 @@ describe('Run instructions', () => {
         ]
       );
       expect(loaded).toHaveLength(1);
-      expect(loaded[0].path).toBe('src/this.ts');
+      expect(loaded[0]?.path).toBe('src/this.ts');
     });
   });
   describe('runLintInstruction', () => {

@@ -39,9 +39,9 @@ describe('toPathInfos', () => {
     ].join('\n');
     const actual = toPathInfos(given);
     expect(actual).toHaveLength(3);
-    expect(actual[0].path).toStrictEqual('dir1/dir2/index1.ts');
-    expect(actual[1].path).toStrictEqual('dir1/dir2/index2.ts');
-    expect(actual[2].path).toStrictEqual('dir1/dir2/index3.ts');
+    expect(actual[0]?.path).toStrictEqual('dir1/dir2/index1.ts');
+    expect(actual[1]?.path).toStrictEqual('dir1/dir2/index2.ts');
+    expect(actual[2]?.path).toStrictEqual('dir1/dir2/index3.ts');
   });
 });
 
@@ -66,10 +66,10 @@ describe('toMergedPathInfos', () => {
     ].join('\n');
     const actual = toMergedPathInfos([given1, given2]);
     expect(actual).toHaveLength(5);
-    expect(actual[0].path).toStrictEqual('dir1/dir2/index1.ts');
-    expect(actual[1].path).toStrictEqual('dir1/dir2/index2.ts');
-    expect(actual[2].path).toStrictEqual('dir1/dir2/index3.ts');
-    expect(actual[3].path).toStrictEqual('dir1/dir2/index4.ts');
-    expect(actual[4].path).toStrictEqual('dir1/dir2/index5.ts');
+    expect(actual[0]?.path).toStrictEqual('dir1/dir2/index1.ts');
+    expect(actual[1]?.path).toStrictEqual('dir1/dir2/index2.ts');
+    expect(actual[2]?.path).toStrictEqual('dir1/dir2/index3.ts');
+    expect(actual[3]?.path).toStrictEqual('dir1/dir2/index4.ts');
+    expect(actual[4]?.path).toStrictEqual('dir1/dir2/index5.ts');
   });
 });

@@ -52,7 +52,7 @@ export class Commanding {
       .addOption(toCommanderOption(cmdLintFilterOptions.withTagStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutTagStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.ecma))
-      .action(async (aim, options: LintActionRawOpts) => {
+      .action(async (aim: string, options: LintActionRawOpts) => {
         const {
           reportBase,
           withPathStarting,
@@ -112,7 +112,7 @@ export class Commanding {
       .addOption(toCommanderOption(cmdTestFilterOptions.withoutTag))
       .addOption(toCommanderOption(cmdTestFilterOptions.withTagStarting))
       .addOption(toCommanderOption(cmdTestFilterOptions.withoutTagStarting))
-      .action(async (aim, options: TestActionRawOpts) => {
+      .action(async (aim: string, options: TestActionRawOpts) => {
         const {
           reportBase,
           displayName,
@@ -172,7 +172,7 @@ export class Commanding {
       .addOption(toCommanderOption(cmdBuildFilterOptions.withoutTag))
       .addOption(toCommanderOption(cmdBuildFilterOptions.withTagStarting))
       .addOption(toCommanderOption(cmdBuildFilterOptions.withoutTagStarting))
-      .action(async (aim, options: BuildActionRawOpts) => {
+      .action(async (aim: string, options: BuildActionRawOpts) => {
         const {
           reportBase,
           withPathStarting,
