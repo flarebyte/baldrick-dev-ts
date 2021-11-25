@@ -1,6 +1,7 @@
 {
   "extends": "baldrick-tsconfig-es2020",
   "compilerOptions": {
-    "moduleResolution": "Node"
-}
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+  }
 }
