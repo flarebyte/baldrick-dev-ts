@@ -3,6 +3,8 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "diagnostics": true,
+    "listFiles": true,
   },
 }
