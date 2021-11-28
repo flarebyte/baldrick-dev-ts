@@ -15,19 +15,19 @@ import {
   BuildMode,
   PresetRollupOptions,
   BasicInstructionResult,
-} from './model';
-import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming';
+} from './model.js';
+import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming.js';
 import { readFile } from 'fs/promises';
 import path from 'path';
-import { byFileQuery, commanderStringsToFiltering } from './path-filtering';
+import { byFileQuery, commanderStringsToFiltering } from './path-filtering.js';
 import glob from 'tiny-glob';
-import { createESLint, lintCommand } from './eslint-helper';
-import { flagsToEcmaVersion } from './eslint-config';
+import { createESLint, lintCommand } from './eslint-helper.js';
+import { flagsToEcmaVersion } from './eslint-config.js';
 import { outputFile } from 'fs-extra';
 import { ESLint } from 'eslint';
-import { createJest, jestCommand } from './jest-helper';
-import { buildBundle, cleanDistFolder } from './rollup-helper';
-import { esmRollupPreset } from './rollup-config-preset';
+import { createJest, jestCommand } from './jest-helper.js';
+import { buildBundle, cleanDistFolder } from './rollup-helper.js';
+import { esmRollupPreset } from './rollup-config-preset.js';
 
 const instructionToTermIntro = (
   instruction: MicroInstruction

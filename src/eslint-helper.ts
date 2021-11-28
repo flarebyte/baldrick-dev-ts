@@ -1,5 +1,5 @@
-import { computeEsLintConfig } from './eslint-config';
-import { LintResolvedOpts } from './model';
+import { computeEsLintConfig } from './eslint-config.js';
+import { LintResolvedOpts } from './model.js';
 import { ESLint } from 'eslint';
 import path from 'path';
 

@@ -1,4 +1,4 @@
-import { PathInfo } from './model';
+import { PathInfo } from './model.js';
 
 export const asPath = (pathInfo: PathInfo): string => pathInfo.path;
 

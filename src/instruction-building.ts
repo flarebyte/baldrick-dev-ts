@@ -4,8 +4,8 @@ import {
   LintActionOpts,
   MicroInstruction,
   TestActionOpts,
-} from './model';
-import { byFileQuery, filteringToCommanderStrings } from './path-filtering';
+} from './model.js';
+import { byFileQuery, filteringToCommanderStrings } from './path-filtering.js';
 
 const moreThanStartAndExt = (fileSearching: FileSearching): boolean =>
   fileSearching.filtering.withPathSegment.length +

@@ -1,5 +1,5 @@
 import { RollupOptions } from 'rollup';
-import { PresetRollupOptions } from './model';
+import { PresetRollupOptions } from './model.js';
 import resolve from '@rollup/plugin-node-resolve';
 import json from '@rollup/plugin-json';
 import typescript from 'rollup-plugin-typescript2';

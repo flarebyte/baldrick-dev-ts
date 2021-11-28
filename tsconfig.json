@@ -1,10 +1,12 @@
 {
   "extends": "baldrick-tsconfig-es2020",
   "compilerOptions": {
+    "module": "es2022",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "outDir": "dist",
     "diagnostics": true,
     "listFiles": true,
-  },
+    "extendedDiagnostics": true
+  }
 }

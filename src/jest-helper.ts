@@ -1,5 +1,5 @@
-import { computeJestConfig } from './jest-config';
-import { TestResolvedOpts } from './model';
+import { computeJestConfig } from './jest-config.js';
+import { TestResolvedOpts } from './model.js';
 import jest from 'jest';
 
 export interface JestHandle {

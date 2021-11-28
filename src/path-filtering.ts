@@ -1,5 +1,5 @@
-import { FileFiltering, PathInfo, CmdOption } from './model';
-import { cmdLintFilterOptions } from './commanding-data';
+import { FileFiltering, PathInfo, CmdOption } from './model.js';
+import { cmdLintFilterOptions } from './commanding-data.js';
 
 export const emptyFileFiltering: FileFiltering = {
   withPathStarting: [],

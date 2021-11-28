@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { version } from './version';
+import { version } from './version.js';
 import {
   BuildAction,
   BuildActionOpts,
@@ -13,13 +13,13 @@ import {
   TestActionOpts,
   TestActionRawOpts,
 } from './model';
-import { toCommanderArgument, toCommanderOption } from './commanding-helper';
+import { toCommanderArgument, toCommanderOption } from './commanding-helper.js';
 import {
   cmdBuildFilterOptions,
   cmdLintFilterOptions,
   cmdTestFilterOptions,
-} from './commanding-data';
-import { basicFormatter, errorFormatter } from '../src/term-formatter';
+} from './commanding-data.js';
+import { basicFormatter, errorFormatter } from '../src/term-formatter.js';
 
 export class Commanding {
   _program: Command = new Command();

@@ -1,5 +1,5 @@
 import { Option, Argument } from 'commander';
-import { CmdOption } from './model';
+import { CmdOption } from './model.js';
 
 const capitalize = (value: string): string =>
   value.length > 0 ? (value[0] || '').toUpperCase() + value.substring(1) : '';

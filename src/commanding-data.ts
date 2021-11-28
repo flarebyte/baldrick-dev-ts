@@ -1,4 +1,4 @@
-import { CmdOption } from './model';
+import { CmdOption } from './model.js';
 
 interface CmdOptions {
   aim: CmdOption;
