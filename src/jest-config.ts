@@ -1,5 +1,5 @@
 import { Config } from '@jest/types';
-import { TestResolvedOpts } from './model';
+import { TestResolvedOpts } from './model.js';
 import path from 'path';
 
 type JestConfigOptions = Partial<Config.InitialOptions>;

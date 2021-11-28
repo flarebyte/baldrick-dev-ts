@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { version } from './version';
+import { version } from './version.js';
 import {
   BuildAction,
   BuildActionOpts,
@@ -13,13 +13,13 @@ import {
   TestActionOpts,
   TestActionRawOpts,
 } from './model';
-import { toCommanderArgument, toCommanderOption } from './commanding-helper';
+import { toCommanderArgument, toCommanderOption } from './commanding-helper.js';
 import {
   cmdBuildFilterOptions,
   cmdLintFilterOptions,
   cmdTestFilterOptions,
-} from './commanding-data';
-import { basicFormatter } from '../src/term-formatter';
+} from './commanding-data.js';
+import { basicFormatter, errorFormatter } from '../src/term-formatter.js';
 
 export class Commanding {
   _program: Command = new Command();
@@ -52,7 +52,7 @@ export class Commanding {
       .addOption(toCommanderOption(cmdLintFilterOptions.withTagStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutTagStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.ecma))
-      .action(async (aim, options: LintActionRawOpts) => {
+      .action(async (aim: string, options: LintActionRawOpts) => {
         const {
           reportBase,
           withPathStarting,
@@ -89,6 +89,7 @@ export class Commanding {
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
           termFormatter: basicFormatter,
+          errTermFormatter: errorFormatter
         };
         await lintAction(ctx, lintOpts);
       });
@@ -111,7 +112,7 @@ export class Commanding {
       .addOption(toCommanderOption(cmdTestFilterOptions.withoutTag))
       .addOption(toCommanderOption(cmdTestFilterOptions.withTagStarting))
       .addOption(toCommanderOption(cmdTestFilterOptions.withoutTagStarting))
-      .action(async (aim, options: TestActionRawOpts) => {
+      .action(async (aim: string, options: TestActionRawOpts) => {
         const {
           reportBase,
           displayName,
@@ -149,6 +150,7 @@ export class Commanding {
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
           termFormatter: basicFormatter,
+          errTermFormatter: errorFormatter
         };
         await testAction(ctx, testOpts);
       });
@@ -170,7 +172,7 @@ export class Commanding {
       .addOption(toCommanderOption(cmdBuildFilterOptions.withoutTag))
       .addOption(toCommanderOption(cmdBuildFilterOptions.withTagStarting))
       .addOption(toCommanderOption(cmdBuildFilterOptions.withoutTagStarting))
-      .action(async (aim, options: BuildActionRawOpts) => {
+      .action(async (aim: string, options: BuildActionRawOpts) => {
         const {
           reportBase,
           withPathStarting,
@@ -206,6 +208,7 @@ export class Commanding {
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
           termFormatter: basicFormatter,
+          errTermFormatter: errorFormatter
         };
         await buildAction(ctx, buildOpts);
       });

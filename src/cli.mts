@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { commanding } from '../dist/baldrick-dev-ts.esm.js';
+import { commanding } from './index.js';
 
 try {
   await commanding.parseAsyncArgv();

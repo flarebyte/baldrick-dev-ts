@@ -70,11 +70,19 @@ export interface TermFormatterParams {
   format: TermFormatterFormat;
 }
 
+export interface ErrTermFormatterParams {
+  title: string;
+  detail: unknown;
+}
+
 export type TermFormatter = (params: TermFormatterParams) => void;
+
+export type ErrTermFormatter = (params: ErrTermFormatterParams) => void;
 
 export interface RunnerContext {
   currentPath: string;
   termFormatter: TermFormatter;
+  errTermFormatter: ErrTermFormatter;
 }
 
 export interface CmdOption {
@@ -105,13 +113,17 @@ export type LintAction = (
 ) => Promise<void>;
 
 export type LintMode = 'check' | 'fix' | 'ci';
-export type SupportedEcmaVersion = 2018 | 2019 | 2020 | 2021;
+export type SupportedEcmaVersion = 2020 | 2021;
 
 export interface LintResolvedOpts {
   modulePath: string;
   mode: LintMode;
   pathPatterns: string[];
   ecmaVersion: SupportedEcmaVersion;
+}
+
+export interface BasicInstructionResult {
+  status: InstructionStatus;
 }
 
 export interface LintInstructionResult {

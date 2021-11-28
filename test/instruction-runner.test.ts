@@ -19,12 +19,13 @@ import {
   runLoadInstruction,
 } from '../src/instruction-runner';
 import { MicroInstruction } from '../src/model';
-import { basicFormatter } from '../src/term-formatter';
+import { basicFormatter, errorFormatter } from '../src/term-formatter';
 
 import fs from 'fs-extra';
 import { diffChars } from 'diff';
 
 const termFormatter = basicFormatter;
+const errTermFormatter = errorFormatter;
 
 const createProjectDir = () => {
   const tempDir = createTempDirsSync();
@@ -47,7 +48,7 @@ const readTempFileAsync = (modulePath: string, filename: string): string => {
   return fs.readFileSync(`${modulePath}/${filename}`, 'utf8');
 };
 const toLastPartOfFile = (longPath: string): string =>
-  longPath.split('/').reverse()[0];
+  longPath.split('/').reverse()[0] || '';
 
 describe('Run instructions', () => {
   describe('runLoadInstruction', () => {
@@ -59,13 +60,13 @@ describe('Run instructions', () => {
       };
       expect.assertions(4);
       const loaded = await runLoadInstruction(
-        { currentPath: modulePath, termFormatter },
+        { currentPath: modulePath, termFormatter, errTermFormatter },
         instruction
       );
       expect(loaded).toHaveLength(2);
-      expect(loaded[0].path).toBe('src/index.ts');
-      expect(loaded[1].path).toBe('src/problematic.ts');
-      expect(loaded[1].tags).toContain('buggy');
+      expect(loaded[0]?.path).toBe('src/index.ts');
+      expect(loaded[1]?.path).toBe('src/problematic.ts');
+      expect(loaded[1]?.tags).toContain('buggy');
     });
   });
   describe('runFilesInstruction', () => {
@@ -75,13 +76,13 @@ describe('Run instructions', () => {
         params: { targetFiles: ['src/file1.ts', 'src/file2.ts;tag2'] },
       };
       const loaded = runFilesInstruction(
-        { currentPath: 'path/not-used-here', termFormatter },
+        { currentPath: 'path/not-used-here', termFormatter, errTermFormatter },
         instruction
       );
       expect(loaded).toHaveLength(2);
-      expect(loaded[0].path).toBe('src/file1.ts');
-      expect(loaded[1].path).toBe('src/file2.ts');
-      expect(loaded[1].tags).toContain('tag2');
+      expect(loaded[0]?.path).toBe('src/file1.ts');
+      expect(loaded[1]?.path).toBe('src/file2.ts');
+      expect(loaded[1]?.tags).toContain('tag2');
     });
   });
   describe('runGlobInstruction', () => {
@@ -93,13 +94,13 @@ describe('Run instructions', () => {
       };
       expect.assertions(4);
       const loaded = await runGlobInstruction(
-        { currentPath: modulePath, termFormatter },
+        { currentPath: modulePath, termFormatter, errTermFormatter },
         instruction
       );
       expect(loaded).toHaveLength(3);
-      expect(loaded[0].path).toBe('src/index.ts');
-      expect(loaded[1].path).toBe('src/problematic.ts');
-      expect(loaded[2].path).toBe('test/index.test.ts');
+      expect(loaded[0]?.path).toBe('src/index.ts');
+      expect(loaded[1]?.path).toBe('src/problematic.ts');
+      expect(loaded[2]?.path).toBe('test/index.test.ts');
     });
   });
   describe('runFilterInstruction', () => {
@@ -109,7 +110,7 @@ describe('Run instructions', () => {
         params: { query: ['--with-path-starting', 'src/'] },
       };
       const loaded = runFilterInstruction(
-        { currentPath: 'path/not-used-here', termFormatter },
+        { currentPath: 'path/not-used-here', termFormatter, errTermFormatter },
         instruction,
         [
           { path: 'src/this.ts', tags: [] },
@@ -117,7 +118,7 @@ describe('Run instructions', () => {
         ]
       );
       expect(loaded).toHaveLength(1);
-      expect(loaded[0].path).toBe('src/this.ts');
+      expect(loaded[0]?.path).toBe('src/this.ts');
     });
   });
   describe('runLintInstruction', () => {
@@ -129,7 +130,7 @@ describe('Run instructions', () => {
       };
       expect.assertions(7);
       const actual = await runLintInstruction(
-        { currentPath: modulePath, termFormatter },
+        { currentPath: modulePath, termFormatter, errTermFormatter },
         instruction,
         [
           { path: 'src', tags: [] },
@@ -158,7 +159,7 @@ describe('Run instructions', () => {
       };
       expect.assertions(3);
       const actual = await runLintInstruction(
-        { currentPath: modulePath, termFormatter },
+        { currentPath: modulePath, termFormatter, errTermFormatter },
         instruction,
         [
           { path: 'src', tags: [] },

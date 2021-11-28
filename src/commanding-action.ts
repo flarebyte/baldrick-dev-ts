@@ -1,6 +1,6 @@
-import { toBuildInstructions, toLintInstructions, toTestInstructions } from './instruction-building';
-import { runInstructions } from './instruction-runner';
-import { BuildAction, BuildActionOpts, LintAction, LintActionOpts, RunnerContext, TestAction, TestActionOpts } from './model';
+import { toBuildInstructions, toLintInstructions, toTestInstructions } from './instruction-building.js';
+import { runInstructions } from './instruction-runner.js';
+import { BuildAction, BuildActionOpts, LintAction, LintActionOpts, RunnerContext, TestAction, TestActionOpts } from './model.js';
 
 export const cmdLintAction: LintAction = async (
   ctx: RunnerContext,

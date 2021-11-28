@@ -2,8 +2,6 @@
   "name": "baldrick-dev-ts",
   "version": "1.0.0",
   "description": "CLI for TypeScript package development",
-  "main": "./dist/baldrick-dev-ts.esm.js",
-  "typings": "dist/index.d.ts",
   "repository": "git@github.com:flarebyte/baldrick-dev-ts.git",
   "author": "Olivier Huin <olih@users.noreply.github.com>",
   "license": "MIT",
@@ -11,6 +9,8 @@
     "node": ">=14"
   },
   "type": "module",
+  "exports": "./dist/src/cli.mjs",
+  "types": "dist/src",
   "scripts": {
     "tsdx": "tsdx",
     "lint": "tsdx lint",
@@ -19,12 +19,13 @@
     "reset": "rm -rf temp"
   },
   "bin": {
-    "baldrick": "bin/baldrick.mjs"
+    "baldrick": "dist/src/cli.mjs"
   },
   "files": [
-    "dist"
+    "dist/src"
   ],
   "dependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-replace": "^3.0.0",
@@ -32,7 +33,6 @@
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "baldrick-tsconfig-es2020": "^0.9.0",
-    "camelcase": "^6.2.1",
     "commander": "^8.3.0",
     "diff": "^5.0.0",
     "eslint": "^8.2.0",
@@ -50,15 +50,15 @@
     "rollup-plugin-typescript2": "^0.31.0",
     "tiny-glob": "^0.2.9",
     "ts-jest": "^27.0.7",
-    "typescript": "^4.5.2"
+    "typescript": "^4.5.2",
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
     "@types/diff": "^5.0.1",
     "@types/eslint": "^8.2.0",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^16.11.9",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.3.1"
+    "tsdx": "^0.14.1"
   },
   "prettier": {
     "printWidth": 80,

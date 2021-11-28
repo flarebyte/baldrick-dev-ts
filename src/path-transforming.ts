@@ -1,4 +1,4 @@
-import { PathInfo } from './model';
+import { PathInfo } from './model.js';
 
 export const asPath = (pathInfo: PathInfo): string => pathInfo.path;
 
@@ -13,7 +13,7 @@ export const toPathInfo = (pathAndTags: string): PathInfo => {
   const [pathStr, tagsStr] = pathAndTags.split(';', 2);
   const tags = tagsStr ? splitBySpace(tagsStr) : [];
   return {
-    path: pathStr.trim(),
+    path: (pathStr || '').trim(),
     tags,
   };
 };

@@ -1,11 +1,13 @@
 import { RollupOptions } from 'rollup';
-import { PresetRollupOptions } from './model';
+import { PresetRollupOptions } from './model.js';
 import resolve from '@rollup/plugin-node-resolve';
 import json from '@rollup/plugin-json';
 import typescript from 'rollup-plugin-typescript2';
 import sourceMaps from 'rollup-plugin-sourcemaps';
-import { terser } from 'rollup-plugin-terser';
+import commonjs from '@rollup/plugin-commonjs';
 import ts from 'typescript';
+
+// [troubleshooting](https://rollupjs.org/guide/en/#troubleshooting)
 
 export const esmRollupPreset = (opts: PresetRollupOptions): RollupOptions => {
   const outputName = [
@@ -17,8 +19,6 @@ export const esmRollupPreset = (opts: PresetRollupOptions): RollupOptions => {
     .filter(Boolean)
     .join('.');
 
-  const shouldMinify = false;
-
   return {
     input: opts.input,
     treeshake: {
@@ -28,13 +28,17 @@ export const esmRollupPreset = (opts: PresetRollupOptions): RollupOptions => {
       file: outputName,
       format: opts.format,
       freeze: false,
-      esModule: false, //should be true
+      esModule: true,
       name: opts.name,
       sourcemap: true,
       exports: 'named',
     },
     plugins: [
       resolve(),
+      // all bundled external modules need to be converted from CJS to ESM
+      commonjs({
+        include: /\/regenerator-runtime\//,
+      }),
       json(),
       typescript({
         typescript: ts,
@@ -42,32 +46,20 @@ export const esmRollupPreset = (opts: PresetRollupOptions): RollupOptions => {
           exclude: [
             '**/*.spec.ts',
             '**/*.test.ts',
+            '**/*.spec.mts',
+            '**/*.test.mts',
             'node_modules',
             opts.buildFolder,
           ],
           compilerOptions: {
             sourceMap: true,
             declaration: true,
-          },
-        },
-        tsconfigOverride: {
-          compilerOptions: {
-            target: 'esnext',
+            moduleResolution: 'node',
+            allowSyntheticDefaultImports: true,
           },
         },
       }),
       sourceMaps(),
-      shouldMinify &&
-        terser({
-          output: { comments: false },
-          compress: {
-            keep_infinity: true,
-            pure_getters: true,
-            passes: 10,
-          },
-          ecma: 2018,
-          toplevel: false,
-        }),
     ],
   };
 };

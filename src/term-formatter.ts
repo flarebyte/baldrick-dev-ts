@@ -1,4 +1,4 @@
-import { TermFormatterFormat, TermFormatterParams } from './model';
+import { ErrTermFormatterParams, TermFormatterFormat, TermFormatterParams } from './model.js';
 
 const simplifyObj = (obj: object): object => {
   const values = Object.entries(obj);
@@ -22,4 +22,8 @@ export const basicFormatter = (params: TermFormatterParams) => {
       : toJsonish(params.format, params.detail);
 
   console.info(` ★ ${params.title} ⇨`, detail);
+};
+
+export const errorFormatter = (params: ErrTermFormatterParams) => {
+  console.error(` ★ ${params.title} ⇨`, params.detail);
 };

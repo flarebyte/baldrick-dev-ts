@@ -1,5 +1,5 @@
-import { Commanding } from './commanding';
-import { cmdBuildAction, cmdLintAction, cmdTestAction } from './commanding-action';
+import { Commanding } from './commanding.js';
+import { cmdBuildAction, cmdLintAction, cmdTestAction } from './commanding-action.js';
 
 const commanding = new Commanding();
 commanding.declareLintAction(cmdLintAction);
