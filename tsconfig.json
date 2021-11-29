@@ -7,5 +7,10 @@
     "diagnostics": true,
     "listFiles": true,
     "extendedDiagnostics": true
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "compilerOptions": {}
   }
 }
