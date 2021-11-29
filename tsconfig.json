@@ -4,7 +4,6 @@
     "module": "es2022",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "outDir": "dist",
     "diagnostics": true,
     "listFiles": true,
     "extendedDiagnostics": true

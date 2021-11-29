@@ -15,7 +15,15 @@ export const computeJestConfig = (opts: TestResolvedOpts) => {
   const ciReporters = opts.mode === 'ci' ? [jestUnitReport] : [];
   const reporters = ['default', ...ciReporters];
   const config: JestConfigOptions = {
-    preset: 'ts-jest',
+    preset: 'ts-jest/presets/default-esm',
+    globals: {
+      'ts-jest': {
+        useESM: true,
+      },
+    },
+    moduleNameMapper: {
+      '^(\\.{1,2}/.*)\\.js$': '$1',
+    },
     collectCoverage: opts.mode === 'cov' || opts.mode === 'ci',
     coverageDirectory: path.join(
       opts.outputDirectory,
