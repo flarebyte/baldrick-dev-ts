@@ -1,4 +1,8 @@
-import { ErrTermFormatterParams, TermFormatterFormat, TermFormatterParams } from './model.js';
+import {
+  ErrTermFormatterParams,
+  TermFormatterFormat,
+  TermFormatterParams,
+} from './model.js';
 
 const simplifyObj = (obj: object): object => {
   const values = Object.entries(obj);

@@ -10,7 +10,6 @@ export const flagsToEcmaVersion = (flags: string[]): SupportedEcmaVersion => {
   return 2021;
 };
 
-
 const defaultConfig = (ecmaVersion: SupportedEcmaVersion): Linter.Config => ({
   root: true,
   parser: '@typescript-eslint/parser',

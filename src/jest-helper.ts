@@ -13,7 +13,7 @@ export const createJest = (opts: TestResolvedOpts): JestHandle => {
   const config = JSON.stringify({ ...jestConfig });
   const cfgArg = ['--config', config];
   // const ciArg = opts.mode === 'ci' ? ['--ci', '--reporters=default', '--reporters=jest-junit']: []
-  const argv = [...cfgArg]
+  const argv = [...cfgArg];
   return { config: jestConfig, argv };
 };
 
@@ -26,7 +26,7 @@ export const jestCommand = async (handle: JestHandle): Promise<void> => {
   // ignoring them. In the future, promise rejections that are not handled will
   // terminate the Node.js process with a non-zero exit code.
   process.on('unhandledRejection', (err) => {
-    console.error(err)
+    console.error(err);
     throw err;
   });
 

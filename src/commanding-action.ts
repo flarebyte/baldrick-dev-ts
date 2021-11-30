@@ -1,6 +1,18 @@
-import { toBuildInstructions, toLintInstructions, toTestInstructions } from './instruction-building.js';
+import {
+  toBuildInstructions,
+  toLintInstructions,
+  toTestInstructions,
+} from './instruction-building.js';
 import { runInstructions } from './instruction-runner.js';
-import { BuildAction, BuildActionOpts, LintAction, LintActionOpts, RunnerContext, TestAction, TestActionOpts } from './model.js';
+import {
+  BuildAction,
+  BuildActionOpts,
+  LintAction,
+  LintActionOpts,
+  RunnerContext,
+  TestAction,
+  TestActionOpts,
+} from './model.js';
 
 export const cmdLintAction: LintAction = async (
   ctx: RunnerContext,
@@ -9,7 +21,7 @@ export const cmdLintAction: LintAction = async (
   const instructions = toLintInstructions(options);
   const status = await runInstructions(ctx, instructions);
   if (status === 'ko') {
-    throw Error('Lint action did fail !')
+    throw Error('Lint action did fail !');
   }
 };
 
@@ -20,7 +32,7 @@ export const cmdTestAction: TestAction = async (
   const instructions = toTestInstructions(options);
   const status = await runInstructions(ctx, instructions);
   if (status === 'ko') {
-    throw Error('Test action did fail !')
+    throw Error('Test action did fail !');
   }
 };
 
@@ -31,6 +43,6 @@ export const cmdBuildAction: BuildAction = async (
   const instructions = toBuildInstructions(options);
   const status = await runInstructions(ctx, instructions);
   if (status === 'ko') {
-    throw Error('Build action did fail !')
+    throw Error('Build action did fail !');
   }
 };
