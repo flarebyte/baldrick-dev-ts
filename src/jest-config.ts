@@ -34,6 +34,7 @@ export const computeJestConfig = (opts: TestResolvedOpts) => {
     reporters,
     coverageReporters: ['json', 'json-summary', 'lcov', 'text'],
     displayName: opts.displayName,
+    testPathIgnorePatterns: ['/node_modules/', 'dist/']
   };
   return config;
 };
