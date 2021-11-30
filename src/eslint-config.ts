@@ -29,6 +29,7 @@ const defaultConfig = (ecmaVersion: SupportedEcmaVersion): Linter.Config => ({
   settings: {},
   rules: {
     'prettier/prettier': 'error',
+    'import/no-unresolved': [2, { ignore: ['.js$'] }],
   },
 });
 
@@ -37,7 +38,7 @@ export const computeEsLintConfig = (opts: LintResolvedOpts): ESLint.Options => {
     baseConfig: {
       ...defaultConfig(opts.ecmaVersion),
     },
-    extensions: ['.ts', '.json'],
+    extensions: ['.ts', '.mts', '.json'],
     fix: opts.mode === 'fix',
   };
 };

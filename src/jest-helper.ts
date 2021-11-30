@@ -1,6 +1,6 @@
 import { computeJestConfig } from './jest-config.js';
 import { TestResolvedOpts } from './model.js';
-import jest from 'jest';
+import jest from 'jest'; /* eslint-disable jest/no-jest-import */
 
 export interface JestHandle {
   config: object;
