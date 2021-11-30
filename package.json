@@ -13,9 +13,10 @@
   "types": "dist/src",
   "scripts": {
     "lint": "baldrick lint check",
+    "lint:fix": "baldrick lint fix",
     "test": "baldrick test check",
-    "build": "tsc --outDir dist",
-    "reset": "rm -rf temp"
+    "build": "yarn reset; tsc --outDir dist",
+    "reset": "rm -rf temp; rm -rf dist"
   },
   "bin": {
     "baldrick": "dist/src/cli.mjs"
