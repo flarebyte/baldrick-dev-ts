@@ -34,10 +34,15 @@ export const createESLint = async (
 };
 
 export const lintCommand = async (
-  handle: ESLintHandle
+  handle: ESLintHandle,
+  fix: boolean
 ): Promise<ESLint.LintResult[]> => {
   const patterns = handle.opts.pathPatterns.map((pathPattern) =>
     path.join(handle.opts.modulePath, pathPattern)
   );
-  return await handle.eslint.lintFiles(patterns);
+  const results = await handle.eslint.lintFiles(patterns);
+  if (fix) {
+    await ESLint.outputFixes(results);
+  }
+  return results;
 };

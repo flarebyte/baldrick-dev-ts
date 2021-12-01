@@ -23,7 +23,7 @@ interface CmdTestOptions extends CmdOptions {
   displayName: CmdOption;
 }
 
-interface CmdBuildOptions extends CmdOptions {}
+type CmdBuildOptions = CmdOptions;
 
 const stringsOption = (
   shortFlag: string,
@@ -162,7 +162,7 @@ export const cmdTestFilterOptions: CmdTestOptions = {
     'Allows for a label to be printed alongside a test while it is running',
     'main'
   ),
-  withPathStarting : { ...withPathStarting, defaultValue: ['test'] },
+  withPathStarting: { ...withPathStarting, defaultValue: ['test'] },
   withoutPathStarting,
   withExtension,
   withoutExtension,

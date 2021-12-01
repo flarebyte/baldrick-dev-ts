@@ -157,6 +157,7 @@ export const runLintInstruction = async (
     params: { targetFiles, reportBase, flags },
   } = instruction;
   const isCI = (flags || []).includes('lint:ci');
+  const shouldFix = (flags || []).includes('lint:fix');
   const targetFilesOrEmpty = targetFiles || [];
   const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
   const lintOpts: LintResolvedOpts = {
@@ -172,7 +173,7 @@ export const runLintInstruction = async (
     format: 'human',
   });
   const handle = await createESLint(lintOpts);
-  const lintResults = await lintCommand(handle);
+  const lintResults = await lintCommand(handle, shouldFix);
   const text = handle.formatter.format(lintResults);
   const json = handle.jsonFormatter.format(lintResults);
   const junitXml = handle.junitFormatter.format(lintResults);

@@ -89,7 +89,7 @@ export class Commanding {
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
           termFormatter: basicFormatter,
-          errTermFormatter: errorFormatter
+          errTermFormatter: errorFormatter,
         };
         await lintAction(ctx, lintOpts);
       });
@@ -150,7 +150,7 @@ export class Commanding {
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
           termFormatter: basicFormatter,
-          errTermFormatter: errorFormatter
+          errTermFormatter: errorFormatter,
         };
         await testAction(ctx, testOpts);
       });
@@ -208,7 +208,7 @@ export class Commanding {
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
           termFormatter: basicFormatter,
-          errTermFormatter: errorFormatter
+          errTermFormatter: errorFormatter,
         };
         await buildAction(ctx, buildOpts);
       });
