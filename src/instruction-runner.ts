@@ -40,7 +40,7 @@ const instructionToTermIntro = (
 
 export const runFilesInstruction = (
   ctx: RunnerContext,
-  instruction: MicroInstruction
+  instruction: MicroInstruction & { name: 'files' }
 ): PathInfo[] => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
@@ -54,7 +54,7 @@ const readUtf8File = (currentPath: string) => (filename: string) =>
 
 export const runLoadInstruction = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction
+  instruction: MicroInstruction & { name: 'load' }
 ): Promise<PathInfo[]> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
@@ -69,7 +69,7 @@ export const runLoadInstruction = async (
 
 export const runGlobInstruction = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction
+  instruction: MicroInstruction & { name: 'glob' }
 ): Promise<PathInfo[]> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
@@ -87,7 +87,7 @@ export const runGlobInstruction = async (
 
 export const runFilterInstruction = (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'filter' },
   pathInfos: PathInfo[]
 ): PathInfo[] => {
   ctx.termFormatter(instructionToTermIntro(instruction));
@@ -149,7 +149,7 @@ const toEslintStatus = (
 
 export const runLintInstruction = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'lint' },
   pathInfos: PathInfo[]
 ): Promise<LintInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
@@ -197,7 +197,7 @@ export const runLintInstruction = async (
 
 export const runLintInstructionWithCatch = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'lint' },
   pathInfos: PathInfo[]
 ): Promise<BasicInstructionResult> => {
   try {
@@ -223,7 +223,7 @@ export const runLintInstructionWithCatch = async (
 
 export const runTestInstruction = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'test' },
   pathInfos: PathInfo[]
 ): Promise<TestInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
@@ -277,7 +277,7 @@ export const runTestInstruction = async (
 
 export const runTestInstructionWithCatch = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'test' },
   pathInfos: PathInfo[]
 ): Promise<BasicInstructionResult> => {
   try {
@@ -303,7 +303,7 @@ export const runTestInstructionWithCatch = async (
 
 const runBuildInstruction = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'build' },
   pathInfos: PathInfo[]
 ): Promise<BuildInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
@@ -337,8 +337,6 @@ const runBuildInstruction = async (
     buildFolder: 'dist',
     name: 'demo-name',
     input: 'src/index.ts',
-    strategy: 'production',
-    format: 'esm',
   };
   const compilerConfig = tscConfig(presetOpts);
 
@@ -357,7 +355,7 @@ const runBuildInstruction = async (
 
 export const runBuildInstructionWithCatch = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'build' },
   pathInfos: PathInfo[]
 ): Promise<BasicInstructionResult> => {
   try {
@@ -395,31 +393,38 @@ export const runInstructions = async (
   const testInstruction = instructions.find((instr) => instr.name === 'test');
   const buildInstruction = instructions.find((instr) => instr.name === 'build');
 
-  const files = filesInstruction
-    ? runFilesInstruction(ctx, filesInstruction)
-    : [];
-  const loaded = loadInstruction
-    ? await runLoadInstruction(ctx, loadInstruction)
-    : [];
-  const globed = globInstruction
-    ? await runGlobInstruction(ctx, globInstruction)
-    : [];
+  const files =
+    filesInstruction && filesInstruction.name === 'files'
+      ? runFilesInstruction(ctx, filesInstruction)
+      : [];
+  const loaded =
+    loadInstruction && loadInstruction.name === 'load'
+      ? await runLoadInstruction(ctx, loadInstruction)
+      : [];
+  const globed =
+    globInstruction && globInstruction.name === 'glob'
+      ? await runGlobInstruction(ctx, globInstruction)
+      : [];
 
   const allFileInfos = [...files, ...loaded, ...globed];
-  const filtered = filterInstruction
-    ? runFilterInstruction(ctx, filterInstruction, allFileInfos)
-    : allFileInfos;
-  const linted = lintInstruction
-    ? await runLintInstructionWithCatch(ctx, lintInstruction, filtered)
-    : false;
+  const filtered =
+    filterInstruction && filterInstruction.name === 'filter'
+      ? runFilterInstruction(ctx, filterInstruction, allFileInfos)
+      : allFileInfos;
+  const linted =
+    lintInstruction && lintInstruction.name === 'lint'
+      ? await runLintInstructionWithCatch(ctx, lintInstruction, filtered)
+      : false;
 
-  const tested = testInstruction
-    ? await runTestInstructionWithCatch(ctx, testInstruction, filtered)
-    : false;
+  const tested =
+    testInstruction && testInstruction.name === 'test'
+      ? await runTestInstructionWithCatch(ctx, testInstruction, filtered)
+      : false;
 
-  const built = buildInstruction
-    ? await runBuildInstructionWithCatch(ctx, buildInstruction, filtered)
-    : false;
+  const built =
+    buildInstruction && buildInstruction.name === 'build'
+      ? await runBuildInstructionWithCatch(ctx, buildInstruction, filtered)
+      : false;
 
   return linted
     ? linted.status

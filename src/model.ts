@@ -1,24 +1,5 @@
 import { ESLint } from 'eslint';
 
-type PresetRollupOptionsStrategy = 'development' | 'production';
-type ModuleFormat = 'cjs' | 'umd' | 'esm' | 'system';
-
-export interface PresetRollupOptions {
-  buildFolder: string;
-  name: string;
-  input: string;
-  strategy: PresetRollupOptionsStrategy;
-  format: ModuleFormat;
-}
-
-export interface TscOptionsConfig {
-  buildFolder: string;
-  name: string;
-  input: string;
-  strategy: PresetRollupOptionsStrategy;
-  format: ModuleFormat;
-}
-
 export interface PathInfo {
   path: string;
   tags: string[];
@@ -44,27 +25,55 @@ export interface FileSearching {
 
 export type GlobAction = (script: string[]) => void;
 
-export type LintReport =
-  | { kind: 'junit'; filename: string }
-  | { kind: 'json'; filename: string };
-
 export type FileSearchMode = 'find' | 'list' | 'load';
 
-export type MicroInstructionName =
-  | 'lint'
-  | 'test'
-  | 'files'
-  | 'load'
-  | 'glob'
-  | 'filter'
-  | 'build';
+type InstructionParams = {
+  flags: string[];
+  targetFiles: string[];
+  query: string[];
+  extensions: string[];
+  reportBase: string;
+  displayName: string;
+};
 
-export type InstructionParams = { [paramName: string]: string[] };
-
-export interface MicroInstruction {
-  name: MicroInstructionName;
-  params: InstructionParams;
-}
+export type MicroInstruction =
+  | {
+      name: 'files';
+      params: Pick<InstructionParams, 'targetFiles'>;
+    }
+  | {
+      name: 'load';
+      params: Pick<InstructionParams, 'targetFiles'>;
+    }
+  | {
+      name: 'glob';
+      params: Pick<InstructionParams, 'targetFiles'>;
+    }
+  | {
+      name: 'filter';
+      params: Pick<InstructionParams, 'query'>;
+    }
+  | {
+      name: 'lint';
+      params: Pick<
+        InstructionParams,
+        'targetFiles' | 'extensions' | 'reportBase' | 'flags'
+      >;
+    }
+  | {
+      name: 'test';
+      params: Pick<
+        InstructionParams,
+        'targetFiles' | 'extensions' | 'reportBase' | 'flags' | 'displayName'
+      >;
+    }
+  | {
+      name: 'build';
+      params: Pick<
+        InstructionParams,
+        'targetFiles' | 'extensions' | 'reportBase' | 'flags'
+      >;
+    };
 
 export type InstructionStatus = 'ok' | 'ko' | 'warning';
 
@@ -121,7 +130,7 @@ export type LintAction = (
 ) => Promise<void>;
 
 export type LintMode = 'check' | 'fix' | 'ci';
-export type SupportedEcmaVersion = 2020 | 2021;
+export type SupportedEcmaVersion = 2020 | 2021 | 2022;
 
 export interface LintResolvedOpts {
   modulePath: string;
@@ -178,6 +187,13 @@ export interface TestInstructionResult {
 }
 
 // Build
+
+export interface TscOptionsConfig {
+  buildFolder: string;
+  name: string;
+  input: string;
+}
+
 export interface BuildActionRawOpts extends FileFiltering {
   aim: string;
   reportBase: string;

@@ -103,7 +103,7 @@ const configureLintInstructions = (
           params: {
             targetFiles: opts.fileSearching.filtering.withPathStarting,
             extensions: opts.fileSearching.filtering.withExtension,
-            reportBase: [opts.reportBase],
+            reportBase: opts.reportBase,
             flags: opts.flags,
           },
         },
@@ -114,7 +114,7 @@ const configureLintInstructions = (
           params: {
             targetFiles: [],
             extensions: [],
-            reportBase: [opts.reportBase],
+            reportBase: opts.reportBase,
             flags: ['globInputPaths:false', ...opts.flags],
           },
         },
@@ -131,8 +131,8 @@ const configureTestInstructions = (
           params: {
             targetFiles: opts.fileSearching.filtering.withPathStarting,
             extensions: opts.fileSearching.filtering.withExtension,
-            reportBase: [opts.reportBase],
-            displayName: [opts.displayName],
+            reportBase: opts.reportBase,
+            displayName: opts.displayName,
             flags: opts.flags,
           },
         },
@@ -143,8 +143,8 @@ const configureTestInstructions = (
           params: {
             targetFiles: [],
             extensions: [],
-            reportBase: [opts.reportBase],
-            displayName: [opts.displayName],
+            reportBase: opts.reportBase,
+            displayName: opts.displayName,
             flags: ['globInputPaths:false', ...opts.flags],
           },
         },
@@ -161,7 +161,7 @@ const configureBuildInstructions = (
           params: {
             targetFiles: opts.fileSearching.filtering.withPathStarting,
             extensions: opts.fileSearching.filtering.withExtension,
-            reportBase: [opts.reportBase],
+            reportBase: opts.reportBase,
             flags: opts.flags,
           },
         },
@@ -172,7 +172,7 @@ const configureBuildInstructions = (
           params: {
             targetFiles: [],
             extensions: [],
-            reportBase: [opts.reportBase],
+            reportBase: opts.reportBase,
             flags: ['globInputPaths:false', ...opts.flags],
           },
         },
