@@ -126,7 +126,7 @@ describe('Run instructions', () => {
     it('run lint check', async () => {
       const instruction: MicroInstruction = {
         name: 'lint',
-        params: { extensions: [], flags: [] },
+        params: { extensions: [], flags: [], targetFiles: [], reportBase: 'report/base' },
       };
       expect.assertions(7);
       const actual = await runLintInstruction(
@@ -155,7 +155,7 @@ describe('Run instructions', () => {
       const indexBefore = readTempFileAsync(modulePath, 'src/index.ts');
       const instruction: MicroInstruction = {
         name: 'lint',
-        params: { extensions: [], flags: ['lint:fix'] },
+        params: { extensions: [], flags: ['lint:fix'], targetFiles: [], reportBase: 'report/base' },
       };
       expect.assertions(3);
       const actual = await runLintInstruction(

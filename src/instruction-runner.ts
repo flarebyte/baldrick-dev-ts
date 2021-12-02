@@ -186,10 +186,8 @@ export const runLintInstruction = async (
     format: 'default',
   });
   if (isCI) {
-    const reportBasePrefix =
-      (reportBase && reportBase[0]) || 'report/lint-report';
-    await outputFile(`${reportBasePrefix}.json`, json, 'utf8');
-    await outputFile(`${reportBasePrefix}.junit.xml`, junitXml, 'utf8');
+    await outputFile(`${reportBase}.json`, json, 'utf8');
+    await outputFile(`${reportBase}.junit.xml`, junitXml, 'utf8');
   }
   const status = toEslintStatus(lintResults);
   return { text, json, junitXml, compact, status, lintResults };
@@ -231,11 +229,8 @@ export const runTestInstruction = async (
     params: { targetFiles, reportBase, displayName, flags },
   } = instruction;
 
-  // const isCI = flags.includes('test:ci');
-  const reportBasePrefix =
-    (reportBase && reportBase[0]) || 'report/test-report';
-  const outputDirectory = path.dirname(reportBasePrefix);
-  const outputName = path.basename(reportBasePrefix);
+  const outputDirectory = path.dirname(reportBase);
+  const outputName = path.basename(reportBase);
   const targetFilesOrEmpty = targetFiles || [];
   const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
   const testOpts: TestResolvedOpts = {
@@ -244,7 +239,7 @@ export const runTestInstruction = async (
     pathPatterns,
     outputDirectory,
     outputName,
-    displayName: (displayName && displayName[0]) || '',
+    displayName,
   };
 
   ctx.termFormatter({
@@ -310,11 +305,9 @@ const runBuildInstruction = async (
   const {
     params: { targetFiles, reportBase, flags },
   } = instruction;
-  const reportBasePrefix =
-    (reportBase && reportBase[0]) || 'report/test-report';
 
-  const outputDirectory = path.dirname(reportBasePrefix);
-  const outputName = path.basename(reportBasePrefix);
+  const outputDirectory = path.dirname(reportBase);
+  const outputName = path.basename(reportBase);
 
   const targetFilesOrEmpty = targetFiles || [];
   const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];

@@ -130,7 +130,7 @@ export type LintAction = (
 ) => Promise<void>;
 
 export type LintMode = 'check' | 'fix' | 'ci';
-export type SupportedEcmaVersion = 2020 | 2021 | 2022;
+export type SupportedEcmaVersion = 2020 | 2021;
 
 export interface LintResolvedOpts {
   modulePath: string;
