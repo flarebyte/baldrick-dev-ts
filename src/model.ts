@@ -11,6 +11,14 @@ export interface PresetRollupOptions {
   format: ModuleFormat;
 }
 
+export interface TscOptionsConfig {
+  buildFolder: string;
+  name: string;
+  input: string;
+  strategy: PresetRollupOptionsStrategy;
+  format: ModuleFormat;
+}
+
 export interface PathInfo {
   path: string;
   tags: string[];

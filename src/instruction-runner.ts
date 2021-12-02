@@ -13,8 +13,8 @@ import {
   BuildInstructionResult,
   BuildResolvedOpts,
   BuildMode,
-  PresetRollupOptions,
   BasicInstructionResult,
+  TscOptionsConfig,
 } from './model.js';
 import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming.js';
 import { readFile } from 'fs/promises';
@@ -26,8 +26,8 @@ import { flagsToEcmaVersion } from './eslint-config.js';
 import { outputFile } from 'fs-extra';
 import { ESLint } from 'eslint';
 import { createJest, jestCommand } from './jest-helper.js';
-import { buildBundle, cleanDistFolder } from './rollup-helper.js';
-import { esmRollupPreset } from './rollup-config-preset.js';
+import { buildBundle, cleanDistFolder } from './tsc-helper.js';
+import { tscConfig } from './tsc-config.js';
 
 const instructionToTermIntro = (
   instruction: MicroInstruction
@@ -333,24 +333,24 @@ const runBuildInstruction = async (
     format: 'human',
   });
 
-  const presetOpts: PresetRollupOptions = {
+  const presetOpts: TscOptionsConfig = {
     buildFolder: 'dist',
     name: 'demo-name',
     input: 'src/index.ts',
     strategy: 'production',
     format: 'esm',
   };
-  const rollupConfig = esmRollupPreset(presetOpts);
+  const compilerConfig = tscConfig(presetOpts);
 
   ctx.termFormatter({
     title: 'Building - rollup config',
-    detail: rollupConfig,
+    detail: compilerConfig,
     kind: 'info',
     format: 'default',
   });
 
   await cleanDistFolder(presetOpts.buildFolder);
-  await buildBundle(rollupConfig);
+  await buildBundle(compilerConfig);
 
   return { status: 'ok' };
 };

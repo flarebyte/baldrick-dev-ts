@@ -25,10 +25,6 @@
     "dist/src"
   ],
   "dependencies": {
-    "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.0.6",
-    "@rollup/plugin-replace": "^3.0.0",
     "@types/jest": "^27.0.3",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
@@ -44,10 +40,6 @@
     "jest": "^27.3.1",
     "jest-junit": "^13.0.0",
     "prettier": "^2.3.2",
-    "rollup": "^2.60.0",
-    "rollup-plugin-sourcemaps": "^0.6.3",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.31.0",
     "tiny-glob": "^0.2.9",
     "ts-jest": "^27.0.7",
     "tslib": "^2.3.1",
