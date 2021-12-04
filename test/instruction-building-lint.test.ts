@@ -1,4 +1,4 @@
-import { LintActionOpts } from '../src/model';
+import { LintActionOpts, SupportedEcmaVersion } from '../src/model';
 import { toLintInstructions } from '../src/instruction-building';
 import { emptyFileFiltering } from '../src/path-filtering';
 
@@ -6,7 +6,7 @@ import { emptyFileFiltering } from '../src/path-filtering';
 
 const defaultOpts = {
   flags: [],
-  ecmaVersion: 2018,
+  ecmaVersion: 2020 as SupportedEcmaVersion,
   reportBase: 'report/lint-report',
 };
 

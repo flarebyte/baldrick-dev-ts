@@ -1,5 +1,5 @@
 import { Option, Argument } from 'commander';
-import { CmdOption } from './model.js';
+import { CmdOption, SupportedEcmaVersion } from './model.js';
 
 const capitalize = (value: string): string =>
   value.length > 0 ? (value[0] || '').toUpperCase() + value.substring(1) : '';
@@ -28,4 +28,14 @@ export const toCommanderArgument = (option: CmdOption): Argument => {
     opts.choices(option.choices);
   }
   return opts;
+};
+
+const supportedEcma: SupportedEcmaVersion[] = [2020, 2021];
+
+export const toSupportedEcma = (givenEcma: string): SupportedEcmaVersion => {
+  const found = supportedEcma.find((f) => f === parseInt(givenEcma));
+  if (!found) {
+    throw new Error(`This Ecma version is not supported yet ${givenEcma}`);
+  }
+  return found;
 };

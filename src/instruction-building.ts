@@ -105,6 +105,7 @@ const configureLintInstructions = (
             extensions: opts.fileSearching.filtering.withExtension,
             reportBase: opts.reportBase,
             flags: opts.flags,
+            ecmaVersion: opts.ecmaVersion
           },
         },
       ]
@@ -116,6 +117,7 @@ const configureLintInstructions = (
             extensions: [],
             reportBase: opts.reportBase,
             flags: ['globInputPaths:false', ...opts.flags],
+            ecmaVersion: opts.ecmaVersion
           },
         },
       ];

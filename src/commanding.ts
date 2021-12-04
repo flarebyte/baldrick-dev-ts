@@ -13,7 +13,7 @@ import {
   TestActionOpts,
   TestActionRawOpts,
 } from './model';
-import { toCommanderArgument, toCommanderOption } from './commanding-helper.js';
+import { toCommanderArgument, toCommanderOption, toSupportedEcma } from './commanding-helper.js';
 import {
   cmdBuildFilterOptions,
   cmdLintFilterOptions,
@@ -84,7 +84,7 @@ export class Commanding {
               withoutTagStarting,
             },
           },
-          ecmaVersion: parseInt(options.ecmaVersion),
+          ecmaVersion: toSupportedEcma(options.ecmaVersion),
           reportBase,
         };
         const ctx: RunnerContext = {

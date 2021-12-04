@@ -26,12 +26,14 @@ export interface FileSearching {
 export type GlobAction = (script: string[]) => void;
 
 export type SupportedFlag =
-  | 'unknown'
   | 'aim:fix'
   | 'aim:ci'
   | 'aim:check'
   | 'aim:cov'
   | 'globInputPaths:false';
+
+
+export type SupportedEcmaVersion = 2020 | 2021; // Update there too src/commanding-helper.ts
 
 type InstructionParams = {
   flags: SupportedFlag[];
@@ -40,6 +42,7 @@ type InstructionParams = {
   extensions: string[];
   reportBase: string;
   displayName: string;
+  ecmaVersion: SupportedEcmaVersion;
 };
 
 export type MicroInstruction =
@@ -63,7 +66,7 @@ export type MicroInstruction =
       name: 'lint';
       params: Pick<
         InstructionParams,
-        'targetFiles' | 'extensions' | 'reportBase' | 'flags'
+        'targetFiles' | 'extensions' | 'reportBase' | 'flags' | 'ecmaVersion'
       >;
     }
   | {
@@ -125,7 +128,7 @@ export interface LintActionRawOpts extends FileFiltering {
 export interface LintActionOpts {
   flags: SupportedFlag[];
   fileSearching: FileSearching;
-  ecmaVersion: number;
+  ecmaVersion: SupportedEcmaVersion;
   reportBase: string;
 }
 
@@ -133,8 +136,6 @@ export type LintAction = (
   ctx: RunnerContext,
   options: LintActionOpts
 ) => Promise<void>;
-
-export type SupportedEcmaVersion = 2020 | 2021;
 
 export interface LintResolvedOpts {
   modulePath: string;

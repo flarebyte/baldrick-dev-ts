@@ -15,6 +15,7 @@
     "lint": "baldrick lint check",
     "lint:fix": "baldrick lint fix",
     "test": "baldrick test check",
+    "test:fix": "baldrick test fix",
     "build": "yarn reset; tsc --outDir dist",
     "reset": "rm -rf temp; rm -rf dist"
   },

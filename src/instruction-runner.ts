@@ -19,7 +19,6 @@ import path from 'path';
 import { byFileQuery, commanderStringsToFiltering } from './path-filtering.js';
 import glob from 'tiny-glob';
 import { createESLint, lintCommand } from './eslint-helper.js';
-import { flagsToEcmaVersion } from './eslint-config.js';
 import { outputFile } from 'fs-extra';
 import { ESLint } from 'eslint';
 import { createJest, jestCommand } from './jest-helper.js';
@@ -111,7 +110,7 @@ export const runLintInstruction = async (
 ): Promise<LintInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
-    params: { targetFiles, reportBase, flags },
+    params: { targetFiles, reportBase, flags, ecmaVersion },
   } = instruction;
   const isCI = satisfyFlag('aim:ci', flags);
   const shouldFix = satisfyFlag('aim:fix', flags);
@@ -121,7 +120,7 @@ export const runLintInstruction = async (
     modulePath: ctx.currentPath,
     flags,
     pathPatterns,
-    ecmaVersion: flagsToEcmaVersion(flags || []), //TODO
+    ecmaVersion,
   };
   ctx.termFormatter({
     title: 'Linting - final opts',

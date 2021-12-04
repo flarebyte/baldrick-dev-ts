@@ -4,13 +4,6 @@ import { satisfyFlag } from './flag-helper.js';
 
 // https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md
 
-export const flagsToEcmaVersion = (flags: string[]): SupportedEcmaVersion => {
-  if (flags.includes('ecma:2020')) {
-    return 2020;
-  }
-  return 2021;
-};
-
 const defaultConfig = (ecmaVersion: SupportedEcmaVersion): Linter.Config => ({
   root: true,
   parser: '@typescript-eslint/parser',
