@@ -12,7 +12,6 @@ export const createJest = (opts: TestResolvedOpts): JestHandle => {
 
   const config = JSON.stringify({ ...jestConfig });
   const cfgArg = ['--config', config];
-  // const ciArg = opts.mode === 'ci' ? ['--ci', '--reporters=default', '--reporters=jest-junit']: []
   const argv = [...cfgArg];
   return { config: jestConfig, argv };
 };

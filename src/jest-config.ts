@@ -25,7 +25,8 @@ export const computeJestConfig = (opts: TestResolvedOpts) => {
     moduleNameMapper: {
       '^(\\.{1,2}/.*)\\.js$': '$1',
     },
-    collectCoverage: satisfyFlag('aim:cov', opts.flags) || satisfyFlag('aim:ci', opts.flags),
+    collectCoverage:
+      satisfyFlag('aim:cov', opts.flags) || satisfyFlag('aim:ci', opts.flags),
     coverageDirectory: path.join(
       opts.outputDirectory,
       'coverage',
@@ -36,6 +37,7 @@ export const computeJestConfig = (opts: TestResolvedOpts) => {
     coverageReporters: ['json', 'json-summary', 'lcov', 'text'],
     displayName: opts.displayName,
     testPathIgnorePatterns: ['/node_modules/', 'dist/'],
+    updateSnapshot: satisfyFlag('aim:fix', opts.flags),
   };
   return config;
 };
