@@ -35,12 +35,21 @@ describe('eslint-config', () => {
           ],
           "root": true,
           "rules": Object {
+            "import/no-unresolved": Array [
+              2,
+              Object {
+                "ignore": Array [
+                  ".js$",
+                ],
+              },
+            ],
             "prettier/prettier": "error",
           },
           "settings": Object {},
         },
         "extensions": Array [
           ".ts",
+          ".mts",
           ".json",
         ],
         "fix": false,

@@ -1,6 +1,7 @@
 import { computeJestConfig } from './jest-config.js';
 import { TestResolvedOpts } from './model.js';
 import jest from 'jest'; // eslint-disable jest/no-jest-import
+import { satisfyFlag } from './flag-helper.js';
 
 export interface JestHandle {
   config: object;
@@ -12,7 +13,10 @@ export const createJest = (opts: TestResolvedOpts): JestHandle => {
 
   const config = JSON.stringify({ ...jestConfig });
   const cfgArg = ['--config', config];
-  const argv = [...cfgArg];
+  const updateSnapshot = satisfyFlag('aim:fix', opts.flags)
+    ? ['--updateSnapshot']
+    : [];
+  const argv = [...cfgArg, ...updateSnapshot];
   return { config: jestConfig, argv };
 };
 

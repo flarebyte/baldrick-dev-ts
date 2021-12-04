@@ -29,11 +29,10 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
+            "ecmaVersion": 2020,
             "extensions": Array [],
             "flags": Array [],
-            "reportBase": Array [
-              "report/lint-report",
-            ],
+            "reportBase": "report/lint-report",
             "targetFiles": Array [
               "src/",
               "test/",
@@ -62,13 +61,12 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
+            "ecmaVersion": 2020,
             "extensions": Array [
               ".specs.ts",
             ],
             "flags": Array [],
-            "reportBase": Array [
-              "report/lint-report",
-            ],
+            "reportBase": "report/lint-report",
             "targetFiles": Array [
               "test/",
             ],
@@ -103,13 +101,12 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
+            "ecmaVersion": 2020,
             "extensions": Array [],
             "flags": Array [
               "globInputPaths:false",
             ],
-            "reportBase": Array [
-              "report/lint-report",
-            ],
+            "reportBase": "report/lint-report",
             "targetFiles": Array [],
           },
         },
@@ -149,13 +146,12 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
+            "ecmaVersion": 2020,
             "extensions": Array [],
             "flags": Array [
               "globInputPaths:false",
             ],
-            "reportBase": Array [
-              "report/lint-report",
-            ],
+            "reportBase": "report/lint-report",
             "targetFiles": Array [],
           },
         },
@@ -204,14 +200,13 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
+            "ecmaVersion": 2020,
             "extensions": Array [],
             "flags": Array [
               "globInputPaths:false",
-              "fix",
+              "aim:fix",
             ],
-            "reportBase": Array [
-              "report/lint-report",
-            ],
+            "reportBase": "report/lint-report",
             "targetFiles": Array [],
           },
         },

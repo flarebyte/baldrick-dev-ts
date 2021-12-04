@@ -37,7 +37,6 @@ export const computeJestConfig = (opts: TestResolvedOpts) => {
     coverageReporters: ['json', 'json-summary', 'lcov', 'text'],
     displayName: opts.displayName,
     testPathIgnorePatterns: ['/node_modules/', 'dist/'],
-    updateSnapshot: satisfyFlag('aim:fix', opts.flags),
   };
   return config;
 };
