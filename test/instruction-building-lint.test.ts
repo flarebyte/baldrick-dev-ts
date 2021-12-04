@@ -166,7 +166,7 @@ describe('Build instruction for linting', () => {
   it('lint and fix some sources ', () => {
     const given: LintActionOpts = {
       ...defaultOpts,
-      flags: ['fix'],
+      flags: ['aim:fix'],
       fileSearching: {
         pathInfos: [],
         filtering: {

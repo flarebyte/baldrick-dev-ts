@@ -155,7 +155,7 @@ describe('Run instructions', () => {
       const indexBefore = readTempFileAsync(modulePath, 'src/index.ts');
       const instruction: MicroInstruction = {
         name: 'lint',
-        params: { extensions: [], flags: ['lint:fix'], targetFiles: [], reportBase: 'report/base' },
+        params: { extensions: [], flags: ['aim:fix'], targetFiles: [], reportBase: 'report/base' },
       };
       expect.assertions(3);
       const actual = await runLintInstruction(

@@ -5,7 +5,7 @@ describe('eslint-config', () => {
   it('should produce a valid config', () => {
     const resolvedOps: LintResolvedOpts = {
       modulePath: 'module-path',
-      mode: 'check',
+      flags: ['aim:check'],
       pathPatterns: [],
       ecmaVersion: 2020,
     };

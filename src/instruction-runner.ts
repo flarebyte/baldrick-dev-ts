@@ -1,18 +1,15 @@
 import {
   LintInstructionResult,
   InstructionStatus,
-  LintMode,
   LintResolvedOpts,
   MicroInstruction,
   PathInfo,
   RunnerContext,
   TermFormatterParams,
   TestResolvedOpts,
-  TestMode,
   TestInstructionResult,
   BuildInstructionResult,
   BuildResolvedOpts,
-  BuildMode,
   BasicInstructionResult,
   TscOptionsConfig,
 } from './model.js';
@@ -28,6 +25,7 @@ import { ESLint } from 'eslint';
 import { createJest, jestCommand } from './jest-helper.js';
 import { buildBundle, cleanDistFolder } from './tsc-helper.js';
 import { tscConfig } from './tsc-config.js';
+import { satisfyFlag } from './flag-helper.js';
 
 const instructionToTermIntro = (
   instruction: MicroInstruction
@@ -98,47 +96,6 @@ export const runFilterInstruction = (
   return pathInfos.filter(byFileQuery(filtering));
 };
 
-const knownLintFlags = ['lint:check', 'lint:fix', 'lint:ci'];
-
-const toLintFlag = (flags: string[]): LintMode => {
-  const lintFlag = flags.filter((flag) => knownLintFlags.includes(flag))[0];
-  if (lintFlag === 'lint:fix') {
-    return 'fix';
-  }
-  if (lintFlag === 'lint:ci') {
-    return 'ci';
-  }
-  return 'check';
-};
-
-const knownTestFlags = ['test:check', 'test:fix', 'test:ci', 'test:cov'];
-
-const toTestFlag = (flags: string[]): TestMode => {
-  const testFlag = flags.filter((flag) => knownTestFlags.includes(flag))[0];
-  if (testFlag === 'test:fix') {
-    return 'fix';
-  }
-  if (testFlag === 'test:ci') {
-    return 'ci';
-  }
-
-  if (testFlag === 'test:cov') {
-    return 'cov';
-  }
-  return 'check';
-};
-
-const knownBuildFlags = ['build:check', 'build:prod'];
-
-const toBuildFlag = (flags: string[]): BuildMode => {
-  const buildFlag = flags.filter((flag) => knownBuildFlags.includes(flag))[0];
-  if (buildFlag === 'build:prod') {
-    return 'prod';
-  }
-
-  return 'check';
-};
-
 const toEslintStatus = (
   lintResults: ESLint.LintResult[]
 ): InstructionStatus => {
@@ -156,15 +113,15 @@ export const runLintInstruction = async (
   const {
     params: { targetFiles, reportBase, flags },
   } = instruction;
-  const isCI = (flags || []).includes('lint:ci');
-  const shouldFix = (flags || []).includes('lint:fix');
+  const isCI = satisfyFlag('aim:ci', flags);
+  const shouldFix = satisfyFlag('aim:fix', flags);
   const targetFilesOrEmpty = targetFiles || [];
   const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
   const lintOpts: LintResolvedOpts = {
     modulePath: ctx.currentPath,
-    mode: toLintFlag(flags || []),
+    flags,
     pathPatterns,
-    ecmaVersion: flagsToEcmaVersion(flags || []),
+    ecmaVersion: flagsToEcmaVersion(flags || []), //TODO
   };
   ctx.termFormatter({
     title: 'Linting - final opts',
@@ -235,7 +192,7 @@ export const runTestInstruction = async (
   const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
   const testOpts: TestResolvedOpts = {
     modulePath: ctx.currentPath,
-    mode: toTestFlag(flags || []),
+    flags,
     pathPatterns,
     outputDirectory,
     outputName,
@@ -313,7 +270,7 @@ const runBuildInstruction = async (
   const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
   const buildOpts: BuildResolvedOpts = {
     modulePath: ctx.currentPath,
-    mode: toBuildFlag(flags || []),
+    flags,
     pathPatterns,
     outputDirectory,
     outputName,

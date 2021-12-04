@@ -25,10 +25,16 @@ export interface FileSearching {
 
 export type GlobAction = (script: string[]) => void;
 
-export type FileSearchMode = 'find' | 'list' | 'load';
+export type SupportedFlag =
+  | 'unknown'
+  | 'aim:fix'
+  | 'aim:ci'
+  | 'aim:check'
+  | 'aim:cov'
+  | 'globInputPaths:false';
 
 type InstructionParams = {
-  flags: string[];
+  flags: SupportedFlag[];
   targetFiles: string[];
   query: string[];
   extensions: string[];
@@ -76,8 +82,7 @@ export type MicroInstruction =
     };
 
 export type InstructionStatus = 'ok' | 'ko' | 'warning';
-
-export type TermFormatterKind = 'intro' | 'info';
+type TermFormatterKind = 'intro' | 'info';
 export type TermFormatterFormat = 'default' | 'human';
 
 export interface TermFormatterParams {
@@ -118,7 +123,7 @@ export interface LintActionRawOpts extends FileFiltering {
 }
 
 export interface LintActionOpts {
-  flags: string[];
+  flags: SupportedFlag[];
   fileSearching: FileSearching;
   ecmaVersion: number;
   reportBase: string;
@@ -129,12 +134,11 @@ export type LintAction = (
   options: LintActionOpts
 ) => Promise<void>;
 
-export type LintMode = 'check' | 'fix' | 'ci';
 export type SupportedEcmaVersion = 2020 | 2021;
 
 export interface LintResolvedOpts {
   modulePath: string;
-  mode: LintMode;
+  flags: SupportedFlag[];
   pathPatterns: string[];
   ecmaVersion: SupportedEcmaVersion;
 }
@@ -160,7 +164,7 @@ export interface TestActionRawOpts extends FileFiltering {
 }
 
 export interface TestActionOpts {
-  flags: string[];
+  flags: SupportedFlag[];
   fileSearching: FileSearching;
   reportBase: string;
   displayName: string;
@@ -171,11 +175,9 @@ export type TestAction = (
   options: TestActionOpts
 ) => Promise<void>;
 
-export type TestMode = 'check' | 'cov' | 'fix' | 'ci' | 'watch';
-
 export interface TestResolvedOpts {
   modulePath: string;
-  mode: TestMode;
+  flags: SupportedFlag[];
   pathPatterns: string[];
   outputDirectory: string;
   outputName: string;
@@ -200,7 +202,7 @@ export interface BuildActionRawOpts extends FileFiltering {
 }
 
 export interface BuildActionOpts {
-  flags: string[];
+  flags: SupportedFlag[];
   fileSearching: FileSearching;
   reportBase: string;
 }
@@ -210,11 +212,9 @@ export type BuildAction = (
   options: BuildActionOpts
 ) => Promise<void>;
 
-export type BuildMode = 'check' | 'prod';
-
 export interface BuildResolvedOpts {
   modulePath: string;
-  mode: BuildMode;
+  flags: SupportedFlag[];
   pathPatterns: string[];
   outputDirectory: string;
   outputName: string;

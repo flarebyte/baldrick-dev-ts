@@ -1,5 +1,6 @@
 import { LintResolvedOpts, SupportedEcmaVersion } from './model.js';
 import { ESLint, Linter } from 'eslint';
+import { satisfyFlag } from './flag-helper.js';
 
 // https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md
 
@@ -39,6 +40,6 @@ export const computeEsLintConfig = (opts: LintResolvedOpts): ESLint.Options => {
       ...defaultConfig(opts.ecmaVersion),
     },
     extensions: ['.ts', '.mts', '.json'],
-    fix: opts.mode === 'fix',
+    fix: satisfyFlag('aim:fix', opts.flags),
   };
 };

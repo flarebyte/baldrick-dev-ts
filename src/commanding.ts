@@ -20,6 +20,7 @@ import {
   cmdTestFilterOptions,
 } from './commanding-data.js';
 import { basicFormatter, errorFormatter } from '../src/term-formatter.js';
+import { toSupportedFlags } from './flag-helper.js';
 
 export class Commanding {
   _program: Command = new Command();
@@ -67,7 +68,7 @@ export class Commanding {
           withoutTagStarting,
         } = options;
         const lintOpts: LintActionOpts = {
-          flags: [`lint:${aim}`, `ecma:${options.ecmaVersion}`],
+          flags: toSupportedFlags([`aim:${aim}`]),
           fileSearching: {
             pathInfos: [],
             filtering: {
@@ -128,7 +129,7 @@ export class Commanding {
           withoutTagStarting,
         } = options;
         const testOpts: TestActionOpts = {
-          flags: [`test:${aim}`],
+          flags: toSupportedFlags([`aim:${aim}`]),
           fileSearching: {
             pathInfos: [],
             filtering: {
@@ -187,7 +188,7 @@ export class Commanding {
           withoutTagStarting,
         } = options;
         const buildOpts: BuildActionOpts = {
-          flags: [`build:${aim}`],
+          flags: toSupportedFlags([`aim:${aim}`]),
           fileSearching: {
             pathInfos: [],
             filtering: {
