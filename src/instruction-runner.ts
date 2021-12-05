@@ -182,19 +182,17 @@ export const runTestInstruction = async (
 ): Promise<TestInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
-    params: { targetFiles, reportBase, displayName, flags },
+    params: { targetFiles, reportDirectory, reportPrefix, displayName, flags },
   } = instruction;
 
-  const outputDirectory = path.dirname(reportBase);
-  const outputName = path.basename(reportBase);
   const targetFilesOrEmpty = targetFiles || [];
   const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
   const testOpts: TestResolvedOpts = {
     modulePath: ctx.currentPath,
     flags,
     pathPatterns,
-    outputDirectory,
-    outputName,
+    outputDirectory: reportDirectory,
+    outputName: reportPrefix,
     displayName,
   };
 
@@ -259,11 +257,8 @@ const runBuildInstruction = async (
 ): Promise<BuildInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
-    params: { targetFiles, reportBase, flags },
+    params: { targetFiles, reportDirectory, reportPrefix, flags },
   } = instruction;
-
-  const outputDirectory = path.dirname(reportBase);
-  const outputName = path.basename(reportBase);
 
   const targetFilesOrEmpty = targetFiles || [];
   const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
@@ -271,8 +266,8 @@ const runBuildInstruction = async (
     modulePath: ctx.currentPath,
     flags,
     pathPatterns,
-    outputDirectory,
-    outputName,
+    outputDirectory: reportDirectory,
+    outputName: reportPrefix,
   };
 
   ctx.termFormatter({

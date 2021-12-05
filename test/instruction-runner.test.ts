@@ -131,6 +131,8 @@ describe('Run instructions', () => {
           flags: [],
           targetFiles: [],
           reportBase: 'report/base',
+          reportDirectory: 'report',
+          reportPrefix: 'base',
           ecmaVersion: 2020,
         },
       };
@@ -166,6 +168,8 @@ describe('Run instructions', () => {
           flags: ['aim:fix'],
           targetFiles: [],
           reportBase: 'report/base',
+          reportDirectory: 'report',
+          reportPrefix: 'base',
           ecmaVersion: 2020,
         },
       };

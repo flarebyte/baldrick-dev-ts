@@ -32,7 +32,6 @@ export type SupportedFlag =
   | 'aim:cov'
   | 'globInputPaths:false';
 
-
 export type SupportedEcmaVersion = 2020 | 2021; // Update there too src/commanding-helper.ts
 
 type InstructionParams = {
@@ -41,6 +40,8 @@ type InstructionParams = {
   query: string[];
   extensions: string[];
   reportBase: string;
+  reportDirectory: string;
+  reportPrefix: string;
   displayName: string;
   ecmaVersion: SupportedEcmaVersion;
 };
@@ -66,21 +67,38 @@ export type MicroInstruction =
       name: 'lint';
       params: Pick<
         InstructionParams,
-        'targetFiles' | 'extensions' | 'reportBase' | 'flags' | 'ecmaVersion'
+        | 'targetFiles'
+        | 'extensions'
+        | 'reportBase'
+        | 'reportDirectory'
+        | 'reportPrefix'
+        | 'flags'
+        | 'ecmaVersion'
       >;
     }
   | {
       name: 'test';
       params: Pick<
         InstructionParams,
-        'targetFiles' | 'extensions' | 'reportBase' | 'flags' | 'displayName'
+        | 'targetFiles'
+        | 'extensions'
+        | 'reportBase'
+        | 'reportDirectory'
+        | 'reportPrefix'
+        | 'flags'
+        | 'displayName'
       >;
     }
   | {
       name: 'build';
       params: Pick<
         InstructionParams,
-        'targetFiles' | 'extensions' | 'reportBase' | 'flags'
+        | 'targetFiles'
+        | 'extensions'
+        | 'reportBase'
+        | 'reportDirectory'
+        | 'reportPrefix'
+        | 'flags'
       >;
     };
 
@@ -130,6 +148,8 @@ export interface LintActionOpts {
   fileSearching: FileSearching;
   ecmaVersion: SupportedEcmaVersion;
   reportBase: string;
+  reportDirectory: string;
+  reportPrefix: string;
 }
 
 export type LintAction = (
@@ -168,6 +188,8 @@ export interface TestActionOpts {
   flags: SupportedFlag[];
   fileSearching: FileSearching;
   reportBase: string;
+  reportDirectory: string;
+  reportPrefix: string;
   displayName: string;
 }
 
@@ -206,6 +228,8 @@ export interface BuildActionOpts {
   flags: SupportedFlag[];
   fileSearching: FileSearching;
   reportBase: string;
+  reportDirectory: string;
+  reportPrefix: string;
 }
 
 export type BuildAction = (

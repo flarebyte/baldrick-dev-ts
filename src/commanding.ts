@@ -13,7 +13,12 @@ import {
   TestActionOpts,
   TestActionRawOpts,
 } from './model';
-import { toCommanderArgument, toCommanderOption, toSupportedEcma } from './commanding-helper.js';
+import {
+  splitReportBase,
+  toCommanderArgument,
+  toCommanderOption,
+  toSupportedEcma,
+} from './commanding-helper.js';
 import {
   cmdBuildFilterOptions,
   cmdLintFilterOptions,
@@ -86,6 +91,7 @@ export class Commanding {
           },
           ecmaVersion: toSupportedEcma(options.ecmaVersion),
           reportBase,
+          ...splitReportBase(reportBase),
         };
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
@@ -147,6 +153,7 @@ export class Commanding {
           },
           reportBase,
           displayName,
+          ...splitReportBase(reportBase),
         };
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
@@ -205,6 +212,7 @@ export class Commanding {
             },
           },
           reportBase,
+          ...splitReportBase(reportBase),
         };
         const ctx: RunnerContext = {
           currentPath: process.cwd(),

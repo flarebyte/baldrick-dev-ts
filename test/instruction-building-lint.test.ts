@@ -8,6 +8,9 @@ const defaultOpts = {
   flags: [],
   ecmaVersion: 2020 as SupportedEcmaVersion,
   reportBase: 'report/lint-report',
+  reportDirectory: 'report',
+  reportPrefix: 'lint-report'
+
 };
 
 describe('Build instruction for linting', () => {

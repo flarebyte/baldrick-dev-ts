@@ -1,5 +1,6 @@
 import { Option, Argument } from 'commander';
 import { CmdOption, SupportedEcmaVersion } from './model.js';
+import path from 'path';
 
 const capitalize = (value: string): string =>
   value.length > 0 ? (value[0] || '').toUpperCase() + value.substring(1) : '';
@@ -39,3 +40,10 @@ export const toSupportedEcma = (givenEcma: string): SupportedEcmaVersion => {
   }
   return found;
 };
+
+export const splitReportBase = (
+  reportBase: string
+): { reportDirectory: string; reportPrefix: string } => ({
+  reportDirectory: path.dirname(reportBase),
+  reportPrefix: path.basename(reportBase),
+});
