@@ -1,5 +1,5 @@
-import { TscOptionsConfig } from "./model";
+import { TscOptionsConfig } from './model';
 
 export const tscConfig = (opts: TscOptionsConfig) => {
-    return opts
-}
+  return opts;
+};

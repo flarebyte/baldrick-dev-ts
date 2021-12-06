@@ -7,5 +7,5 @@ export async function cleanDistFolder(distFolder: string) {
 }
 
 export const buildBundle = async (opts: TscOptionsConfig) => {
-  return Promise.resolve(opts)
+  return Promise.resolve(opts);
 };
