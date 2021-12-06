@@ -110,45 +110,23 @@ export class Commanding {
       .addOption(toCommanderOption(cmdTestFilterOptions.reportBase))
       .addOption(toCommanderOption(cmdTestFilterOptions.displayName))
       .addOption(toCommanderOption(cmdTestFilterOptions.withPathStarting))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withoutPathStarting))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withExtension))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withoutExtension))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withPathSegment))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withoutPathSegment))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withTag))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withoutTag))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withTagStarting))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withoutTagStarting))
       .action(async (aim: string, options: TestActionRawOpts) => {
-        const {
-          reportBase,
-          displayName,
-          withPathStarting,
-          withoutPathStarting,
-          withExtension,
-          withoutExtension,
-          withPathSegment,
-          withoutPathSegment,
-          withTag,
-          withoutTag,
-          withTagStarting,
-          withoutTagStarting,
-        } = options;
+        const { reportBase, displayName, withPathStarting } = options;
         const testOpts: TestActionOpts = {
           flags: toSupportedFlags([`aim:${aim}`]),
           fileSearching: {
             pathInfos: [],
             filtering: {
               withPathStarting,
-              withoutPathStarting,
-              withExtension,
-              withoutExtension,
-              withPathSegment,
-              withoutPathSegment,
-              withTag,
-              withoutTag,
-              withTagStarting,
-              withoutTagStarting,
+              withoutPathStarting: [],
+              withExtension: [],
+              withoutExtension: [],
+              withPathSegment: [],
+              withoutPathSegment: [],
+              withTag: [],
+              withoutTag: [],
+              withTagStarting: [],
+              withoutTagStarting: [],
             },
           },
           reportBase,
@@ -171,44 +149,23 @@ export class Commanding {
       .addArgument(toCommanderArgument(cmdBuildFilterOptions.aim))
       .addOption(toCommanderOption(cmdBuildFilterOptions.reportBase))
       .addOption(toCommanderOption(cmdBuildFilterOptions.withPathStarting))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutPathStarting))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withExtension))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutExtension))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withPathSegment))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutPathSegment))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withTag))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutTag))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withTagStarting))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutTagStarting))
       .action(async (aim: string, options: BuildActionRawOpts) => {
-        const {
-          reportBase,
-          withPathStarting,
-          withoutPathStarting,
-          withExtension,
-          withoutExtension,
-          withPathSegment,
-          withoutPathSegment,
-          withTag,
-          withoutTag,
-          withTagStarting,
-          withoutTagStarting,
-        } = options;
+        const { reportBase, withPathStarting } = options;
         const buildOpts: BuildActionOpts = {
           flags: toSupportedFlags([`aim:${aim}`]),
           fileSearching: {
             pathInfos: [],
             filtering: {
               withPathStarting,
-              withoutPathStarting,
-              withExtension,
-              withoutExtension,
-              withPathSegment,
-              withoutPathSegment,
-              withTag,
-              withoutTag,
-              withTagStarting,
-              withoutTagStarting,
+              withoutPathStarting: [],
+              withExtension: [],
+              withoutExtension: [],
+              withPathSegment: [],
+              withoutPathSegment: [],
+              withTag: [],
+              withoutTag: [],
+              withTagStarting: [],
+              withoutTagStarting: [],
             },
           },
           reportBase,

@@ -18,6 +18,8 @@ export interface FileFiltering {
   withoutTagStarting: string[];
 }
 
+type MinFileFiltering = Pick<FileFiltering, 'withPathStarting'>;
+
 export interface FileSearching {
   pathInfos: PathInfo[];
   filtering: FileFiltering;
@@ -136,10 +138,12 @@ export interface CmdOption {
   choices: string[];
 }
 
-// Lint
-export interface LintActionRawOpts extends FileFiltering {
+interface BaseAction {
   aim: string;
   reportBase: string;
+}
+// Lint
+export interface LintActionRawOpts extends BaseAction, FileFiltering {
   ecmaVersion: string;
 }
 
@@ -178,9 +182,7 @@ export interface LintInstructionResult {
 }
 
 // Test
-export interface TestActionRawOpts extends FileFiltering {
-  aim: string;
-  reportBase: string;
+export interface TestActionRawOpts extends BaseAction, MinFileFiltering {
   displayName: string;
 }
 
@@ -219,10 +221,7 @@ export interface TscOptionsConfig {
   input: string;
 }
 
-export interface BuildActionRawOpts extends FileFiltering {
-  aim: string;
-  reportBase: string;
-}
+export interface BuildActionRawOpts extends BaseAction, MinFileFiltering {}
 
 export interface BuildActionOpts {
   flags: SupportedFlag[];

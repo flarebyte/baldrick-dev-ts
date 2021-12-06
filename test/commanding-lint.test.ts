@@ -44,6 +44,8 @@ describe('Commands Lint', () => {
           "aim:check",
         ],
         "reportBase": "report/lint-report",
+        "reportDirectory": "report",
+        "reportPrefix": "lint-report",
       }
     `);
   });

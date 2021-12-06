@@ -9,8 +9,7 @@ const defaultOpts = {
   ecmaVersion: 2020 as SupportedEcmaVersion,
   reportBase: 'report/lint-report',
   reportDirectory: 'report',
-  reportPrefix: 'lint-report'
-
+  reportPrefix: 'lint-report',
 };
 
 describe('Build instruction for linting', () => {
@@ -36,6 +35,8 @@ describe('Build instruction for linting', () => {
             "extensions": Array [],
             "flags": Array [],
             "reportBase": "report/lint-report",
+            "reportDirectory": "report",
+            "reportPrefix": "lint-report",
             "targetFiles": Array [
               "src/",
               "test/",
@@ -70,6 +71,8 @@ describe('Build instruction for linting', () => {
             ],
             "flags": Array [],
             "reportBase": "report/lint-report",
+            "reportDirectory": "report",
+            "reportPrefix": "lint-report",
             "targetFiles": Array [
               "test/",
             ],
@@ -110,6 +113,8 @@ describe('Build instruction for linting', () => {
               "globInputPaths:false",
             ],
             "reportBase": "report/lint-report",
+            "reportDirectory": "report",
+            "reportPrefix": "lint-report",
             "targetFiles": Array [],
           },
         },
@@ -155,6 +160,8 @@ describe('Build instruction for linting', () => {
               "globInputPaths:false",
             ],
             "reportBase": "report/lint-report",
+            "reportDirectory": "report",
+            "reportPrefix": "lint-report",
             "targetFiles": Array [],
           },
         },
@@ -210,6 +217,8 @@ describe('Build instruction for linting', () => {
               "aim:fix",
             ],
             "reportBase": "report/lint-report",
+            "reportDirectory": "report",
+            "reportPrefix": "lint-report",
             "targetFiles": Array [],
           },
         },
