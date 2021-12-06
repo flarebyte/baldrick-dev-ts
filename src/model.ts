@@ -83,7 +83,6 @@ export type MicroInstruction =
       params: Pick<
         InstructionParams,
         | 'targetFiles'
-        | 'extensions'
         | 'reportBase'
         | 'reportDirectory'
         | 'reportPrefix'
@@ -96,7 +95,6 @@ export type MicroInstruction =
       params: Pick<
         InstructionParams,
         | 'targetFiles'
-        | 'extensions'
         | 'reportBase'
         | 'reportDirectory'
         | 'reportPrefix'

@@ -129,69 +129,33 @@ const configureLintInstructions = (
 
 const configureTestInstructions = (
   opts: TestActionOpts
-): MicroInstruction[] => {
-  return isSimpleLint(opts.fileSearching)
-    ? [
-        {
-          name: 'test',
-          params: {
-            targetFiles: opts.fileSearching.filtering.withPathStarting,
-            extensions: opts.fileSearching.filtering.withExtension,
-            reportBase: opts.reportBase,
-            reportDirectory: opts.reportDirectory,
-            reportPrefix: opts.reportPrefix,
-            displayName: opts.displayName,
-            flags: opts.flags,
-          },
-        },
-      ]
-    : [
-        {
-          name: 'test',
-          params: {
-            targetFiles: [],
-            extensions: [],
-            reportBase: opts.reportBase,
-            reportDirectory: opts.reportDirectory,
-            reportPrefix: opts.reportPrefix,
-            displayName: opts.displayName,
-            flags: ['globInputPaths:false', ...opts.flags],
-          },
-        },
-      ];
-};
-
+): MicroInstruction[] => [
+  {
+    name: 'test',
+    params: {
+      targetFiles: opts.fileSearching.filtering.withPathStarting,
+      reportBase: opts.reportBase,
+      reportDirectory: opts.reportDirectory,
+      reportPrefix: opts.reportPrefix,
+      displayName: opts.displayName,
+      flags: opts.flags,
+    },
+  },
+];
 const configureBuildInstructions = (
   opts: BuildActionOpts
-): MicroInstruction[] => {
-  return isSimpleLint(opts.fileSearching)
-    ? [
-        {
-          name: 'build',
-          params: {
-            targetFiles: opts.fileSearching.filtering.withPathStarting,
-            extensions: opts.fileSearching.filtering.withExtension,
-            reportBase: opts.reportBase,
-            reportDirectory: opts.reportDirectory,
-            reportPrefix: opts.reportPrefix,
-            flags: opts.flags,
-          },
-        },
-      ]
-    : [
-        {
-          name: 'build',
-          params: {
-            targetFiles: [],
-            extensions: [],
-            reportBase: opts.reportBase,
-            reportDirectory: opts.reportDirectory,
-            reportPrefix: opts.reportPrefix,
-            flags: ['globInputPaths:false', ...opts.flags],
-          },
-        },
-      ];
-};
+): MicroInstruction[] => [
+  {
+    name: 'build',
+    params: {
+      targetFiles: opts.fileSearching.filtering.withPathStarting,
+      reportBase: opts.reportBase,
+      reportDirectory: opts.reportDirectory,
+      reportPrefix: opts.reportPrefix,
+      flags: opts.flags,
+    },
+  },
+];
 export const toLintInstructions = (
   opts: LintActionOpts
 ): MicroInstruction[] => {
