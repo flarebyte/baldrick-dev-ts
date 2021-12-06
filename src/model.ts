@@ -34,6 +34,7 @@ export type SupportedFlag =
   | 'aim:cov'
   | 'globInputPaths:false';
 
+// Update there src/flag-helper.ts
 export type SupportedEcmaVersion = 2020 | 2021; // Update there too src/commanding-helper.ts
 
 type InstructionParams = {

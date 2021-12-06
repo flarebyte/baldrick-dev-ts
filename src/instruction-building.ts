@@ -172,11 +172,7 @@ export const toTestInstructions = (
   opts: TestActionOpts
 ): MicroInstruction[] => {
   return [
-    ...filesInstructions(opts.fileSearching),
-    ...loadInstructions(opts.fileSearching),
-    ...globInstructions(opts.fileSearching),
-    ...filterInstructions(opts.fileSearching),
-    ...configureTestInstructions(opts),
+      ...configureTestInstructions(opts),
   ];
 };
 
@@ -184,10 +180,6 @@ export const toBuildInstructions = (
   opts: BuildActionOpts
 ): MicroInstruction[] => {
   return [
-    ...filesInstructions(opts.fileSearching),
-    ...loadInstructions(opts.fileSearching),
-    ...globInstructions(opts.fileSearching),
-    ...filterInstructions(opts.fileSearching),
     ...configureBuildInstructions(opts),
   ];
 };
