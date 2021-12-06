@@ -212,7 +212,8 @@ export interface TestInstructionResult {
   status: InstructionStatus;
 }
 
-// Build
+// Build ---perhaps we don't need build after-all and can just use tsc instead
+// In 2023, if the build code is still not used, we should remove it from the code base
 
 export interface TscOptionsConfig {
   buildFolder: string;
