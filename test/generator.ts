@@ -40,9 +40,9 @@ export const prettierContent: FileContent = {
 const randomBetween = (low: number, high: number): number =>
   Math.ceil(Math.random() * (high - low) + low);
 
-export const createTempDirsSync = (): string => {
+export const createTempDirsSync = (subfolder: string): string => {
   const suffix = randomBetween(1, 1000000);
-  const tempFolder = `temp/temp${suffix}`;
+  const tempFolder = `temp/${subfolder}/temp${suffix}`;
   fs.ensureDirSync(`${tempFolder}/src`);
   fs.ensureDirSync(`${tempFolder}/test`);
   fs.ensureDirSync(`${tempFolder}/schemas`);
@@ -50,7 +50,7 @@ export const createTempDirsSync = (): string => {
   return tempFolder;
 };
 
-export const emptyTempDir = () => fs.emptyDirSync('temp');
+export const emptyTempDir = (subfolder: string) => fs.emptyDirSync(`temp/${subfolder}/`);
 
 export const createTestingFilesSync = (
   modulePath: string,
@@ -113,53 +113,34 @@ const readmeLint = `
 `;
 export const readmeMd: FileContent = createFileContent('README.md', readmeLint);
 
-const tsconfigEsNextJson = {
-  // see https://www.typescriptlang.org/tsconfig to better understand tsconfigs
-  include: ['src', 'types'],
-  compilerOptions: {
-    module: 'esnext',
-    lib: ['dom', 'esnext'],
-    importHelpers: true,
-    // output .d.ts declaration files for consumers
-    declaration: true,
-    // output .js.map sourcemap files for consumers
-    sourceMap: true,
-    // match output dir to input dir. e.g. dist/index instead of dist/src/index
-    rootDir: './src',
-    // stricter type-checking for stronger correctness. Recommended by TS
-    strict: true,
-    // linter checks for common issues
-    noImplicitReturns: true,
-    noFallthroughCasesInSwitch: true,
-    // noUnused* overlap with @typescript-eslint/no-unused-vars, can disable if duplicative
-    noUnusedLocals: true,
-    noUnusedParameters: true,
-    // use Node's module resolution algorithm, instead of the legacy TS one
-    moduleResolution: 'node',
-    // transpile JSX to React.createElement
-    jsx: 'react',
-    // interop between ESM and CJS modules. Recommended by TS
-    esModuleInterop: true,
-    // significant perf increase by skipping checking .d.ts files, particularly those in node_modules. Recommended by TS
-    skipLibCheck: true,
-    // error out if import and file system have a casing mismatch. Recommended by TS
-    forceConsistentCasingInFileNames: true,
-    // `tsdx build` ignores this option, but it is commonly used when type-checking separately with `tsc`
-    noEmit: true,
-  },
-};
-
-export const tsconfigEsNext: FileContent = createFileContent(
-  'tsconfig.json',
-  JSON.stringify(tsconfigEsNextJson, null, 2)
-);
-
 export const tsconfigNode = (configVersion: 'es2020') =>
   createFileContent(
     'tsconfig.json',
     JSON.stringify(
       {
-        extends: `baldrick-tsconfig-${configVersion}`,
+        $schema: 'https://json.schemastore.org/tsconfig',
+        display: configVersion,
+
+        compilerOptions: {
+          lib: [configVersion],
+          module: configVersion,
+          target: configVersion,
+          strict: true,
+          esModuleInterop: true,
+          skipLibCheck: true,
+          forceConsistentCasingInFileNames: true,
+          declaration: true,
+          newLine: 'lf',
+          noImplicitReturns: true,
+          noImplicitOverride: true,
+          noUnusedLocals: true,
+          noUnusedParameters: true,
+          noFallthroughCasesInSwitch: true,
+          noUncheckedIndexedAccess: true,
+          noPropertyAccessFromIndexSignature: true,
+          noEmitOnError: true,
+          useDefineForClassFields: true,
+        },
       },
       null,
       2
