@@ -1,6 +1,6 @@
 {
   "name": "baldrick-dev-ts",
-  "version": "1.0.0",
+  "version": "0.8.0",
   "description": "CLI for TypeScript package development",
   "repository": "git@github.com:flarebyte/baldrick-dev-ts.git",
   "author": "Olivier Huin <olih@users.noreply.github.com>",
