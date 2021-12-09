@@ -13,13 +13,19 @@ import {
   TestActionOpts,
   TestActionRawOpts,
 } from './model';
-import { toCommanderArgument, toCommanderOption } from './commanding-helper.js';
+import {
+  splitReportBase,
+  toCommanderArgument,
+  toCommanderOption,
+  toSupportedEcma,
+} from './commanding-helper.js';
 import {
   cmdBuildFilterOptions,
   cmdLintFilterOptions,
   cmdTestFilterOptions,
 } from './commanding-data.js';
 import { basicFormatter, errorFormatter } from '../src/term-formatter.js';
+import { toSupportedFlags } from './flag-helper.js';
 
 export class Commanding {
   _program: Command = new Command();
@@ -67,7 +73,7 @@ export class Commanding {
           withoutTagStarting,
         } = options;
         const lintOpts: LintActionOpts = {
-          flags: [`lint:${aim}`, `ecma:${options.ecmaVersion}`],
+          flags: toSupportedFlags([`aim:${aim}`]),
           fileSearching: {
             pathInfos: [],
             filtering: {
@@ -83,8 +89,9 @@ export class Commanding {
               withoutTagStarting,
             },
           },
-          ecmaVersion: parseInt(options.ecmaVersion),
+          ecmaVersion: toSupportedEcma(options.ecmaVersion),
           reportBase,
+          ...splitReportBase(reportBase),
         };
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
@@ -103,49 +110,28 @@ export class Commanding {
       .addOption(toCommanderOption(cmdTestFilterOptions.reportBase))
       .addOption(toCommanderOption(cmdTestFilterOptions.displayName))
       .addOption(toCommanderOption(cmdTestFilterOptions.withPathStarting))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withoutPathStarting))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withExtension))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withoutExtension))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withPathSegment))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withoutPathSegment))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withTag))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withoutTag))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withTagStarting))
-      .addOption(toCommanderOption(cmdTestFilterOptions.withoutTagStarting))
       .action(async (aim: string, options: TestActionRawOpts) => {
-        const {
-          reportBase,
-          displayName,
-          withPathStarting,
-          withoutPathStarting,
-          withExtension,
-          withoutExtension,
-          withPathSegment,
-          withoutPathSegment,
-          withTag,
-          withoutTag,
-          withTagStarting,
-          withoutTagStarting,
-        } = options;
+        const { reportBase, displayName, withPathStarting } = options;
         const testOpts: TestActionOpts = {
-          flags: [`test:${aim}`],
+          flags: toSupportedFlags([`aim:${aim}`]),
           fileSearching: {
             pathInfos: [],
             filtering: {
               withPathStarting,
-              withoutPathStarting,
-              withExtension,
-              withoutExtension,
-              withPathSegment,
-              withoutPathSegment,
-              withTag,
-              withoutTag,
-              withTagStarting,
-              withoutTagStarting,
+              withoutPathStarting: [],
+              withExtension: [],
+              withoutExtension: [],
+              withPathSegment: [],
+              withoutPathSegment: [],
+              withTag: [],
+              withoutTag: [],
+              withTagStarting: [],
+              withoutTagStarting: [],
             },
           },
           reportBase,
           displayName,
+          ...splitReportBase(reportBase),
         };
         const ctx: RunnerContext = {
           currentPath: process.cwd(),
@@ -163,47 +149,27 @@ export class Commanding {
       .addArgument(toCommanderArgument(cmdBuildFilterOptions.aim))
       .addOption(toCommanderOption(cmdBuildFilterOptions.reportBase))
       .addOption(toCommanderOption(cmdBuildFilterOptions.withPathStarting))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutPathStarting))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withExtension))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutExtension))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withPathSegment))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutPathSegment))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withTag))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutTag))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withTagStarting))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withoutTagStarting))
       .action(async (aim: string, options: BuildActionRawOpts) => {
-        const {
-          reportBase,
-          withPathStarting,
-          withoutPathStarting,
-          withExtension,
-          withoutExtension,
-          withPathSegment,
-          withoutPathSegment,
-          withTag,
-          withoutTag,
-          withTagStarting,
-          withoutTagStarting,
-        } = options;
+        const { reportBase, withPathStarting } = options;
         const buildOpts: BuildActionOpts = {
-          flags: [`build:${aim}`],
+          flags: toSupportedFlags([`aim:${aim}`]),
           fileSearching: {
             pathInfos: [],
             filtering: {
               withPathStarting,
-              withoutPathStarting,
-              withExtension,
-              withoutExtension,
-              withPathSegment,
-              withoutPathSegment,
-              withTag,
-              withoutTag,
-              withTagStarting,
-              withoutTagStarting,
+              withoutPathStarting: [],
+              withExtension: [],
+              withoutExtension: [],
+              withPathSegment: [],
+              withoutPathSegment: [],
+              withTag: [],
+              withoutTag: [],
+              withTagStarting: [],
+              withoutTagStarting: [],
             },
           },
           reportBase,
+          ...splitReportBase(reportBase),
         };
         const ctx: RunnerContext = {
           currentPath: process.cwd(),

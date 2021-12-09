@@ -41,10 +41,11 @@ describe('Commands Lint', () => {
           "pathInfos": Array [],
         },
         "flags": Array [
-          "lint:check",
-          "ecma:2020",
+          "aim:check",
         ],
         "reportBase": "report/lint-report",
+        "reportDirectory": "report",
+        "reportPrefix": "lint-report",
       }
     `);
   });

@@ -103,8 +103,11 @@ const configureLintInstructions = (
           params: {
             targetFiles: opts.fileSearching.filtering.withPathStarting,
             extensions: opts.fileSearching.filtering.withExtension,
-            reportBase: [opts.reportBase],
+            reportBase: opts.reportBase,
+            reportDirectory: opts.reportDirectory,
+            reportPrefix: opts.reportPrefix,
             flags: opts.flags,
+            ecmaVersion: opts.ecmaVersion,
           },
         },
       ]
@@ -114,8 +117,11 @@ const configureLintInstructions = (
           params: {
             targetFiles: [],
             extensions: [],
-            reportBase: [opts.reportBase],
+            reportBase: opts.reportBase,
+            reportDirectory: opts.reportDirectory,
+            reportPrefix: opts.reportPrefix,
             flags: ['globInputPaths:false', ...opts.flags],
+            ecmaVersion: opts.ecmaVersion,
           },
         },
       ];
@@ -123,61 +129,33 @@ const configureLintInstructions = (
 
 const configureTestInstructions = (
   opts: TestActionOpts
-): MicroInstruction[] => {
-  return isSimpleLint(opts.fileSearching)
-    ? [
-        {
-          name: 'test',
-          params: {
-            targetFiles: opts.fileSearching.filtering.withPathStarting,
-            extensions: opts.fileSearching.filtering.withExtension,
-            reportBase: [opts.reportBase],
-            displayName: [opts.displayName],
-            flags: opts.flags,
-          },
-        },
-      ]
-    : [
-        {
-          name: 'test',
-          params: {
-            targetFiles: [],
-            extensions: [],
-            reportBase: [opts.reportBase],
-            displayName: [opts.displayName],
-            flags: ['globInputPaths:false', ...opts.flags],
-          },
-        },
-      ];
-};
-
+): MicroInstruction[] => [
+  {
+    name: 'test',
+    params: {
+      targetFiles: opts.fileSearching.filtering.withPathStarting,
+      reportBase: opts.reportBase,
+      reportDirectory: opts.reportDirectory,
+      reportPrefix: opts.reportPrefix,
+      displayName: opts.displayName,
+      flags: opts.flags,
+    },
+  },
+];
 const configureBuildInstructions = (
   opts: BuildActionOpts
-): MicroInstruction[] => {
-  return isSimpleLint(opts.fileSearching)
-    ? [
-        {
-          name: 'build',
-          params: {
-            targetFiles: opts.fileSearching.filtering.withPathStarting,
-            extensions: opts.fileSearching.filtering.withExtension,
-            reportBase: [opts.reportBase],
-            flags: opts.flags,
-          },
-        },
-      ]
-    : [
-        {
-          name: 'build',
-          params: {
-            targetFiles: [],
-            extensions: [],
-            reportBase: [opts.reportBase],
-            flags: ['globInputPaths:false', ...opts.flags],
-          },
-        },
-      ];
-};
+): MicroInstruction[] => [
+  {
+    name: 'build',
+    params: {
+      targetFiles: opts.fileSearching.filtering.withPathStarting,
+      reportBase: opts.reportBase,
+      reportDirectory: opts.reportDirectory,
+      reportPrefix: opts.reportPrefix,
+      flags: opts.flags,
+    },
+  },
+];
 export const toLintInstructions = (
   opts: LintActionOpts
 ): MicroInstruction[] => {
@@ -194,11 +172,7 @@ export const toTestInstructions = (
   opts: TestActionOpts
 ): MicroInstruction[] => {
   return [
-    ...filesInstructions(opts.fileSearching),
-    ...loadInstructions(opts.fileSearching),
-    ...globInstructions(opts.fileSearching),
-    ...filterInstructions(opts.fileSearching),
-    ...configureTestInstructions(opts),
+      ...configureTestInstructions(opts),
   ];
 };
 
@@ -206,10 +180,6 @@ export const toBuildInstructions = (
   opts: BuildActionOpts
 ): MicroInstruction[] => {
   return [
-    ...filesInstructions(opts.fileSearching),
-    ...loadInstructions(opts.fileSearching),
-    ...globInstructions(opts.fileSearching),
-    ...filterInstructions(opts.fileSearching),
     ...configureBuildInstructions(opts),
   ];
 };

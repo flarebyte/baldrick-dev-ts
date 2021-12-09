@@ -6,6 +6,7 @@ import {
   createTempDirsSync,
   createTestingFilesSync,
   editorConfig,
+  emptyTempDir,
   indexTestTs,
   indexTs,
   personSchema,
@@ -53,8 +54,10 @@ const authorExamples: Example[] = [
   },
 ];
 
+const testFolder = 'cmd-glob';
+
 const createProjectDir = () => {
-  const tempDir = createTempDirsSync();
+  const tempDir = createTempDirsSync('cmd-glob');
   const fileContents = [
     createPackageJson('module-' + tempDir.replace('/', '-')),
     indexTs,
@@ -75,6 +78,19 @@ const createProjectDir = () => {
 };
 
 describe('Commands Glob', () => {
+
+  beforeAll(() => {
+    emptyTempDir(testFolder);
+    createProjectDir();
+  });
+
+  afterAll(() => {
+    emptyTempDir(testFolder);
+  });
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
   it('rehearse parsing', () => {
     const commanding = new Commanding();
     const mockedAction = jest.fn();
@@ -85,7 +101,6 @@ describe('Commands Glob', () => {
   });
 
   describe('Managing json schema', () => {
-    createProjectDir();
     const commanding = new Commanding();
     const mockedAction = jest.fn();
     commanding.declareGlobAction(mockedAction);

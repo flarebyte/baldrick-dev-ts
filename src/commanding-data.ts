@@ -1,8 +1,11 @@
 import { CmdOption } from './model.js';
 
-interface CmdOptions {
+interface CmdOptionsBase {
   aim: CmdOption;
   reportBase: CmdOption;
+}
+
+interface CmdOptionsFilter {
   withPathStarting: CmdOption;
   withoutPathStarting: CmdOption;
   withExtension: CmdOption;
@@ -15,15 +18,17 @@ interface CmdOptions {
   withoutTagStarting: CmdOption;
 }
 
-interface CmdLintOptions extends CmdOptions {
+type CmdOptionsMinFilter = Pick<CmdOptionsFilter, 'withPathStarting'>;
+
+interface CmdLintOptions extends CmdOptionsBase, CmdOptionsFilter {
   ecma: CmdOption;
 }
 
-interface CmdTestOptions extends CmdOptions {
+interface CmdTestOptions extends CmdOptionsBase, CmdOptionsMinFilter {
   displayName: CmdOption;
 }
 
-type CmdBuildOptions = CmdOptions;
+interface CmdBuildOptions extends CmdOptionsBase, CmdOptionsMinFilter {}
 
 const stringsOption = (
   shortFlag: string,
@@ -163,15 +168,6 @@ export const cmdTestFilterOptions: CmdTestOptions = {
     'main'
   ),
   withPathStarting: { ...withPathStarting, defaultValue: ['test'] },
-  withoutPathStarting,
-  withExtension,
-  withoutExtension,
-  withPathSegment,
-  withoutPathSegment,
-  withTag,
-  withoutTag,
-  withTagStarting,
-  withoutTagStarting,
 };
 
 export const cmdBuildFilterOptions: CmdBuildOptions = {
@@ -183,13 +179,4 @@ export const cmdBuildFilterOptions: CmdBuildOptions = {
     'report/build-report'
   ),
   withPathStarting,
-  withoutPathStarting,
-  withExtension,
-  withoutExtension,
-  withPathSegment,
-  withoutPathSegment,
-  withTag,
-  withoutTag,
-  withTagStarting,
-  withoutTagStarting,
 };

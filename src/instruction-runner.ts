@@ -1,20 +1,17 @@
 import {
   LintInstructionResult,
   InstructionStatus,
-  LintMode,
   LintResolvedOpts,
   MicroInstruction,
   PathInfo,
   RunnerContext,
   TermFormatterParams,
   TestResolvedOpts,
-  TestMode,
   TestInstructionResult,
   BuildInstructionResult,
   BuildResolvedOpts,
-  BuildMode,
-  PresetRollupOptions,
   BasicInstructionResult,
+  TscOptionsConfig,
 } from './model.js';
 import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming.js';
 import { readFile } from 'fs/promises';
@@ -22,12 +19,12 @@ import path from 'path';
 import { byFileQuery, commanderStringsToFiltering } from './path-filtering.js';
 import glob from 'tiny-glob';
 import { createESLint, lintCommand } from './eslint-helper.js';
-import { flagsToEcmaVersion } from './eslint-config.js';
 import { outputFile } from 'fs-extra';
 import { ESLint } from 'eslint';
 import { createJest, jestCommand } from './jest-helper.js';
-import { buildBundle, cleanDistFolder } from './rollup-helper.js';
-import { esmRollupPreset } from './rollup-config-preset.js';
+import { buildBundle, cleanDistFolder } from './tsc-helper.js';
+import { tscConfig } from './tsc-config.js';
+import { satisfyFlag } from './flag-helper.js';
 
 const instructionToTermIntro = (
   instruction: MicroInstruction
@@ -40,7 +37,7 @@ const instructionToTermIntro = (
 
 export const runFilesInstruction = (
   ctx: RunnerContext,
-  instruction: MicroInstruction
+  instruction: MicroInstruction & { name: 'files' }
 ): PathInfo[] => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
@@ -54,7 +51,7 @@ const readUtf8File = (currentPath: string) => (filename: string) =>
 
 export const runLoadInstruction = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction
+  instruction: MicroInstruction & { name: 'load' }
 ): Promise<PathInfo[]> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
@@ -69,7 +66,7 @@ export const runLoadInstruction = async (
 
 export const runGlobInstruction = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction
+  instruction: MicroInstruction & { name: 'glob' }
 ): Promise<PathInfo[]> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
@@ -87,7 +84,7 @@ export const runGlobInstruction = async (
 
 export const runFilterInstruction = (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'filter' },
   pathInfos: PathInfo[]
 ): PathInfo[] => {
   ctx.termFormatter(instructionToTermIntro(instruction));
@@ -96,47 +93,6 @@ export const runFilterInstruction = (
   } = instruction;
   const filtering = commanderStringsToFiltering(query || []);
   return pathInfos.filter(byFileQuery(filtering));
-};
-
-const knownLintFlags = ['lint:check', 'lint:fix', 'lint:ci'];
-
-const toLintFlag = (flags: string[]): LintMode => {
-  const lintFlag = flags.filter((flag) => knownLintFlags.includes(flag))[0];
-  if (lintFlag === 'lint:fix') {
-    return 'fix';
-  }
-  if (lintFlag === 'lint:ci') {
-    return 'ci';
-  }
-  return 'check';
-};
-
-const knownTestFlags = ['test:check', 'test:fix', 'test:ci', 'test:cov'];
-
-const toTestFlag = (flags: string[]): TestMode => {
-  const testFlag = flags.filter((flag) => knownTestFlags.includes(flag))[0];
-  if (testFlag === 'test:fix') {
-    return 'fix';
-  }
-  if (testFlag === 'test:ci') {
-    return 'ci';
-  }
-
-  if (testFlag === 'test:cov') {
-    return 'cov';
-  }
-  return 'check';
-};
-
-const knownBuildFlags = ['build:check', 'build:prod'];
-
-const toBuildFlag = (flags: string[]): BuildMode => {
-  const buildFlag = flags.filter((flag) => knownBuildFlags.includes(flag))[0];
-  if (buildFlag === 'build:prod') {
-    return 'prod';
-  }
-
-  return 'check';
 };
 
 const toEslintStatus = (
@@ -149,22 +105,22 @@ const toEslintStatus = (
 
 export const runLintInstruction = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'lint' },
   pathInfos: PathInfo[]
 ): Promise<LintInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
-    params: { targetFiles, reportBase, flags },
+    params: { targetFiles, reportBase, flags, ecmaVersion },
   } = instruction;
-  const isCI = (flags || []).includes('lint:ci');
-  const shouldFix = (flags || []).includes('lint:fix');
+  const isCI = satisfyFlag('aim:ci', flags);
+  const shouldFix = satisfyFlag('aim:fix', flags);
   const targetFilesOrEmpty = targetFiles || [];
   const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
   const lintOpts: LintResolvedOpts = {
     modulePath: ctx.currentPath,
-    mode: toLintFlag(flags || []),
+    flags,
     pathPatterns,
-    ecmaVersion: flagsToEcmaVersion(flags || []),
+    ecmaVersion,
   };
   ctx.termFormatter({
     title: 'Linting - final opts',
@@ -186,10 +142,8 @@ export const runLintInstruction = async (
     format: 'default',
   });
   if (isCI) {
-    const reportBasePrefix =
-      (reportBase && reportBase[0]) || 'report/lint-report';
-    await outputFile(`${reportBasePrefix}.json`, json, 'utf8');
-    await outputFile(`${reportBasePrefix}.junit.xml`, junitXml, 'utf8');
+    await outputFile(`${reportBase}.json`, json, 'utf8');
+    await outputFile(`${reportBase}.junit.xml`, junitXml, 'utf8');
   }
   const status = toEslintStatus(lintResults);
   return { text, json, junitXml, compact, status, lintResults };
@@ -197,7 +151,7 @@ export const runLintInstruction = async (
 
 export const runLintInstructionWithCatch = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'lint' },
   pathInfos: PathInfo[]
 ): Promise<BasicInstructionResult> => {
   try {
@@ -223,28 +177,23 @@ export const runLintInstructionWithCatch = async (
 
 export const runTestInstruction = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'test' },
   pathInfos: PathInfo[]
 ): Promise<TestInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
-    params: { targetFiles, reportBase, displayName, flags },
+    params: { targetFiles, reportDirectory, reportPrefix, displayName, flags },
   } = instruction;
 
-  // const isCI = flags.includes('test:ci');
-  const reportBasePrefix =
-    (reportBase && reportBase[0]) || 'report/test-report';
-  const outputDirectory = path.dirname(reportBasePrefix);
-  const outputName = path.basename(reportBasePrefix);
   const targetFilesOrEmpty = targetFiles || [];
   const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
   const testOpts: TestResolvedOpts = {
     modulePath: ctx.currentPath,
-    mode: toTestFlag(flags || []),
+    flags,
     pathPatterns,
-    outputDirectory,
-    outputName,
-    displayName: (displayName && displayName[0]) || '',
+    outputDirectory: reportDirectory,
+    outputName: reportPrefix,
+    displayName,
   };
 
   ctx.termFormatter({
@@ -277,7 +226,7 @@ export const runTestInstruction = async (
 
 export const runTestInstructionWithCatch = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'test' },
   pathInfos: PathInfo[]
 ): Promise<BasicInstructionResult> => {
   try {
@@ -303,27 +252,22 @@ export const runTestInstructionWithCatch = async (
 
 const runBuildInstruction = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'build' },
   pathInfos: PathInfo[]
 ): Promise<BuildInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
-    params: { targetFiles, reportBase, flags },
+    params: { targetFiles, reportDirectory, reportPrefix, flags },
   } = instruction;
-  const reportBasePrefix =
-    (reportBase && reportBase[0]) || 'report/test-report';
-
-  const outputDirectory = path.dirname(reportBasePrefix);
-  const outputName = path.basename(reportBasePrefix);
 
   const targetFilesOrEmpty = targetFiles || [];
   const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
   const buildOpts: BuildResolvedOpts = {
     modulePath: ctx.currentPath,
-    mode: toBuildFlag(flags || []),
+    flags,
     pathPatterns,
-    outputDirectory,
-    outputName,
+    outputDirectory: reportDirectory,
+    outputName: reportPrefix,
   };
 
   ctx.termFormatter({
@@ -333,31 +277,29 @@ const runBuildInstruction = async (
     format: 'human',
   });
 
-  const presetOpts: PresetRollupOptions = {
+  const presetOpts: TscOptionsConfig = {
     buildFolder: 'dist',
     name: 'demo-name',
     input: 'src/index.ts',
-    strategy: 'production',
-    format: 'esm',
   };
-  const rollupConfig = esmRollupPreset(presetOpts);
+  const compilerConfig = tscConfig(presetOpts);
 
   ctx.termFormatter({
     title: 'Building - rollup config',
-    detail: rollupConfig,
+    detail: compilerConfig,
     kind: 'info',
     format: 'default',
   });
 
   await cleanDistFolder(presetOpts.buildFolder);
-  await buildBundle(rollupConfig);
+  await buildBundle(compilerConfig);
 
   return { status: 'ok' };
 };
 
 export const runBuildInstructionWithCatch = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction,
+  instruction: MicroInstruction & { name: 'build' },
   pathInfos: PathInfo[]
 ): Promise<BasicInstructionResult> => {
   try {
@@ -395,31 +337,38 @@ export const runInstructions = async (
   const testInstruction = instructions.find((instr) => instr.name === 'test');
   const buildInstruction = instructions.find((instr) => instr.name === 'build');
 
-  const files = filesInstruction
-    ? runFilesInstruction(ctx, filesInstruction)
-    : [];
-  const loaded = loadInstruction
-    ? await runLoadInstruction(ctx, loadInstruction)
-    : [];
-  const globed = globInstruction
-    ? await runGlobInstruction(ctx, globInstruction)
-    : [];
+  const files =
+    filesInstruction && filesInstruction.name === 'files'
+      ? runFilesInstruction(ctx, filesInstruction)
+      : [];
+  const loaded =
+    loadInstruction && loadInstruction.name === 'load'
+      ? await runLoadInstruction(ctx, loadInstruction)
+      : [];
+  const globed =
+    globInstruction && globInstruction.name === 'glob'
+      ? await runGlobInstruction(ctx, globInstruction)
+      : [];
 
   const allFileInfos = [...files, ...loaded, ...globed];
-  const filtered = filterInstruction
-    ? runFilterInstruction(ctx, filterInstruction, allFileInfos)
-    : allFileInfos;
-  const linted = lintInstruction
-    ? await runLintInstructionWithCatch(ctx, lintInstruction, filtered)
-    : false;
+  const filtered =
+    filterInstruction && filterInstruction.name === 'filter'
+      ? runFilterInstruction(ctx, filterInstruction, allFileInfos)
+      : allFileInfos;
+  const linted =
+    lintInstruction && lintInstruction.name === 'lint'
+      ? await runLintInstructionWithCatch(ctx, lintInstruction, filtered)
+      : false;
 
-  const tested = testInstruction
-    ? await runTestInstructionWithCatch(ctx, testInstruction, filtered)
-    : false;
+  const tested =
+    testInstruction && testInstruction.name === 'test'
+      ? await runTestInstructionWithCatch(ctx, testInstruction, filtered)
+      : false;
 
-  const built = buildInstruction
-    ? await runBuildInstructionWithCatch(ctx, buildInstruction, filtered)
-    : false;
+  const built =
+    buildInstruction && buildInstruction.name === 'build'
+      ? await runBuildInstructionWithCatch(ctx, buildInstruction, filtered)
+      : false;
 
   return linted
     ? linted.status

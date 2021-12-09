@@ -1,16 +1,5 @@
 import { ESLint } from 'eslint';
 
-type PresetRollupOptionsStrategy = 'development' | 'production';
-type ModuleFormat = 'cjs' | 'umd' | 'esm' | 'system';
-
-export interface PresetRollupOptions {
-  buildFolder: string;
-  name: string;
-  input: string;
-  strategy: PresetRollupOptionsStrategy;
-  format: ModuleFormat;
-}
-
 export interface PathInfo {
   path: string;
   tags: string[];
@@ -29,6 +18,8 @@ export interface FileFiltering {
   withoutTagStarting: string[];
 }
 
+type MinFileFiltering = Pick<FileFiltering, 'withPathStarting'>;
+
 export interface FileSearching {
   pathInfos: PathInfo[];
   filtering: FileFiltering;
@@ -36,31 +27,84 @@ export interface FileSearching {
 
 export type GlobAction = (script: string[]) => void;
 
-export type LintReport =
-  | { kind: 'junit'; filename: string }
-  | { kind: 'json'; filename: string };
+export type SupportedFlag =
+  | 'aim:fix'
+  | 'aim:ci'
+  | 'aim:check'
+  | 'aim:cov'
+  | 'globInputPaths:false';
 
-export type FileSearchMode = 'find' | 'list' | 'load';
+// Update there src/flag-helper.ts
+export type SupportedEcmaVersion = 2020 | 2021; // Update there too src/commanding-helper.ts
 
-export type MicroInstructionName =
-  | 'lint'
-  | 'test'
-  | 'files'
-  | 'load'
-  | 'glob'
-  | 'filter'
-  | 'build';
+type InstructionParams = {
+  flags: SupportedFlag[];
+  targetFiles: string[];
+  query: string[];
+  extensions: string[];
+  reportBase: string;
+  reportDirectory: string;
+  reportPrefix: string;
+  displayName: string;
+  ecmaVersion: SupportedEcmaVersion;
+};
 
-export type InstructionParams = { [paramName: string]: string[] };
-
-export interface MicroInstruction {
-  name: MicroInstructionName;
-  params: InstructionParams;
-}
+export type MicroInstruction =
+  | {
+      name: 'files';
+      params: Pick<InstructionParams, 'targetFiles'>;
+    }
+  | {
+      name: 'load';
+      params: Pick<InstructionParams, 'targetFiles'>;
+    }
+  | {
+      name: 'glob';
+      params: Pick<InstructionParams, 'targetFiles'>;
+    }
+  | {
+      name: 'filter';
+      params: Pick<InstructionParams, 'query'>;
+    }
+  | {
+      name: 'lint';
+      params: Pick<
+        InstructionParams,
+        | 'targetFiles'
+        | 'extensions'
+        | 'reportBase'
+        | 'reportDirectory'
+        | 'reportPrefix'
+        | 'flags'
+        | 'ecmaVersion'
+      >;
+    }
+  | {
+      name: 'test';
+      params: Pick<
+        InstructionParams,
+        | 'targetFiles'
+        | 'reportBase'
+        | 'reportDirectory'
+        | 'reportPrefix'
+        | 'flags'
+        | 'displayName'
+      >;
+    }
+  | {
+      name: 'build';
+      params: Pick<
+        InstructionParams,
+        | 'targetFiles'
+        | 'reportBase'
+        | 'reportDirectory'
+        | 'reportPrefix'
+        | 'flags'
+      >;
+    };
 
 export type InstructionStatus = 'ok' | 'ko' | 'warning';
-
-export type TermFormatterKind = 'intro' | 'info';
+type TermFormatterKind = 'intro' | 'info';
 export type TermFormatterFormat = 'default' | 'human';
 
 export interface TermFormatterParams {
@@ -93,18 +137,22 @@ export interface CmdOption {
   choices: string[];
 }
 
-// Lint
-export interface LintActionRawOpts extends FileFiltering {
+interface BaseAction {
   aim: string;
   reportBase: string;
+}
+// Lint
+export interface LintActionRawOpts extends BaseAction, FileFiltering {
   ecmaVersion: string;
 }
 
 export interface LintActionOpts {
-  flags: string[];
+  flags: SupportedFlag[];
   fileSearching: FileSearching;
-  ecmaVersion: number;
+  ecmaVersion: SupportedEcmaVersion;
   reportBase: string;
+  reportDirectory: string;
+  reportPrefix: string;
 }
 
 export type LintAction = (
@@ -112,12 +160,9 @@ export type LintAction = (
   options: LintActionOpts
 ) => Promise<void>;
 
-export type LintMode = 'check' | 'fix' | 'ci';
-export type SupportedEcmaVersion = 2020 | 2021;
-
 export interface LintResolvedOpts {
   modulePath: string;
-  mode: LintMode;
+  flags: SupportedFlag[];
   pathPatterns: string[];
   ecmaVersion: SupportedEcmaVersion;
 }
@@ -136,16 +181,16 @@ export interface LintInstructionResult {
 }
 
 // Test
-export interface TestActionRawOpts extends FileFiltering {
-  aim: string;
-  reportBase: string;
+export interface TestActionRawOpts extends BaseAction, MinFileFiltering {
   displayName: string;
 }
 
 export interface TestActionOpts {
-  flags: string[];
+  flags: SupportedFlag[];
   fileSearching: FileSearching;
   reportBase: string;
+  reportDirectory: string;
+  reportPrefix: string;
   displayName: string;
 }
 
@@ -154,11 +199,9 @@ export type TestAction = (
   options: TestActionOpts
 ) => Promise<void>;
 
-export type TestMode = 'check' | 'cov' | 'fix' | 'ci' | 'watch';
-
 export interface TestResolvedOpts {
   modulePath: string;
-  mode: TestMode;
+  flags: SupportedFlag[];
   pathPatterns: string[];
   outputDirectory: string;
   outputName: string;
@@ -169,16 +212,23 @@ export interface TestInstructionResult {
   status: InstructionStatus;
 }
 
-// Build
-export interface BuildActionRawOpts extends FileFiltering {
-  aim: string;
-  reportBase: string;
+// Build ---perhaps we don't need build after-all and can just use tsc instead
+// In 2023, if the build code is still not used, we should remove it from the code base
+
+export interface TscOptionsConfig {
+  buildFolder: string;
+  name: string;
+  input: string;
 }
 
+export interface BuildActionRawOpts extends BaseAction, MinFileFiltering {}
+
 export interface BuildActionOpts {
-  flags: string[];
+  flags: SupportedFlag[];
   fileSearching: FileSearching;
   reportBase: string;
+  reportDirectory: string;
+  reportPrefix: string;
 }
 
 export type BuildAction = (
@@ -186,11 +236,9 @@ export type BuildAction = (
   options: BuildActionOpts
 ) => Promise<void>;
 
-export type BuildMode = 'check' | 'prod';
-
 export interface BuildResolvedOpts {
   modulePath: string;
-  mode: BuildMode;
+  flags: SupportedFlag[];
   pathPatterns: string[];
   outputDirectory: string;
   outputName: string;

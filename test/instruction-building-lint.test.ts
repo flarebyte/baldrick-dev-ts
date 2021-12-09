@@ -1,4 +1,4 @@
-import { LintActionOpts } from '../src/model';
+import { LintActionOpts, SupportedEcmaVersion } from '../src/model';
 import { toLintInstructions } from '../src/instruction-building';
 import { emptyFileFiltering } from '../src/path-filtering';
 
@@ -6,8 +6,10 @@ import { emptyFileFiltering } from '../src/path-filtering';
 
 const defaultOpts = {
   flags: [],
-  ecmaVersion: 2018,
+  ecmaVersion: 2020 as SupportedEcmaVersion,
   reportBase: 'report/lint-report',
+  reportDirectory: 'report',
+  reportPrefix: 'lint-report',
 };
 
 describe('Build instruction for linting', () => {
@@ -29,11 +31,12 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
+            "ecmaVersion": 2020,
             "extensions": Array [],
             "flags": Array [],
-            "reportBase": Array [
-              "report/lint-report",
-            ],
+            "reportBase": "report/lint-report",
+            "reportDirectory": "report",
+            "reportPrefix": "lint-report",
             "targetFiles": Array [
               "src/",
               "test/",
@@ -62,13 +65,14 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
+            "ecmaVersion": 2020,
             "extensions": Array [
               ".specs.ts",
             ],
             "flags": Array [],
-            "reportBase": Array [
-              "report/lint-report",
-            ],
+            "reportBase": "report/lint-report",
+            "reportDirectory": "report",
+            "reportPrefix": "lint-report",
             "targetFiles": Array [
               "test/",
             ],
@@ -103,13 +107,14 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
+            "ecmaVersion": 2020,
             "extensions": Array [],
             "flags": Array [
               "globInputPaths:false",
             ],
-            "reportBase": Array [
-              "report/lint-report",
-            ],
+            "reportBase": "report/lint-report",
+            "reportDirectory": "report",
+            "reportPrefix": "lint-report",
             "targetFiles": Array [],
           },
         },
@@ -149,13 +154,14 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
+            "ecmaVersion": 2020,
             "extensions": Array [],
             "flags": Array [
               "globInputPaths:false",
             ],
-            "reportBase": Array [
-              "report/lint-report",
-            ],
+            "reportBase": "report/lint-report",
+            "reportDirectory": "report",
+            "reportPrefix": "lint-report",
             "targetFiles": Array [],
           },
         },
@@ -166,7 +172,7 @@ describe('Build instruction for linting', () => {
   it('lint and fix some sources ', () => {
     const given: LintActionOpts = {
       ...defaultOpts,
-      flags: ['fix'],
+      flags: ['aim:fix'],
       fileSearching: {
         pathInfos: [],
         filtering: {
@@ -204,14 +210,15 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
+            "ecmaVersion": 2020,
             "extensions": Array [],
             "flags": Array [
               "globInputPaths:false",
-              "fix",
+              "aim:fix",
             ],
-            "reportBase": Array [
-              "report/lint-report",
-            ],
+            "reportBase": "report/lint-report",
+            "reportDirectory": "report",
+            "reportPrefix": "lint-report",
             "targetFiles": Array [],
           },
         },
