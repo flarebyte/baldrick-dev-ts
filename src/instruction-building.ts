@@ -171,15 +171,11 @@ export const toLintInstructions = (
 export const toTestInstructions = (
   opts: TestActionOpts
 ): MicroInstruction[] => {
-  return [
-      ...configureTestInstructions(opts),
-  ];
+  return [...configureTestInstructions(opts)];
 };
 
 export const toBuildInstructions = (
   opts: BuildActionOpts
 ): MicroInstruction[] => {
-  return [
-    ...configureBuildInstructions(opts),
-  ];
+  return [...configureBuildInstructions(opts)];
 };

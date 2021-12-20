@@ -15,7 +15,8 @@ The main motivation is to reduce the amount of dev dependencies that needs to be
 -   **Jest** under the hood for testing.
 -   **ES2020** or later.
 
-## Linting
+## Usage
+### Linting
 
 Usage:  `baldrick lint [options] <aim>`
 
@@ -45,7 +46,7 @@ Fix problems in the default source folder:
  `baldrick lint fix`
 
 
-## Testing
+### Testing
 
 Usage: `baldrick test [options] <aim>`
 
@@ -66,11 +67,8 @@ Update snapshots for unit test:
 
  `baldrick test fix`
 
-## Installation
 
-    yarn add baldrick-dev-ts --dev
-
-## Acknowledgement
+## Acknowledgements
 
 `baldrick-dev-ts` was initially created as a fork of the brilliant [tsdx](https://github.com/jaredpalmer/tsdx) project.
 Eventually, the code has been massively refactored to match the new requirements, and very little remain of the `tsdx` starting point, except our gratitude to this initial project.

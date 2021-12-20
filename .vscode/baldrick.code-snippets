@@ -1,0 +1,8 @@
+{
+  "b-rm-nulls": {
+    "scope": "javascript,typescript",
+    "prefix": "b-rm-nulls",
+    "body": "const removeNulls = <S>(value: S | undefined): value is S => value != null;",
+    "description": "Filter out undefined values"
+  }
+}
