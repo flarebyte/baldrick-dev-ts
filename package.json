@@ -1,7 +1,11 @@
 {
   "name": "baldrick-dev-ts",
   "description": "CLI for TypeScript package development",
-  "keywords": ["cli", "eslint", "jest"],
+  "keywords": [
+    "cli",
+    "eslint",
+    "jest"
+  ],
   "version": "0.8.0",
   "author": {
     "name": "Olivier Huin <olih@users.noreply.github.com>",
