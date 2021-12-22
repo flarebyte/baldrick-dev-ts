@@ -1,6 +1,6 @@
 import { computeJestConfig } from './jest-config.js';
 import { TestResolvedOpts } from './model.js';
-import jest from 'jest'; // eslint-disable jest/no-jest-import
+import jest from 'jest'; // eslint-disable-line jest/no-jest-import
 import { satisfyFlag } from './flag-helper.js';
 
 export interface JestHandle {

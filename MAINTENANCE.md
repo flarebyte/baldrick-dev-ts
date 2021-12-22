@@ -14,7 +14,9 @@ __Run:__ ```yarn lint```
 
 __From package:__ [baldrick](https://github.com/flarebyte/baldrick-dev-ts) of [npm](https://www.npmjs.com/) :  Zero-config CLI for TypeScript package development
 
----,### Fix static code analysis
+---
+
+### Fix static code analysis
 
 > Fix problems in Typescript code
 
@@ -26,7 +28,9 @@ __Run:__ ```yarn lint:fix```
 
 __From package:__ [baldrick](https://github.com/flarebyte/baldrick-dev-ts) of [npm](https://www.npmjs.com/) :  Zero-config CLI for TypeScript package development
 
----,### Static code analysis for continuous integration
+---
+
+### Static code analysis for continuous integration
 
 > Find problems in Typescript code
 
@@ -38,7 +42,9 @@ __Run:__ ```yarn lint:ci```
 
 __From package:__ [baldrick](https://github.com/flarebyte/baldrick-dev-ts) of [npm](https://www.npmjs.com/) :  Zero-config CLI for TypeScript package development
 
----,### Unit testing
+---
+
+### Unit testing
 
 > Run the unit tests
 
@@ -50,7 +56,9 @@ __Run:__ ```yarn test```
 
 __From package:__ [baldrick](https://github.com/flarebyte/baldrick-dev-ts) of [npm](https://www.npmjs.com/) :  Zero-config CLI for TypeScript package development
 
----,### Fix unit testing snapshots
+---
+
+### Fix unit testing snapshots
 
 > Run the unit tests and update the snapshots
 
@@ -62,7 +70,9 @@ __Run:__ ```yarn test:fix```
 
 __From package:__ [baldrick](https://github.com/flarebyte/baldrick-dev-ts) of [npm](https://www.npmjs.com/) :  Zero-config CLI for TypeScript package development
 
----,### Unit testing code coverage
+---
+
+### Unit testing code coverage
 
 > Verify the extent to which the code has been executed. This does not include any threshold, but it is recommended to maximize the coverage
 
@@ -74,7 +84,9 @@ __Run:__ ```yarn test:cov```
 
 __From package:__ [baldrick](https://github.com/flarebyte/baldrick-dev-ts) of [npm](https://www.npmjs.com/) :  Zero-config CLI for TypeScript package development
 
----,### Unit testing code and coverage for continuous integration
+---
+
+### Unit testing code and coverage for continuous integration
 
 > Test and verify the coverage of the code
 
@@ -86,7 +98,9 @@ __Run:__ ```yarn test:ci```
 
 __From package:__ [baldrick](https://github.com/flarebyte/baldrick-dev-ts) of [npm](https://www.npmjs.com/) :  Zero-config CLI for TypeScript package development
 
----,### Reset distribution and report folders
+---
+
+### Reset distribution and report folders
 
 > Delete the dist and report folder
 
@@ -98,7 +112,9 @@ __Run:__ ```yarn reset```
 
 __From package:__ [yarn](https://classic.yarnpkg.com/en/) of [npm](https://www.npmjs.com/) :  Dependency management
 
----,### Build the library
+---
+
+### Build the library
 
 > Transpile all the typescript source code to javascript
 
@@ -110,7 +126,9 @@ __Run:__ ```yarn build```
 
 __From package:__ [yarn](https://classic.yarnpkg.com/en/) of [npm](https://www.npmjs.com/) :  Dependency management
 
----,### Ready for publishing
+---
+
+### Ready for publishing
 
 > Run a sequence of commands to check that the library is ready to be published
 
@@ -122,7 +140,9 @@ __Run:__ ```yarn ready```
 
 __From package:__ [yarn](https://classic.yarnpkg.com/en/) of [npm](https://www.npmjs.com/) :  Dependency management
 
----,### Versioning
+---
+
+### Versioning
 
 > Checks that the code is ready for versioning and version it
 
@@ -134,7 +154,9 @@ __Run:__ ```yarn version```
 
 __From package:__ [yarn](https://classic.yarnpkg.com/en/) of [npm](https://www.npmjs.com/) :  Dependency management
 
----,### Run GitHub Actions locally
+---
+
+### Run GitHub Actions locally
 
 > Run GitHub Actions inside a docker container
 
@@ -146,7 +168,9 @@ __Run:__ ```act```
 
 __From package:__ [act](https://github.com/nektos/act) of [brew](https://docs.brew.sh/) :  Run GitHub Actions locally
 
----,### Install the local project globally
+---
+
+### Install the local project globally
 
 > Install this local project/script globally on the dev machine for development or testing purpose
 
@@ -158,7 +182,9 @@ __Run:__ ```yarn global add `pwd````
 
 __From package:__ [yarn](https://classic.yarnpkg.com/en/) of [npm](https://www.npmjs.com/) :  Dependency management
 
----,### Normalize the code structure using latest
+---
+
+### Normalize the code structure using latest
 
 > Normalize the code structure using baldrick (npx version)
 
@@ -170,7 +196,9 @@ __Run:__ ```yarn norm```
 
 __From package:__ [baldrick-ts](https://github.com/flarebyte/baldrick-ts) of [npm](https://www.npmjs.com/) :  Typescript scaffolding assistant
 
----,### Normalize the code structure
+---
+
+### Normalize the code structure
 
 > Normalize the code structure using baldrick (global version)
 
