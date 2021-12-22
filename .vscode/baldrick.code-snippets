@@ -1,7 +1,7 @@
 {
-  "b-rm-nulls": {
+  "filter-no-null": {
     "scope": "javascript,typescript",
-    "prefix": "b-rm-nulls",
+    "prefix": "filter-no-null",
     "body": "const removeNulls = <S>(value: S | undefined): value is S => value != null;",
     "description": "Filter out undefined values"
   },
@@ -39,5 +39,14 @@
     "prefix": "mock-console",
     "body": "jest.spyOn(global.console, \"${1|log,info,warn,error|}\").mockImplementation(() => {});",
     "description": "Mock console in unit tests"
+  },
+  "stringify": {
+    "scope": "javascript,typescript",
+    "prefix": "stringify",
+    "body": [
+      "const toJsonString = (value: object): string =>",
+      "  JSON.stringify(value, null, 2);"
+    ],
+    "description": "stringify an object"
   }
 }

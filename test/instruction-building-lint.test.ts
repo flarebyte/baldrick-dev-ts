@@ -1,6 +1,6 @@
-import { LintActionOpts, SupportedEcmaVersion } from '../src/model';
-import { toLintInstructions } from '../src/instruction-building';
-import { emptyFileFiltering } from '../src/path-filtering';
+import { LintActionOpts, SupportedEcmaVersion } from '../src/model.js';
+import { toLintInstructions } from '../src/instruction-building.js';
+import { emptyFileFiltering } from '../src/path-filtering.js';
 
 // https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions
 

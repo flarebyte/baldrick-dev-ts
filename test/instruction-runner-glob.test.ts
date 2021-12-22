@@ -17,8 +17,8 @@ import {
   runFilterInstruction,
   runGlobInstruction,
   runLoadInstruction,
-} from '../src/instruction-runner';
-import { MicroInstruction } from '../src/model';
+} from '../src/instruction-runner.js';
+import { MicroInstruction } from '../src/model.js';
 
 const termFormatter = jest.fn();
 

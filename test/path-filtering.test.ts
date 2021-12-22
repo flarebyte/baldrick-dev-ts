@@ -1,11 +1,11 @@
-import { FileFiltering, PathInfo } from '../src/model';
+import { FileFiltering, PathInfo } from '../src/model.js';
 import {
   byFileQuery,
   commanderStringsToFiltering,
   emptyFileFiltering,
   filteringToCommanderStrings,
-} from '../src/path-filtering';
-import { asPath } from '../src/path-transforming';
+} from '../src/path-filtering.js';
+import { asPath } from '../src/path-transforming.js';
 
 const examples: PathInfo[] = [
   {

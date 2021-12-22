@@ -12,8 +12,8 @@ import {
   readmeMd,
   tsconfigNode,
 } from './generator';
-import { runLintInstruction } from '../src/instruction-runner';
-import { MicroInstruction } from '../src/model';
+import { runLintInstruction } from '../src/instruction-runner.js';
+import { MicroInstruction } from '../src/model.js';
 
 import fs from 'fs-extra';
 import { diffChars } from 'diff';

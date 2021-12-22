@@ -1,5 +1,15 @@
 # Maintenance of the code
 
+## Overall workflow
+
+The typical developer workflow goes as follow:
+
+| Mode                   | Code analysis | Testing                    | Building          | Publishing          |
+| ---------------------- | ------------- | -------------------------- | ----------------- | ------------------- |
+| Checking               | yarn lint     | yarn test or yarn test:cov | yarn build        | yarn ready          |
+| Fixing                 | yarn lint:fix | yarn test:fix              | Fix the code      | Update dependencies |
+| Continuous integration | yarn lint:ci  | yarn test:ci               | Not available yet | Not available yet   |
+
 ## Commands
 
 ### Static code analysis

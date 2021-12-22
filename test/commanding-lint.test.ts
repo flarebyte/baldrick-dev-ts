@@ -1,4 +1,4 @@
-import { Commanding } from '../src/commanding';
+import { Commanding } from '../src/commanding.js';
 
 const actAndGetSecondParam = async (given: string[]) => {
   const commanding = new Commanding();

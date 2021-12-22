@@ -86,9 +86,12 @@ Eventually, the code has been massively refactored to match the new requirements
 * [Code Maintenance](MAINTENANCE.md)
 * [Code Of Conduct](CODE_OF_CONDUCT.md)
 * [Contributing](CONTRIBUTING.md)
+* [Contributors](https://github.com/flarebyte/baldrick-dev-ts/graphs/contributors)
+* [Dependencies](https://github.com/flarebyte/baldrick-dev-ts/network/dependencies)
 
 ## Installation
 
+This package is [ESM only][esm].
 ```
 yarn global add baldrick-dev-ts
 baldrick --help
