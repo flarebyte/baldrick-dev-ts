@@ -6,7 +6,7 @@
     "eslint",
     "jest"
   ],
-  "version": "0.8.0",
+  "version": "0.8.5",
   "author": {
     "name": "Olivier Huin <olih@users.noreply.github.com>",
     "url": "https://github.com/olih"
@@ -62,14 +62,14 @@
     "eslint": "^8.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jest": "^25.2.4",
+    "eslint-plugin-jest": "^25.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "fs-extra": "^10.0.0",
-    "jest": "^27.3.1",
+    "jest": "^27.4.5",
     "jest-junit": "^13.0.0",
     "prettier": "^2.3.2",
     "tiny-glob": "^0.2.9",
-    "ts-jest": "^27.0.7",
+    "ts-jest": "^27.1.2",
     "tslib": "^2.3.1",
     "typescript": "^4.5.2"
   },

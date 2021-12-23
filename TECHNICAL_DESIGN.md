@@ -1,7 +1,5 @@
 # Technical Design
 
-> 
-
 ## Code structure
 
 * __src__: Typescript source code
