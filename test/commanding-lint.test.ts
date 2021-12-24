@@ -1,11 +1,14 @@
-import { Commanding } from '../src/commanding';
+import { jest } from '@jest/globals';
+import { Commanding } from '../src/commanding.js';
+import { LintAction } from '../src/model.js';
 
 const actAndGetSecondParam = async (given: string[]) => {
   const commanding = new Commanding();
   const mockedAction = jest.fn();
-  commanding.declareLintAction(mockedAction);
+  commanding.declareLintAction(mockedAction as LintAction);
   await commanding.parseAsync(['node', 'baldrick', 'lint', ...given]);
-  const secondParam = mockedAction.mock.calls[0][1];
+  const secondParam =
+    mockedAction.mock.calls[0] && mockedAction.mock.calls[0][1];
   return secondParam;
 };
 

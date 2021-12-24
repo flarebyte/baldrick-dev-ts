@@ -1,30 +1,57 @@
 {
   "name": "baldrick-dev-ts",
-  "version": "0.8.0",
   "description": "CLI for TypeScript package development",
-  "repository": "git@github.com:flarebyte/baldrick-dev-ts.git",
-  "author": "Olivier Huin <olih@users.noreply.github.com>",
+  "keywords": [
+    "cli",
+    "eslint",
+    "jest"
+  ],
+  "version": "0.8.5",
+  "author": {
+    "name": "Olivier Huin <olih@users.noreply.github.com>",
+    "url": "https://github.com/olih"
+  },
   "license": "MIT",
-  "engines": {
-    "node": ">=14"
+  "homepage": "https://github.com/flarebyte/baldrick-dev-ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flarebyte/baldrick-dev-ts.git"
   },
   "type": "module",
-  "exports": "./dist/src/cli.mjs",
-  "types": "dist/src",
-  "scripts": {
-    "lint": "baldrick lint check",
-    "lint:fix": "baldrick lint fix",
-    "test": "baldrick test check",
-    "test:fix": "baldrick test fix",
-    "build": "yarn reset; tsc --outDir dist",
-    "reset": "rm -rf temp; rm -rf dist"
+  "exports": {
+    ".": {
+      "import": "./dist/src/cli.mjs",
+      "default": "./dist/src/cli.mjs",
+      "types": "./dist/src"
+    },
+    "./package.json": {
+      "default": "./package.json"
+    }
   },
+  "files": [
+    "dist/src",
+    "src"
+  ],
   "bin": {
     "baldrick": "dist/src/cli.mjs"
   },
-  "files": [
-    "dist/src"
-  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "lint": "npx baldrick-dev-ts lint check",
+    "lint:fix": "npx baldrick-dev-ts lint fix",
+    "lint:ci": "npx baldrick-dev-ts lint ci",
+    "test": "npx baldrick-dev-ts test check",
+    "test:fix": "npx baldrick-dev-ts test fix",
+    "test:cov": "npx baldrick-dev-ts test cov",
+    "test:ci": "npx baldrick-dev-ts test ci",
+    "reset": "rm -rf dist; rm -rf report",
+    "build": "yarn reset;tsc --outDir dist",
+    "ready": "yarn lint && yarn test:cov && yarn outdated",
+    "norm": "npx baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick",
+    "norm:g": "baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick"
+  },
   "dependencies": {
     "@types/jest": "^27.0.3",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
@@ -35,27 +62,24 @@
     "eslint": "^8.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jest": "^25.2.4",
+    "eslint-plugin-jest": "^25.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "fs-extra": "^10.0.0",
-    "jest": "^27.3.1",
+    "jest": "^27.4.5",
     "jest-junit": "^13.0.0",
     "prettier": "^2.3.2",
     "tiny-glob": "^0.2.9",
-    "ts-jest": "^27.0.7",
-    "tslib": "^2.3.1",
-    "typescript": "^4.5.2"
+    "ts-jest": "^27.1.2",
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
     "@types/diff": "^5.0.1",
     "@types/eslint": "^8.2.0",
     "@types/fs-extra": "^9.0.13",
-    "@types/node": "^16.11.9"
+    "@types/node": "^16.11.9",
+    "typescript": "^4.5.3"
   },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
+  "peerDependencies": {
+    "typescript": "4.x"
   }
 }

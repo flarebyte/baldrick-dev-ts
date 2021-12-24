@@ -1,5 +1,5 @@
-import { computeEsLintConfig } from '../src/eslint-config';
-import { LintResolvedOpts } from '../src/model';
+import { computeEsLintConfig } from '../src/eslint-config.js';
+import { LintResolvedOpts } from '../src/model.js';
 
 describe('eslint-config', () => {
   it('should produce a valid config', () => {

@@ -4,7 +4,12 @@ import path from 'path';
 import { satisfyFlag } from './flag-helper.js';
 
 type JestConfigOptions = Partial<Config.InitialOptions>;
-
+/**
+ * Provide a standardized jest config
+ * @see https://github.com/facebook/jest/blob/64de4d7361367fd711a231d25c37f3be89564264/docs/ECMAScriptModules.md
+ * @param opts
+ * @returns
+ */
 export const computeJestConfig = (opts: TestResolvedOpts) => {
   const jestUnitReport: Config.ReporterConfig = [
     'jest-junit',
@@ -37,6 +42,7 @@ export const computeJestConfig = (opts: TestResolvedOpts) => {
     coverageReporters: ['json', 'json-summary', 'lcov', 'text'],
     displayName: opts.displayName,
     testPathIgnorePatterns: ['/node_modules/', 'dist/'],
+    transform: {},
   };
   return config;
 };

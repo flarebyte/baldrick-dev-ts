@@ -1,10 +1,5 @@
 #!/usr/bin/env node
 
-import { commanding } from './index.js';
+import { runClient } from './client.js';
 
-try {
-  await commanding.parseAsyncArgv();
-} catch (err) {
-  console.log('Baldrick will exit with error code 1');
-  process.exit(1);
-}
+await runClient();
