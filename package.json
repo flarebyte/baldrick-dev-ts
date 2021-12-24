@@ -39,18 +39,18 @@
     "node": ">=14"
   },
   "scripts": {
-    "lint": "baldrick lint check",
-    "lint:fix": "baldrick lint fix",
-    "lint:ci": "baldrick lint ci",
-    "test": "baldrick test check",
-    "test:fix": "baldrick test fix",
-    "test:cov": "baldrick test cov",
-    "test:ci": "baldrick test ci",
+    "lint": "npx baldrick-dev-ts lint check",
+    "lint:fix": "npx baldrick-dev-ts lint fix",
+    "lint:ci": "npx baldrick-dev-ts lint ci",
+    "test": "npx baldrick-dev-ts test check",
+    "test:fix": "npx baldrick-dev-ts test fix",
+    "test:cov": "npx baldrick-dev-ts test cov",
+    "test:ci": "npx baldrick-dev-ts test ci",
     "reset": "rm -rf dist; rm -rf report",
     "build": "yarn reset;tsc --outDir dist",
     "ready": "yarn lint && yarn test:cov && yarn outdated",
-    "norm": "npx baldrick-ts generate -f cli -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick",
-    "norm:g": "baldrick-ts generate -f cli -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick"
+    "norm": "npx baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick",
+    "norm:g": "baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick"
   },
   "dependencies": {
     "@types/jest": "^27.0.3",
@@ -70,8 +70,7 @@
     "prettier": "^2.3.2",
     "tiny-glob": "^0.2.9",
     "ts-jest": "^27.1.2",
-    "tslib": "^2.3.1",
-    "typescript": "^4.5.2"
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
     "@types/diff": "^5.0.1",
@@ -79,5 +78,7 @@
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^16.11.9"
   },
-  "peerDependencies": {}
+  "peerDependencies": {
+    "typescript": "4.x"
+  }
 }
