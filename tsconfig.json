@@ -4,7 +4,6 @@
     "module": "es2022",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "importHelpers": true,
     "diagnostics": true,
     "extendedDiagnostics": true
   },

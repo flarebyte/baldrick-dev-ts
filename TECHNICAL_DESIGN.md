@@ -1,5 +1,7 @@
 # Technical Design
 
+> 
+
 ## Code structure
 
 * __src__: Typescript source code
@@ -12,3 +14,4 @@
 ## Useful links
 
 * Guideline for [Clean Code in Typescript](https://labs42io.github.io/clean-code-typescript/)
+* [Supporting node.js ESM](https://the-guild.dev/blog/support-nodejs-esm)

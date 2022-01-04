@@ -17,6 +17,7 @@
     "type": "git",
     "url": "https://github.com/flarebyte/baldrick-dev-ts.git"
   },
+  "bugs": "https://github.com/flarebyte/baldrick-dev-ts/issues",
   "type": "module",
   "exports": {
     ".": {
@@ -47,8 +48,11 @@
     "test:cov": "npx baldrick-dev-ts test cov",
     "test:ci": "npx baldrick-dev-ts test ci",
     "reset": "rm -rf dist; rm -rf report",
-    "build": "yarn reset;tsc --outDir dist",
+    "prebuild": "yarn reset",
+    "build": "tsc --outDir dist",
+    "doc": "npx typedoc --json report/doc.json --pretty src/index.ts && npx baldrick-doc-ts typedoc --json-source report/doc.json",
     "ready": "yarn lint && yarn test:cov && yarn outdated",
+    "github": "gh repo edit --delete-branch-on-merge --enable-squash-merge",
     "norm": "npx baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick",
     "norm:g": "baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick"
   },
