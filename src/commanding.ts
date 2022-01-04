@@ -1,9 +1,9 @@
 import { Command } from 'commander';
 import { version } from './version.js';
 import {
-  BuildAction,
-  BuildActionOpts,
-  BuildActionRawOpts,
+  MarkdownAction,
+  MarkdownActionOpts,
+  MarkdownActionRawOpts,
   GlobAction,
   LintAction,
   LintActionOpts,
@@ -20,7 +20,7 @@ import {
   toSupportedEcma,
 } from './commanding-helper.js';
 import {
-  cmdBuildFilterOptions,
+  cmdMarkdownFilterOptions,
   cmdLintFilterOptions,
   cmdTestFilterOptions,
 } from './commanding-data.js';
@@ -142,16 +142,16 @@ export class Commanding {
       });
   }
 
-  declareBuildAction(buildAction: BuildAction) {
+  declareMarkdownAction(markdownAction: MarkdownAction) {
     this._program
-      .command('build')
-      .description('Build the code')
-      .addArgument(toCommanderArgument(cmdBuildFilterOptions.aim))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.reportBase))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withPathStarting))
-      .action(async (aim: string, options: BuildActionRawOpts) => {
+      .command('markdown')
+      .description('Markdown the code')
+      .addArgument(toCommanderArgument(cmdMarkdownFilterOptions.aim))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.reportBase))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withPathStarting))
+      .action(async (aim: string, options: MarkdownActionRawOpts) => {
         const { reportBase, withPathStarting } = options;
-        const buildOpts: BuildActionOpts = {
+        const markdownOpts: MarkdownActionOpts = {
           flags: toSupportedFlags([`aim:${aim}`]),
           fileSearching: {
             pathInfos: [],
@@ -176,7 +176,7 @@ export class Commanding {
           termFormatter: basicFormatter,
           errTermFormatter: errorFormatter,
         };
-        await buildAction(ctx, buildOpts);
+        await markdownAction(ctx, markdownOpts);
       });
   }
 

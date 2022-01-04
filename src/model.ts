@@ -92,7 +92,7 @@ export type MicroInstruction =
       >;
     }
   | {
-      name: 'build';
+      name: 'markdown';
       params: Pick<
         InstructionParams,
         | 'targetFiles'
@@ -212,18 +212,10 @@ export interface TestInstructionResult {
   status: InstructionStatus;
 }
 
-// Build ---perhaps we don't need build after-all and can just use tsc instead
-// In 2023, if the build code is still not used, we should remove it from the code base
+// Markdown
+export interface MarkdownActionRawOpts extends BaseAction, MinFileFiltering {}
 
-export interface TscOptionsConfig {
-  buildFolder: string;
-  name: string;
-  input: string;
-}
-
-export interface BuildActionRawOpts extends BaseAction, MinFileFiltering {}
-
-export interface BuildActionOpts {
+export interface MarkdownActionOpts {
   flags: SupportedFlag[];
   fileSearching: FileSearching;
   reportBase: string;
@@ -231,12 +223,12 @@ export interface BuildActionOpts {
   reportPrefix: string;
 }
 
-export type BuildAction = (
+export type MarkdownAction = (
   ctx: RunnerContext,
-  options: BuildActionOpts
+  options: MarkdownActionOpts
 ) => Promise<void>;
 
-export interface BuildResolvedOpts {
+export interface MarkdownResolvedOpts {
   modulePath: string;
   flags: SupportedFlag[];
   pathPatterns: string[];
@@ -244,6 +236,6 @@ export interface BuildResolvedOpts {
   outputName: string;
 }
 
-export interface BuildInstructionResult {
+export interface MarkdownInstructionResult {
   status: InstructionStatus;
 }

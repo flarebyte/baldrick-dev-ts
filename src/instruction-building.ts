@@ -1,5 +1,5 @@
 import {
-  BuildActionOpts,
+  MarkdownActionOpts,
   FileSearching,
   LintActionOpts,
   MicroInstruction,
@@ -142,11 +142,11 @@ const configureTestInstructions = (
     },
   },
 ];
-const configureBuildInstructions = (
-  opts: BuildActionOpts
+const configureMarkdownInstructions = (
+  opts: MarkdownActionOpts
 ): MicroInstruction[] => [
   {
-    name: 'build',
+    name: 'markdown',
     params: {
       targetFiles: opts.fileSearching.filtering.withPathStarting,
       reportBase: opts.reportBase,
@@ -174,8 +174,8 @@ export const toTestInstructions = (
   return [...configureTestInstructions(opts)];
 };
 
-export const toBuildInstructions = (
-  opts: BuildActionOpts
+export const toMarkdownInstructions = (
+  opts: MarkdownActionOpts
 ): MicroInstruction[] => {
-  return [...configureBuildInstructions(opts)];
+  return [...configureMarkdownInstructions(opts)];
 };

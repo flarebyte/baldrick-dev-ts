@@ -1,12 +1,12 @@
 import {
-  toBuildInstructions,
+  toMarkdownInstructions,
   toLintInstructions,
   toTestInstructions,
 } from './instruction-building.js';
 import { runInstructions } from './instruction-runner.js';
 import {
-  BuildAction,
-  BuildActionOpts,
+  MarkdownAction,
+  MarkdownActionOpts,
   LintAction,
   LintActionOpts,
   RunnerContext,
@@ -36,13 +36,13 @@ export const cmdTestAction: TestAction = async (
   }
 };
 
-export const cmdBuildAction: BuildAction = async (
+export const cmdMarkdownAction: MarkdownAction = async (
   ctx: RunnerContext,
-  options: BuildActionOpts
+  options: MarkdownActionOpts
 ) => {
-  const instructions = toBuildInstructions(options);
+  const instructions = toMarkdownInstructions(options);
   const status = await runInstructions(ctx, instructions);
   if (status === 'ko') {
-    throw Error('Build action did fail !');
+    throw Error('Markdown action did fail !');
   }
 };

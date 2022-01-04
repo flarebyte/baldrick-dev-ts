@@ -8,10 +8,9 @@ import {
   TermFormatterParams,
   TestResolvedOpts,
   TestInstructionResult,
-  BuildInstructionResult,
-  BuildResolvedOpts,
+  MarkdownInstructionResult,
+  MarkdownResolvedOpts,
   BasicInstructionResult,
-  TscOptionsConfig,
 } from './model.js';
 import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming.js';
 import { readFile } from 'fs/promises';
@@ -22,8 +21,6 @@ import { createESLint, lintCommand } from './eslint-helper.js';
 import { outputFile } from 'fs-extra';
 import { ESLint } from 'eslint';
 import { createJest, jestCommand } from './jest-helper.js';
-import { buildBundle, cleanDistFolder } from './tsc-helper.js';
-import { tscConfig } from './tsc-config.js';
 import { satisfyFlag } from './flag-helper.js';
 
 const instructionToTermIntro = (
@@ -250,11 +247,11 @@ export const runTestInstructionWithCatch = async (
   return { status: 'ok' };
 };
 
-const runBuildInstruction = async (
+const runMarkdownInstruction = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction & { name: 'build' },
+  instruction: MicroInstruction & { name: 'markdown' },
   pathInfos: PathInfo[]
-): Promise<BuildInstructionResult> => {
+): Promise<MarkdownInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
     params: { targetFiles, reportDirectory, reportPrefix, flags },
@@ -262,7 +259,7 @@ const runBuildInstruction = async (
 
   const targetFilesOrEmpty = targetFiles || [];
   const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
-  const buildOpts: BuildResolvedOpts = {
+  const markdownOpts: MarkdownResolvedOpts = {
     modulePath: ctx.currentPath,
     flags,
     pathPatterns,
@@ -271,51 +268,34 @@ const runBuildInstruction = async (
   };
 
   ctx.termFormatter({
-    title: 'Building - final opts',
-    detail: buildOpts,
+    title: 'Markdown - final opts',
+    detail: markdownOpts,
     kind: 'info',
     format: 'human',
   });
 
-  const presetOpts: TscOptionsConfig = {
-    buildFolder: 'dist',
-    name: 'demo-name',
-    input: 'src/index.ts',
-  };
-  const compilerConfig = tscConfig(presetOpts);
-
-  ctx.termFormatter({
-    title: 'Building - rollup config',
-    detail: compilerConfig,
-    kind: 'info',
-    format: 'default',
-  });
-
-  await cleanDistFolder(presetOpts.buildFolder);
-  await buildBundle(compilerConfig);
-
   return { status: 'ok' };
 };
 
-export const runBuildInstructionWithCatch = async (
+export const runMarkdownInstructionWithCatch = async (
   ctx: RunnerContext,
-  instruction: MicroInstruction & { name: 'build' },
+  instruction: MicroInstruction & { name: 'markdown' },
   pathInfos: PathInfo[]
 ): Promise<BasicInstructionResult> => {
   try {
     const started = new Date().getTime();
-    await runBuildInstruction(ctx, instruction, pathInfos);
+    await runMarkdownInstruction(ctx, instruction, pathInfos);
     const finished = new Date().getTime();
     const delta_seconds = ((finished - started) / 1000).toFixed(1);
     ctx.termFormatter({
-      title: 'Building - finished',
+      title: 'Markdown - finished',
       detail: `Took ${delta_seconds} seconds`,
       format: 'default',
       kind: 'info',
     });
   } catch (err) {
     ctx.errTermFormatter({
-      title: 'Building - build error',
+      title: 'Markdown - markdown error',
       detail: err,
     });
     throw err;
@@ -335,7 +315,9 @@ export const runInstructions = async (
   );
   const lintInstruction = instructions.find((instr) => instr.name === 'lint');
   const testInstruction = instructions.find((instr) => instr.name === 'test');
-  const buildInstruction = instructions.find((instr) => instr.name === 'build');
+  const markdownInstruction = instructions.find(
+    (instr) => instr.name === 'markdown'
+  );
 
   const files =
     filesInstruction && filesInstruction.name === 'files'
@@ -366,8 +348,12 @@ export const runInstructions = async (
       : false;
 
   const built =
-    buildInstruction && buildInstruction.name === 'build'
-      ? await runBuildInstructionWithCatch(ctx, buildInstruction, filtered)
+    markdownInstruction && markdownInstruction.name === 'markdown'
+      ? await runMarkdownInstructionWithCatch(
+          ctx,
+          markdownInstruction,
+          filtered
+        )
       : false;
 
   return linted
