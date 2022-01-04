@@ -79,6 +79,31 @@ export const runGlobInstruction = async (
   return matchedFiles.flat().map(toPathInfo);
 };
 
+export const runGlobInstructionWithCatch = async (
+  ctx: RunnerContext,
+  instruction: MicroInstruction & { name: 'glob' }
+): Promise<PathInfo[]> => {
+  try {
+    const started = new Date().getTime();
+    const results = await runGlobInstruction(ctx, instruction);
+    const finished = new Date().getTime();
+    const delta_seconds = ((finished - started) / 1000).toFixed(1);
+    ctx.termFormatter({
+      title: 'Globbing - finished',
+      detail: `Took ${delta_seconds} seconds`,
+      format: 'default',
+      kind: 'info',
+    });
+    return results;
+  } catch (err) {
+    ctx.errTermFormatter({
+      title: 'Globbing - error',
+      detail: err,
+    });
+    throw err;
+  }
+};
+
 export const runFilterInstruction = (
   ctx: RunnerContext,
   instruction: MicroInstruction & { name: 'filter' },
@@ -328,7 +353,7 @@ export const runInstructions = async (
       : [];
   const globed =
     globInstruction && globInstruction.name === 'glob'
-      ? await runGlobInstruction(ctx, globInstruction)
+      ? await runGlobInstructionWithCatch(ctx, globInstruction)
       : [];
 
   const allFileInfos = [...files, ...loaded, ...globed];
