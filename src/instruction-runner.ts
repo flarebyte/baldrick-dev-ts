@@ -254,11 +254,10 @@ const runMarkdownInstruction = async (
 ): Promise<MarkdownInstructionResult> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
-    params: { targetFiles, reportDirectory, reportPrefix, flags },
+    params: { reportDirectory, reportPrefix, flags },
   } = instruction;
 
-  const targetFilesOrEmpty = targetFiles || [];
-  const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
+  const pathPatterns = pathInfos.map(asPath);
   const markdownOpts: MarkdownResolvedOpts = {
     modulePath: ctx.currentPath,
     flags,

@@ -23,6 +23,7 @@ type MinFileFiltering = Pick<FileFiltering, 'withPathStarting'>;
 export interface FileSearching {
   pathInfos: PathInfo[];
   filtering: FileFiltering;
+  useGlob: 'auto' | 'yes';
 }
 
 export type GlobAction = (script: string[]) => void;
@@ -95,11 +96,7 @@ export type MicroInstruction =
       name: 'markdown';
       params: Pick<
         InstructionParams,
-        | 'targetFiles'
-        | 'reportBase'
-        | 'reportDirectory'
-        | 'reportPrefix'
-        | 'flags'
+        'reportBase' | 'reportDirectory' | 'reportPrefix' | 'flags'
       >;
     };
 
@@ -213,7 +210,7 @@ export interface TestInstructionResult {
 }
 
 // Markdown
-export interface MarkdownActionRawOpts extends BaseAction, MinFileFiltering {}
+export interface MarkdownActionRawOpts extends BaseAction, FileFiltering {}
 
 export interface MarkdownActionOpts {
   flags: SupportedFlag[];

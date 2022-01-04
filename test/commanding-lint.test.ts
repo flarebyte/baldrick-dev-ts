@@ -42,6 +42,7 @@ describe('Commands Lint', () => {
             "withoutTagStarting": Array [],
           },
           "pathInfos": Array [],
+          "useGlob": "auto",
         },
         "flags": Array [
           "aim:check",

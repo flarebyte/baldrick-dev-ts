@@ -88,6 +88,7 @@ export class Commanding {
               withTagStarting,
               withoutTagStarting,
             },
+            useGlob: 'auto',
           },
           ecmaVersion: toSupportedEcma(options.ecmaVersion),
           reportBase,
@@ -128,6 +129,7 @@ export class Commanding {
               withTagStarting: [],
               withoutTagStarting: [],
             },
+            useGlob: 'auto',
           },
           reportBase,
           displayName,
@@ -145,28 +147,52 @@ export class Commanding {
   declareMarkdownAction(markdownAction: MarkdownAction) {
     this._program
       .command('markdown')
-      .description('Markdown the code')
+      .description('Process markdown documents')
       .addArgument(toCommanderArgument(cmdMarkdownFilterOptions.aim))
       .addOption(toCommanderOption(cmdMarkdownFilterOptions.reportBase))
       .addOption(toCommanderOption(cmdMarkdownFilterOptions.withPathStarting))
+      .addOption(
+        toCommanderOption(cmdMarkdownFilterOptions.withoutPathStarting)
+      )
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withExtension))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withoutExtension))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withPathSegment))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withoutPathSegment))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withTag))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withoutTag))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withTagStarting))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withoutTagStarting))
       .action(async (aim: string, options: MarkdownActionRawOpts) => {
-        const { reportBase, withPathStarting } = options;
+        const {
+          reportBase,
+          withPathStarting,
+          withoutPathStarting,
+          withExtension,
+          withoutExtension,
+          withPathSegment,
+          withoutPathSegment,
+          withTag,
+          withoutTag,
+          withTagStarting,
+          withoutTagStarting,
+        } = options;
         const markdownOpts: MarkdownActionOpts = {
           flags: toSupportedFlags([`aim:${aim}`]),
           fileSearching: {
             pathInfos: [],
             filtering: {
               withPathStarting,
-              withoutPathStarting: [],
-              withExtension: [],
-              withoutExtension: [],
-              withPathSegment: [],
-              withoutPathSegment: [],
-              withTag: [],
-              withoutTag: [],
-              withTagStarting: [],
-              withoutTagStarting: [],
+              withoutPathStarting,
+              withExtension,
+              withoutExtension,
+              withPathSegment,
+              withoutPathSegment,
+              withTag,
+              withoutTag,
+              withTagStarting,
+              withoutTagStarting,
             },
+            useGlob: 'yes',
           },
           reportBase,
           ...splitReportBase(reportBase),

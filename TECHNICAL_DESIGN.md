@@ -1,6 +1,7 @@
 # Technical Design
 
-> 
+> Overview of the technical design for this project
+
 
 ## Code structure
 

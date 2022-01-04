@@ -22,7 +22,8 @@ const isSimpleLint = (fileSearching: FileSearching): boolean =>
   fileSearching.pathInfos.length === 0 && !moreThanStartAndExt(fileSearching);
 
 const shouldGlob = (fileSearching: FileSearching): boolean =>
-  fileSearching.pathInfos.length === 0 && moreThanStartAndExt(fileSearching);
+  fileSearching.useGlob === 'yes' ||
+  (fileSearching.pathInfos.length === 0 && moreThanStartAndExt(fileSearching));
 
 const shouldLoadFiles = (fileSearching: FileSearching): boolean =>
   fileSearching.pathInfos.some((p) => p.tags.includes('@load'));
@@ -148,7 +149,6 @@ const configureMarkdownInstructions = (
   {
     name: 'markdown',
     params: {
-      targetFiles: opts.fileSearching.filtering.withPathStarting,
       reportBase: opts.reportBase,
       reportDirectory: opts.reportDirectory,
       reportPrefix: opts.reportPrefix,
@@ -177,5 +177,11 @@ export const toTestInstructions = (
 export const toMarkdownInstructions = (
   opts: MarkdownActionOpts
 ): MicroInstruction[] => {
-  return [...configureMarkdownInstructions(opts)];
+  return [
+    ...filesInstructions(opts.fileSearching),
+    ...loadInstructions(opts.fileSearching),
+    ...globInstructions(opts.fileSearching),
+    ...filterInstructions(opts.fileSearching),
+    ...configureMarkdownInstructions(opts),
+  ];
 };

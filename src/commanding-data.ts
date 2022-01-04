@@ -28,7 +28,7 @@ interface CmdTestOptions extends CmdOptionsBase, CmdOptionsMinFilter {
   displayName: CmdOption;
 }
 
-interface CmdMarkdownOptions extends CmdOptionsBase, CmdOptionsMinFilter {}
+interface CmdMarkdownOptions extends CmdOptionsBase, CmdOptionsFilter {}
 
 const stringsOption = (
   shortFlag: string,
@@ -179,4 +179,13 @@ export const cmdMarkdownFilterOptions: CmdMarkdownOptions = {
     'report/markdown-report'
   ),
   withPathStarting,
+  withoutPathStarting,
+  withExtension: { ...withExtension, defaultValue: ['.md'] },
+  withoutExtension,
+  withPathSegment,
+  withoutPathSegment,
+  withTag,
+  withoutTag,
+  withTagStarting,
+  withoutTagStarting,
 };
