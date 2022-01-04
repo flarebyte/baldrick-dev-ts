@@ -29,8 +29,7 @@ const shouldLoadFiles = (fileSearching: FileSearching): boolean =>
   fileSearching.pathInfos.some((p) => p.tags.includes('@load'));
 
 const shouldFilter = (fileSearching: FileSearching): boolean =>
-  (shouldGlob(fileSearching) || shouldLoadFiles(fileSearching)) &&
-  moreThanStartAndExt(fileSearching);
+  shouldGlob(fileSearching) || shouldLoadFiles(fileSearching);
 
 const loadInstructions = (fileSearching: FileSearching): MicroInstruction[] => {
   const targetFiles = fileSearching.pathInfos
@@ -66,9 +65,10 @@ const filesInstructions = (
       ];
 };
 const globInstructions = (fileSearching: FileSearching): MicroInstruction[] => {
-  const targetFiles = fileSearching.filtering.withPathStarting.map(
-    (p) => `${p}**/*`
-  );
+  const targetFiles =
+    fileSearching.filtering.withPathStarting.length === 0
+      ? ['*']
+      : fileSearching.filtering.withPathStarting.map((p) => `${p}**/*`);
   return shouldGlob(fileSearching)
     ? [
         {

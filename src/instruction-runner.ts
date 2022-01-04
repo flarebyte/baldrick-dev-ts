@@ -346,7 +346,7 @@ export const runInstructions = async (
       ? await runTestInstructionWithCatch(ctx, testInstruction, filtered)
       : false;
 
-  const built =
+  const markdowned =
     markdownInstruction && markdownInstruction.name === 'markdown'
       ? await runMarkdownInstructionWithCatch(
           ctx,
@@ -359,7 +359,7 @@ export const runInstructions = async (
     ? linted.status
     : tested
     ? tested.status
-    : built
-    ? built.status
+    : markdowned
+    ? markdowned.status
     : 'ko';
 };
