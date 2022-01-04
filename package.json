@@ -6,7 +6,7 @@
     "eslint",
     "jest"
   ],
-  "version": "0.8.5",
+  "version": "0.9.0",
   "author": {
     "name": "Olivier Huin <olih@users.noreply.github.com>",
     "url": "https://github.com/olih"
@@ -57,30 +57,30 @@
     "norm:g": "baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick"
   },
   "dependencies": {
-    "@types/jest": "^27.0.3",
-    "@typescript-eslint/eslint-plugin": "^5.4.0",
-    "@typescript-eslint/parser": "^5.4.0",
+    "@types/jest": "27.4.0",
+    "@typescript-eslint/eslint-plugin": "5.9.0",
+    "@typescript-eslint/parser": "5.9.0",
     "baldrick-tsconfig-es2020": "^0.9.0",
     "commander": "^8.3.0",
     "diff": "^5.0.0",
-    "eslint": "^8.2.0",
+    "eslint": "8.6.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jest": "^25.3.0",
+    "eslint-plugin-import": "2.25.4",
+    "eslint-plugin-jest": "25.3.4",
     "eslint-plugin-prettier": "^4.0.0",
     "fs-extra": "^10.0.0",
     "jest": "^27.4.5",
     "jest-junit": "^13.0.0",
-    "prettier": "^2.3.2",
+    "prettier": "2.5.1",
     "tiny-glob": "^0.2.9",
     "ts-jest": "^27.1.2",
     "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@types/diff": "^5.0.1",
-    "@types/eslint": "^8.2.0",
+    "@types/diff": "5.0.2",
+    "@types/eslint": "8.2.1",
     "@types/fs-extra": "^9.0.13",
-    "@types/node": "^16.11.9",
+    "@types/node": "16.11.18",
     "typescript": "^4.5.3"
   },
   "peerDependencies": {
