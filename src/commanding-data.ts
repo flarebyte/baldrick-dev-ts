@@ -171,7 +171,11 @@ export const cmdTestFilterOptions: CmdTestOptions = {
 };
 
 export const cmdMarkdownFilterOptions: CmdMarkdownOptions = {
-  aim: choiceOption('a', 'aim', 'Specify the aim for markdown', ['check']),
+  aim: choiceOption('a', 'aim', 'Specify the aim for markdown', [
+    'check',
+    'fix',
+    'ci',
+  ]),
   reportBase: stringOption(
     'rb',
     'report-base',

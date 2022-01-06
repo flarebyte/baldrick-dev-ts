@@ -22,6 +22,8 @@ import { outputFile } from 'fs-extra';
 import { ESLint } from 'eslint';
 import { createJest, jestCommand } from './jest-helper.js';
 import { satisfyFlag } from './flag-helper.js';
+import { runMdPrettier } from './prettier-md-helper.js';
+import { runMdRemark } from './remark-md-helper.js';
 
 const instructionToTermIntro = (
   instruction: MicroInstruction
@@ -297,6 +299,15 @@ const runMarkdownInstruction = async (
     kind: 'info',
     format: 'human',
   });
+
+  const shouldFix = satisfyFlag('aim:fix', flags);
+  if (shouldFix) {
+    await runMdPrettier(pathPatterns);
+  }
+  const shouldCheck = satisfyFlag('aim:check', flags);
+  if (shouldCheck) {
+    await runMdRemark(pathPatterns);
+  }
 
   return { status: 'ok' };
 };

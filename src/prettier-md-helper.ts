@@ -1,6 +1,8 @@
-import { format, Options } from 'prettier';
+import prettier, { Options } from 'prettier';
 import { computePrettierMdConfig } from './prettier-md-config.js';
 import { readFile, writeFile } from 'fs/promises';
+
+const { format } = prettier;
 const fileLimits = 200;
 const runMdPrettierOnFile =
   (prettierOpts: Options) => async (filename: string) => {

@@ -69,12 +69,15 @@
     "eslint-plugin-jest": "25.3.4",
     "eslint-plugin-prettier": "^4.0.0",
     "fs-extra": "^10.0.0",
-    "jest": "^27.4.5",
+    "jest": "27.4.7",
     "jest-junit": "^13.0.0",
     "prettier": "2.5.1",
+    "remark-cli": "^10.0.1",
+    "remark-preset-lint-markdown-style-guide": "^5.1.2",
     "tiny-glob": "^0.2.9",
     "ts-jest": "^27.1.2",
-    "tslib": "^2.3.1"
+    "tslib": "^2.3.1",
+    "vfile-reporter": "^7.0.3"
   },
   "devDependencies": {
     "@types/diff": "5.0.2",
