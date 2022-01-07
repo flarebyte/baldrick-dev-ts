@@ -3,7 +3,7 @@ import { computePrettierMdConfig } from './prettier-md-config.js';
 import { readFile, writeFile } from 'fs/promises';
 
 const { format } = prettier;
-const fileLimits = 200;
+const filesLimit = 200;
 const runMdPrettierOnFile =
   (prettierOpts: Options) => async (filename: string) => {
     const content = await readFile(filename, 'utf-8');
@@ -12,7 +12,7 @@ const runMdPrettierOnFile =
   };
 
 export const runMdPrettier = async (filenames: string[]) => {
-  if (filenames.length > fileLimits) {
+  if (filenames.length > filesLimit) {
     throw new Error(`Too many files to process: ${filenames.length}`);
   }
   if (filenames.length === 0) {

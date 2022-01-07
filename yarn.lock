@@ -5131,6 +5131,14 @@ vfile-message@^3.0.0:
     "@types/unist" "^2.0.0"
     unist-util-stringify-position "^3.0.0"
 
+vfile-reporter-json@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/vfile-reporter-json/-/vfile-reporter-json-3.1.0.tgz#a5168ab39fc8a1b766556b5a1b4490438ae94528"
+  integrity sha512-Hm/rXgIGecCyjbXGY1BswIU6U0cy2ebixnags0vC26w2ckM9p8YeSn8jpsLZ3ply8zTZCRD1Er0Uc9hee8eMwg==
+  dependencies:
+    vfile "^5.0.0"
+    vfile-message "^3.0.0"
+
 vfile-reporter@^7.0.0, vfile-reporter@^7.0.3:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/vfile-reporter/-/vfile-reporter-7.0.3.tgz#faa72f6d2d56841b352480c827b53f8417cb1b33"

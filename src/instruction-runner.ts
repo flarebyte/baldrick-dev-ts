@@ -306,7 +306,7 @@ const runMarkdownInstruction = async (
   }
   const shouldCheck = satisfyFlag('aim:check', flags);
   if (shouldCheck) {
-    await runMdRemark(pathPatterns);
+    await runMdRemark(markdownOpts, pathPatterns);
   }
 
   return { status: 'ok' };
