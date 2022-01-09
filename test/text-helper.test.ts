@@ -13,6 +13,7 @@ const loremIpsum = [
 describe('text-helper', () => {
   it('should wrap word', () => {
     const actual = wrapWord(30, loremIpsum);
+    expect((actual[0] || '').length).toBeLessThanOrEqual(30);
     expect(actual).toMatchInlineSnapshot(`
       "Lorem ipsum dolor sit amet,
       consectetur adipiscing elit, sed

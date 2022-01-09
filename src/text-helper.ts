@@ -59,7 +59,8 @@ type MdLineType =
   | 'paragraph'
   | 'header'
   | 'table-row'
-  | 'code-block';
+  | 'code-block'
+  | 'horizontal-line';
 
 const getMdLineType = (line: string): MdLineType => {
   const trimmed = line.trim();
@@ -71,6 +72,9 @@ const getMdLineType = (line: string): MdLineType => {
   }
   if (trimmed.startsWith('1.')) {
     return 'ordered-list';
+  }
+  if (trimmed.startsWith('---')) {
+    return 'horizontal-line';
   }
   if (trimmed.startsWith('-')) {
     return 'unordered-list';
@@ -97,7 +101,8 @@ export const normalizeMdLine = (line: string): string => {
   const keepLineAsIs =
     lineType === 'header' ||
     lineType === 'table-row' ||
-    lineType === 'code-block';
+    lineType === 'code-block' ||
+    lineType === 'horizontal-line';
   if (keepLineAsIs) {
     return line;
   }
