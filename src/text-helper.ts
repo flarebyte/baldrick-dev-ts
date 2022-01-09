@@ -11,21 +11,22 @@ const createWrappingWord = (current: string): WrappingWord => ({
   current,
   done: [],
   progress: {
-    count: current.length,
+    count: current.length + 1,
     words: [current],
   },
 });
 
+const oneSpace = 1;
 const mergeWrappingWords =
   (width: number) =>
   (total: WrappingWord, next: WrappingWord): WrappingWord => {
-    const newCount = next.current.length + total.progress.count;
+    const newCount = next.current.length + total.progress.count + oneSpace;
     if (newCount > width) {
       return {
         current: next.current,
         done: [...total.done, total.progress.words.join(' ')],
         progress: {
-          count: next.current.length,
+          count: next.current.length + oneSpace,
           words: [next.current],
         },
       };
