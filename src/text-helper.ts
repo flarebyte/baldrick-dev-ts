@@ -116,15 +116,17 @@ export const normalizeMdLine = (line: string): string => {
   const leadingSpaces = ' '.repeat(nbOfLeadingSpaces);
   if (lineType === 'unordered-list') {
     const ulText = wrapWord(maxLineOther, trimmed.substring(1).trim());
-    return `${leadingSpaces}-   ${ulText}`;
+    return `${leadingSpaces}- ${ulText}`;
   }
   if (lineType === 'ordered-list') {
     const olText = wrapWord(maxLineOther, trimmed.substring(2).trim());
-    return `${leadingSpaces}1.   ${olText}`;
+    return `${leadingSpaces}1. ${olText}`;
   }
   if (lineType === 'blockquote') {
     const bqText = wrapWord(maxLineOther, trimmed.substring(1).trim());
-    return `${leadingSpaces}> ${bqText}`;
+    const bqSplitted = bqText.split('\n');
+    const bqPrefixed = bqSplitted.map((li) => `${leadingSpaces}> ${li}`);
+    return bqPrefixed.join('\n');
   }
 
   throw new Error('should be a supported line type');
