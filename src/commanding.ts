@@ -1,9 +1,9 @@
 import { Command } from 'commander';
 import { version } from './version.js';
 import {
-  BuildAction,
-  BuildActionOpts,
-  BuildActionRawOpts,
+  MarkdownAction,
+  MarkdownActionOpts,
+  MarkdownActionRawOpts,
   GlobAction,
   LintAction,
   LintActionOpts,
@@ -20,7 +20,7 @@ import {
   toSupportedEcma,
 } from './commanding-helper.js';
 import {
-  cmdBuildFilterOptions,
+  cmdMarkdownFilterOptions,
   cmdLintFilterOptions,
   cmdTestFilterOptions,
 } from './commanding-data.js';
@@ -88,6 +88,7 @@ export class Commanding {
               withTagStarting,
               withoutTagStarting,
             },
+            useGlob: 'auto',
           },
           ecmaVersion: toSupportedEcma(options.ecmaVersion),
           reportBase,
@@ -128,6 +129,7 @@ export class Commanding {
               withTagStarting: [],
               withoutTagStarting: [],
             },
+            useGlob: 'auto',
           },
           reportBase,
           displayName,
@@ -142,31 +144,55 @@ export class Commanding {
       });
   }
 
-  declareBuildAction(buildAction: BuildAction) {
+  declareMarkdownAction(markdownAction: MarkdownAction) {
     this._program
-      .command('build')
-      .description('Build the code')
-      .addArgument(toCommanderArgument(cmdBuildFilterOptions.aim))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.reportBase))
-      .addOption(toCommanderOption(cmdBuildFilterOptions.withPathStarting))
-      .action(async (aim: string, options: BuildActionRawOpts) => {
-        const { reportBase, withPathStarting } = options;
-        const buildOpts: BuildActionOpts = {
+      .command('markdown')
+      .description('Process markdown documents')
+      .addArgument(toCommanderArgument(cmdMarkdownFilterOptions.aim))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.reportBase))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withPathStarting))
+      .addOption(
+        toCommanderOption(cmdMarkdownFilterOptions.withoutPathStarting)
+      )
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withExtension))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withoutExtension))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withPathSegment))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withoutPathSegment))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withTag))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withoutTag))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withTagStarting))
+      .addOption(toCommanderOption(cmdMarkdownFilterOptions.withoutTagStarting))
+      .action(async (aim: string, options: MarkdownActionRawOpts) => {
+        const {
+          reportBase,
+          withPathStarting,
+          withoutPathStarting,
+          withExtension,
+          withoutExtension,
+          withPathSegment,
+          withoutPathSegment,
+          withTag,
+          withoutTag,
+          withTagStarting,
+          withoutTagStarting,
+        } = options;
+        const markdownOpts: MarkdownActionOpts = {
           flags: toSupportedFlags([`aim:${aim}`]),
           fileSearching: {
             pathInfos: [],
             filtering: {
               withPathStarting,
-              withoutPathStarting: [],
-              withExtension: [],
-              withoutExtension: [],
-              withPathSegment: [],
-              withoutPathSegment: [],
-              withTag: [],
-              withoutTag: [],
-              withTagStarting: [],
-              withoutTagStarting: [],
+              withoutPathStarting,
+              withExtension,
+              withoutExtension,
+              withPathSegment,
+              withoutPathSegment,
+              withTag,
+              withoutTag,
+              withTagStarting,
+              withoutTagStarting,
             },
+            useGlob: 'yes',
           },
           reportBase,
           ...splitReportBase(reportBase),
@@ -176,7 +202,7 @@ export class Commanding {
           termFormatter: basicFormatter,
           errTermFormatter: errorFormatter,
         };
-        await buildAction(ctx, buildOpts);
+        await markdownAction(ctx, markdownOpts);
       });
   }
 

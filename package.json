@@ -6,7 +6,7 @@
     "eslint",
     "jest"
   ],
-  "version": "0.8.5",
+  "version": "0.9.0",
   "author": {
     "name": "Olivier Huin <olih@users.noreply.github.com>",
     "url": "https://github.com/olih"
@@ -17,6 +17,7 @@
     "type": "git",
     "url": "https://github.com/flarebyte/baldrick-dev-ts.git"
   },
+  "bugs": "https://github.com/flarebyte/baldrick-dev-ts/issues",
   "type": "module",
   "exports": {
     ".": {
@@ -47,36 +48,43 @@
     "test:cov": "npx baldrick-dev-ts test cov",
     "test:ci": "npx baldrick-dev-ts test ci",
     "reset": "rm -rf dist; rm -rf report",
-    "build": "yarn reset;tsc --outDir dist",
+    "prebuild": "yarn reset",
+    "build": "tsc --outDir dist",
+    "doc": "npx typedoc --json report/doc.json --pretty src/index.ts && npx baldrick-doc-ts typedoc --json-source report/doc.json",
     "ready": "yarn lint && yarn test:cov && yarn outdated",
+    "github": "gh repo edit --delete-branch-on-merge --enable-squash-merge",
     "norm": "npx baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick",
     "norm:g": "baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick"
   },
   "dependencies": {
-    "@types/jest": "^27.0.3",
-    "@typescript-eslint/eslint-plugin": "^5.4.0",
-    "@typescript-eslint/parser": "^5.4.0",
+    "@types/jest": "27.4.0",
+    "@typescript-eslint/eslint-plugin": "5.9.0",
+    "@typescript-eslint/parser": "5.9.0",
     "baldrick-tsconfig-es2020": "^0.9.0",
     "commander": "^8.3.0",
     "diff": "^5.0.0",
-    "eslint": "^8.2.0",
+    "eslint": "8.6.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jest": "^25.3.0",
+    "eslint-plugin-import": "2.25.4",
+    "eslint-plugin-jest": "25.3.4",
     "eslint-plugin-prettier": "^4.0.0",
     "fs-extra": "^10.0.0",
-    "jest": "^27.4.5",
+    "jest": "27.4.7",
     "jest-junit": "^13.0.0",
-    "prettier": "^2.3.2",
+    "prettier": "2.5.1",
+    "remark-cli": "^10.0.1",
+    "remark-preset-lint-markdown-style-guide": "^5.1.2",
     "tiny-glob": "^0.2.9",
     "ts-jest": "^27.1.2",
-    "tslib": "^2.3.1"
+    "tslib": "^2.3.1",
+    "vfile-reporter": "^7.0.3",
+    "vfile-reporter-json": "^3.1.0"
   },
   "devDependencies": {
-    "@types/diff": "^5.0.1",
-    "@types/eslint": "^8.2.0",
+    "@types/diff": "5.0.2",
+    "@types/eslint": "8.2.1",
     "@types/fs-extra": "^9.0.13",
-    "@types/node": "^16.11.9",
+    "@types/node": "16.11.18",
     "typescript": "^4.5.3"
   },
   "peerDependencies": {

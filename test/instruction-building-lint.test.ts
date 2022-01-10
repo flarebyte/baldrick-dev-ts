@@ -22,6 +22,7 @@ describe('Build instruction for linting', () => {
           ...emptyFileFiltering,
           withPathStarting: ['src/', 'test/'],
         },
+        useGlob: 'auto'
       },
     };
 
@@ -56,6 +57,7 @@ describe('Build instruction for linting', () => {
           withPathStarting: ['test/'],
           withExtension: ['.specs.ts'],
         },
+        useGlob: 'auto'
       },
     };
 
@@ -90,6 +92,7 @@ describe('Build instruction for linting', () => {
           { path: 'gen/step2.ts', tags: ['phase2'] },
         ],
         filtering: { ...emptyFileFiltering, withTag: ['phase1'] },
+        useGlob: 'auto'
       },
     };
 
@@ -128,6 +131,7 @@ describe('Build instruction for linting', () => {
       fileSearching: {
         pathInfos: [{ path: 'gen/schemas.csv', tags: ['@load'] }],
         filtering: { ...emptyFileFiltering, withTag: ['phase1'] },
+        useGlob: 'auto'
       },
     };
 
@@ -180,6 +184,7 @@ describe('Build instruction for linting', () => {
           withPathStarting: ['src/', 'test/'],
           withoutPathSegment: ['fixture'],
         },
+        useGlob: 'auto'
       },
     };
 

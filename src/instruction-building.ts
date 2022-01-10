@@ -1,5 +1,5 @@
 import {
-  BuildActionOpts,
+  MarkdownActionOpts,
   FileSearching,
   LintActionOpts,
   MicroInstruction,
@@ -22,14 +22,14 @@ const isSimpleLint = (fileSearching: FileSearching): boolean =>
   fileSearching.pathInfos.length === 0 && !moreThanStartAndExt(fileSearching);
 
 const shouldGlob = (fileSearching: FileSearching): boolean =>
-  fileSearching.pathInfos.length === 0 && moreThanStartAndExt(fileSearching);
+  fileSearching.useGlob === 'yes' ||
+  (fileSearching.pathInfos.length === 0 && moreThanStartAndExt(fileSearching));
 
 const shouldLoadFiles = (fileSearching: FileSearching): boolean =>
   fileSearching.pathInfos.some((p) => p.tags.includes('@load'));
 
 const shouldFilter = (fileSearching: FileSearching): boolean =>
-  (shouldGlob(fileSearching) || shouldLoadFiles(fileSearching)) &&
-  moreThanStartAndExt(fileSearching);
+  shouldGlob(fileSearching) || shouldLoadFiles(fileSearching);
 
 const loadInstructions = (fileSearching: FileSearching): MicroInstruction[] => {
   const targetFiles = fileSearching.pathInfos
@@ -65,9 +65,10 @@ const filesInstructions = (
       ];
 };
 const globInstructions = (fileSearching: FileSearching): MicroInstruction[] => {
-  const targetFiles = fileSearching.filtering.withPathStarting.map(
-    (p) => `${p}**/*`
-  );
+  const targetFiles =
+    fileSearching.filtering.withPathStarting.length === 0
+      ? ['*']
+      : fileSearching.filtering.withPathStarting.map((p) => `${p}**/*`);
   return shouldGlob(fileSearching)
     ? [
         {
@@ -142,13 +143,12 @@ const configureTestInstructions = (
     },
   },
 ];
-const configureBuildInstructions = (
-  opts: BuildActionOpts
+const configureMarkdownInstructions = (
+  opts: MarkdownActionOpts
 ): MicroInstruction[] => [
   {
-    name: 'build',
+    name: 'markdown',
     params: {
-      targetFiles: opts.fileSearching.filtering.withPathStarting,
       reportBase: opts.reportBase,
       reportDirectory: opts.reportDirectory,
       reportPrefix: opts.reportPrefix,
@@ -174,8 +174,14 @@ export const toTestInstructions = (
   return [...configureTestInstructions(opts)];
 };
 
-export const toBuildInstructions = (
-  opts: BuildActionOpts
+export const toMarkdownInstructions = (
+  opts: MarkdownActionOpts
 ): MicroInstruction[] => {
-  return [...configureBuildInstructions(opts)];
+  return [
+    ...filesInstructions(opts.fileSearching),
+    ...loadInstructions(opts.fileSearching),
+    ...globInstructions(opts.fileSearching),
+    ...filterInstructions(opts.fileSearching),
+    ...configureMarkdownInstructions(opts),
+  ];
 };

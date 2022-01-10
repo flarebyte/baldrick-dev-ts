@@ -28,7 +28,7 @@ interface CmdTestOptions extends CmdOptionsBase, CmdOptionsMinFilter {
   displayName: CmdOption;
 }
 
-interface CmdBuildOptions extends CmdOptionsBase, CmdOptionsMinFilter {}
+interface CmdMarkdownOptions extends CmdOptionsBase, CmdOptionsFilter {}
 
 const stringsOption = (
   shortFlag: string,
@@ -170,13 +170,26 @@ export const cmdTestFilterOptions: CmdTestOptions = {
   withPathStarting: { ...withPathStarting, defaultValue: ['test'] },
 };
 
-export const cmdBuildFilterOptions: CmdBuildOptions = {
-  aim: choiceOption('a', 'aim', 'Specify the aim for build', ['check']),
+export const cmdMarkdownFilterOptions: CmdMarkdownOptions = {
+  aim: choiceOption('a', 'aim', 'Specify the aim for markdown', [
+    'check',
+    'fix',
+    'ci',
+  ]),
   reportBase: stringOption(
     'rb',
     'report-base',
     'Specify the base name for reporting',
-    'report/build-report'
+    'report/markdown-report'
   ),
   withPathStarting,
+  withoutPathStarting,
+  withExtension: { ...withExtension, defaultValue: ['.md'] },
+  withoutExtension,
+  withPathSegment,
+  withoutPathSegment,
+  withTag,
+  withoutTag,
+  withTagStarting,
+  withoutTagStarting,
 };

@@ -4,11 +4,11 @@
 
 The typical developer workflow goes as follow:
 
-| Mode                   | Code analysis | Testing                    | Building          | Publishing          |
-| ---------------------- | ------------- | -------------------------- | ----------------- | ------------------- |
-| Checking               | yarn lint     | yarn test or yarn test:cov | yarn build        | yarn ready          |
-| Fixing                 | yarn lint:fix | yarn test:fix              | Fix the code      | Update dependencies |
-| Continuous integration | yarn lint:ci  | yarn test:ci               | Not available yet | Not available yet   |
+| Mode                   | Code analysis | Testing                    | Building     | Publishing                       |
+| ---------------------- | ------------- | -------------------------- | ------------ | -------------------------------- |
+| Checking               | yarn lint     | yarn test or yarn test:cov | yarn build   | yarn ready                       |
+| Fixing                 | yarn lint:fix | yarn test:fix              | Fix the code | Update dependencies and yarn doc |
+| Continuous integration | yarn lint:ci  | yarn test:ci               | yarn build   | Not available yet                |
 
 ## Commands
 
@@ -124,6 +124,20 @@ __From package:__ [yarn](https://classic.yarnpkg.com/en/) of [npm](https://www.n
 
 ---
 
+### Clear previous build
+
+> Delete the dist and report folder
+
+__Motivation:__ Start from a clean slate
+
+__When to use it:__ Before building
+
+__Run:__ ```yarn prebuild```
+
+__From package:__ [yarn](https://classic.yarnpkg.com/en/) of [npm](https://www.npmjs.com/) :  Dependency management
+
+---
+
 ### Build the library
 
 > Transpile all the typescript source code to javascript
@@ -133,6 +147,20 @@ __Motivation:__ ESM library should be written in javascript
 __When to use it:__ Before building
 
 __Run:__ ```yarn build```
+
+__From package:__ [yarn](https://classic.yarnpkg.com/en/) of [npm](https://www.npmjs.com/) :  Dependency management
+
+---
+
+### Generate the documentation
+
+> Generate the markdown documentation for the typescript project
+
+__Motivation:__ Good documentation is essential for developer experience
+
+__When to use it:__ Before publishing
+
+__Run:__ ```yarn doc```
 
 __From package:__ [yarn](https://classic.yarnpkg.com/en/) of [npm](https://www.npmjs.com/) :  Dependency management
 
@@ -177,6 +205,20 @@ __When to use it:__ When changing github actions
 __Run:__ ```act```
 
 __From package:__ [act](https://github.com/nektos/act) of [brew](https://docs.brew.sh/) :  Run GitHub Actions locally
+
+---
+
+### Update github repository
+
+> Enable useful features for the github project repository
+
+__Motivation:__ Create consistent settings
+
+__When to use it:__ After creating
+
+__Run:__ ```yarn github```
+
+__From package:__ [gh](https://cli.github.com/) of [brew](https://docs.brew.sh/) :  GitHub CLI brings GitHub to your terminal
 
 ---
 
