@@ -6,7 +6,7 @@
     "eslint",
     "jest"
   ],
-  "version": "0.9.0",
+  "version": "0.10.0",
   "author": {
     "name": "Olivier Huin <olih@users.noreply.github.com>",
     "url": "https://github.com/olih"

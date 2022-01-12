@@ -97,6 +97,7 @@ export const fixMdRemarkContent = async (content: string) => {
       bullet: '-',
       listItemIndent: 'tab',
       incrementListMarker: true,
+      fences: true,
     })
     .process(content);
 
