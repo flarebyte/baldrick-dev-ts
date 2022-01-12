@@ -2,6 +2,7 @@ import prettier, { Options } from 'prettier';
 import { computePrettierMdConfig } from './prettier-md-config.js';
 import { readFile, writeFile } from 'fs/promises';
 import { normalizeMdLine } from './text-helper.js';
+import { fixMdRemarkContent } from './remark-md-helper.js';
 
 const { format } = prettier;
 const filesLimit = 200;
@@ -11,7 +12,9 @@ const runMdPrettierOnFile =
     const formatted = format(content, prettierOpts);
     const lines = formatted.split('\n');
     const fixedLines = lines.map(normalizeMdLine);
-    writeFile(filename, fixedLines.join('\n'), 'utf-8');
+    const customFix = fixedLines.join('\n');
+    const remarked = await fixMdRemarkContent(customFix);
+    writeFile(filename, remarked, 'utf-8');
   };
 
 export const runMdPrettier = async (filenames: string[]) => {
