@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import {
   ErrTermFormatterParams,
   TermFormatterFormat,
@@ -25,9 +26,19 @@ export const basicFormatter = (params: TermFormatterParams) => {
       ? params.detail
       : toJsonish(params.format, params.detail);
 
-  console.info(` ★ ${params.title} ⇨`, detail);
+  if (params.kind === 'info') {
+    console.info(` ★ ${params.title} ⇨`, detail);
+  }
+
+  if (params.kind === 'intro') {
+    console.info(chalk.blue(' ✸ ') + `${params.title} ⇨`, detail);
+  }
+
+  if (params.kind === 'success') {
+    console.info(chalk.green(' ✔ Success ') + `${params.title} ⇨`, detail);
+  }
 };
 
 export const errorFormatter = (params: ErrTermFormatterParams) => {
-  console.error(` ★ ${params.title} ⇨`, params.detail);
+  console.error(chalk.red('❌ Failure ') + `${params.title} ⇨`, params.detail);
 };

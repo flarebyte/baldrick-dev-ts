@@ -101,7 +101,7 @@ export type MicroInstruction =
     };
 
 export type InstructionStatus = 'ok' | 'ko' | 'warning';
-type TermFormatterKind = 'intro' | 'info';
+type TermFormatterKind = 'intro' | 'info' | 'success';
 export type TermFormatterFormat = 'default' | 'human';
 
 export interface TermFormatterParams {
