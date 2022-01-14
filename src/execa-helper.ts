@@ -1,10 +1,10 @@
 import { execa } from 'execa';
-import { RunnerContext } from './model';
+import { RunnerContext } from './model.js';
 
 type VersionsObj = { [Key in string]?: string };
 
 const isVersion = (version?: string): boolean =>
-  typeof version === 'string' && version.split('.').length === 2;
+  typeof version === 'string' && version.split('.').length === 3;
 
 export const getYarnVersions = async (): Promise<VersionsObj> => {
   try {
@@ -18,19 +18,23 @@ export const getYarnVersions = async (): Promise<VersionsObj> => {
 
 interface YarnInfo {
   name: string;
-  description: string;
-  version: string;
+  data: {
+    description: string;
+    version: string;
+  };
 }
 
 export const getYarnInfo = async (ctx: RunnerContext): Promise<YarnInfo> => {
   try {
     const { stdout, stderr } = await execa('yarn', ['info', '--json']);
     const content: YarnInfo = JSON.parse(stdout);
-    const valid = isVersion(content.version);
+    const valid = isVersion(content?.data?.version);
     if (!valid) {
       ctx.errTermFormatter({
         title: 'yarn info',
-        detail: stderr ? `${stderr} ${stdout}` : stdout,
+        detail: stderr
+          ? `version: ${content?.data?.version}\n<<<${stdout}>>>\n\nERR:\n${stderr}`
+          : `version: ${content?.data?.version}\n<<<${stdout}>>>`,
       });
       throw new Error(`yarn info failed to retrieve the version`);
     }
@@ -54,12 +58,14 @@ export const npmPublish = async (ctx: RunnerContext): Promise<void> => {
   }
 };
 
+/**
+ * @example `gh release create v0.6.0 --generate-notes`
+ */
 export const ghRelease = async (
   ctx: RunnerContext,
   version: string
 ): Promise<void> => {
   try {
-    // gh release create v0.6.0 --generate-notes
     const { stdout, stderr } = await execa('gh', [
       'release',
       'create',
@@ -68,7 +74,7 @@ export const ghRelease = async (
     ]);
     ctx.termFormatter({
       title: 'gh release',
-      detail: stderr ? `${stderr} ${stdout}` : stdout,
+      detail: stderr ? `${stderr}\n\n${stdout}` : stdout,
       kind: 'info',
       format: 'default',
     });

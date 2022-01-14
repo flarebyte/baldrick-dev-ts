@@ -17,7 +17,7 @@ const isPublishable = async (
   const remoteInfo = await getYarnInfo(ctx);
   return localInfo.version === '0.1.0'
     ? [true, '0.1.0']
-    : [localInfo.version !== remoteInfo.version, localInfo.version];
+    : [localInfo.version !== remoteInfo.data.version, localInfo.version];
 };
 
 export const runReleaseAction: ReleaseAction = async (
