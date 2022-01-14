@@ -1,3 +1,4 @@
+import { runReleaseActionWithCatch } from './action-release.js';
 import {
   toMarkdownInstructions,
   toLintInstructions,
@@ -12,6 +13,8 @@ import {
   RunnerContext,
   TestAction,
   TestActionOpts,
+  ReleaseAction,
+  ReleaseActionOpts,
 } from './model.js';
 
 export const cmdLintAction: LintAction = async (
@@ -44,5 +47,15 @@ export const cmdMarkdownAction: MarkdownAction = async (
   const status = await runInstructions(ctx, instructions);
   if (status === 'ko') {
     throw Error('Markdown action did fail !');
+  }
+};
+
+export const cmdReleaseAction: ReleaseAction = async (
+  ctx: RunnerContext,
+  options: ReleaseActionOpts
+) => {
+  const status = await runReleaseActionWithCatch(ctx, options);
+  if (status === 'ko') {
+    throw Error('Release action did fail !');
   }
 };

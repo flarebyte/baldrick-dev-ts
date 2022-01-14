@@ -236,3 +236,17 @@ export interface MarkdownResolvedOpts {
 export interface MarkdownInstructionResult {
   status: InstructionStatus;
 }
+
+// Release
+export interface ReleaseActionOpts {
+  flags: SupportedFlag[];
+}
+
+export type ReleaseAction = (
+  ctx: RunnerContext,
+  options: ReleaseActionOpts
+) => Promise<void>;
+
+export interface ReleaseResolvedOpts {
+  flags: SupportedFlag[];
+}

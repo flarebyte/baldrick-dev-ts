@@ -30,6 +30,10 @@ interface CmdTestOptions extends CmdOptionsBase, CmdOptionsMinFilter {
 
 interface CmdMarkdownOptions extends CmdOptionsBase, CmdOptionsFilter {}
 
+interface CmdReleaseOptions {
+  aim: CmdOption;
+}
+
 const stringsOption = (
   shortFlag: string,
   longFlag: string,
@@ -192,4 +196,8 @@ export const cmdMarkdownFilterOptions: CmdMarkdownOptions = {
   withoutTag,
   withTagStarting,
   withoutTagStarting,
+};
+
+export const cmdReleaseOptions: CmdReleaseOptions = {
+  aim: choiceOption('a', 'aim', 'Specify the aim for release', ['check', 'ci']),
 };

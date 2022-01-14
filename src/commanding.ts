@@ -12,6 +12,8 @@ import {
   TestAction,
   TestActionOpts,
   TestActionRawOpts,
+  ReleaseAction,
+  ReleaseActionOpts,
 } from './model';
 import {
   splitReportBase,
@@ -23,6 +25,7 @@ import {
   cmdMarkdownFilterOptions,
   cmdLintFilterOptions,
   cmdTestFilterOptions,
+  cmdReleaseOptions,
 } from './commanding-data.js';
 import { basicFormatter, errorFormatter } from '../src/term-formatter.js';
 import { toSupportedFlags } from './flag-helper.js';
@@ -203,6 +206,24 @@ export class Commanding {
           errTermFormatter: errorFormatter,
         };
         await markdownAction(ctx, markdownOpts);
+      });
+  }
+
+  declareReleaseAction(releaseAction: ReleaseAction) {
+    this._program
+      .command('release')
+      .description('Publish and release the current project')
+      .addArgument(toCommanderArgument(cmdReleaseOptions.aim))
+      .action(async (aim: string) => {
+        const ctx: RunnerContext = {
+          currentPath: process.cwd(),
+          termFormatter: basicFormatter,
+          errTermFormatter: errorFormatter,
+        };
+        const releaseOpts: ReleaseActionOpts = {
+          flags: toSupportedFlags([`aim:${aim}`]),
+        };
+        await releaseAction(ctx, releaseOpts);
       });
   }
 

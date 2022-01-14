@@ -39,6 +39,9 @@ const formatJsonWarnings = async (opts: MarkdownResolvedOpts, vfile: VFile) => {
   await fs.appendFile(pathName, singleLineJson);
 };
 
+/**
+ * @see https://github.com/codacy/codacy-remark-lint
+ */
 const createRemark = () =>
   remark()
     .use(remarkPresetLintConsistent)
