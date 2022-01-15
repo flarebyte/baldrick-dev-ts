@@ -21,25 +21,23 @@ const mergeWrappingWords =
   (width: number) =>
   (total: WrappingWord, next: WrappingWord): WrappingWord => {
     const newCount = next.current.length + total.progress.count + oneSpace;
-    if (newCount > width) {
-      return {
-        current: next.current,
-        done: [...total.done, total.progress.words.join(' ')],
-        progress: {
-          count: next.current.length + oneSpace,
-          words: [next.current],
-        },
-      };
-    } else {
-      return {
-        current: next.current,
-        done: total.done,
-        progress: {
-          count: newCount,
-          words: [...total.progress.words, next.current],
-        },
-      };
-    }
+    return newCount > width
+      ? {
+          current: next.current,
+          done: [...total.done, total.progress.words.join(' ')],
+          progress: {
+            count: next.current.length + oneSpace,
+            words: [next.current],
+          },
+        }
+      : {
+          current: next.current,
+          done: total.done,
+          progress: {
+            count: newCount,
+            words: [...total.progress.words, next.current],
+          },
+        };
   };
 
 export const wrapWord = (width: number, text: string): string => {
@@ -115,15 +113,15 @@ export const normalizeMdLine = (line: string): string => {
   const nbOfLeadingSpaces = line.length - trimmed.length;
   const leadingSpaces = ' '.repeat(nbOfLeadingSpaces);
   if (lineType === 'unordered-list') {
-    const ulText = wrapWord(maxLineOther, trimmed.substring(1).trim());
+    const ulText = wrapWord(maxLineOther, trimmed.slice(1).trim());
     return `${leadingSpaces}- ${ulText}`;
   }
   if (lineType === 'ordered-list') {
-    const olText = wrapWord(maxLineOther, trimmed.substring(2).trim());
+    const olText = wrapWord(maxLineOther, trimmed.slice(2).trim());
     return `${leadingSpaces}1. ${olText}`;
   }
   if (lineType === 'blockquote') {
-    const bqText = wrapWord(maxLineOther, trimmed.substring(1).trim());
+    const bqText = wrapWord(maxLineOther, trimmed.slice(1).trim());
     const bqSplitted = bqText.split('\n');
     const bqPrefixed = bqSplitted.map((li) => `${leadingSpaces}> ${li}`);
     return bqPrefixed.join('\n');

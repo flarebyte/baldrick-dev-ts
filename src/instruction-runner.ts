@@ -13,8 +13,8 @@ import {
   BasicInstructionResult,
 } from './model.js';
 import { asPath, toMergedPathInfos, toPathInfo } from './path-transforming.js';
-import { readFile } from 'fs/promises';
-import path from 'path';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import { byFileQuery, commanderStringsToFiltering } from './path-filtering.js';
 import glob from 'tiny-glob';
 import { createESLint, lintCommand } from './eslint-helper.js';
@@ -86,9 +86,9 @@ export const runGlobInstructionWithCatch = async (
   instruction: MicroInstruction & { name: 'glob' }
 ): Promise<PathInfo[]> => {
   try {
-    const started = new Date().getTime();
+    const started = Date.now();
     const results = await runGlobInstruction(ctx, instruction);
-    const finished = new Date().getTime();
+    const finished = Date.now();
     const delta_seconds = ((finished - started) / 1000).toFixed(1);
     ctx.termFormatter({
       title: 'Globbing - finished',
@@ -97,12 +97,12 @@ export const runGlobInstructionWithCatch = async (
       kind: 'success',
     });
     return results;
-  } catch (err) {
+  } catch (error) {
     ctx.errTermFormatter({
       title: 'Globbing - error',
-      detail: err,
+      detail: error,
     });
-    throw err;
+    throw error;
   }
 };
 
@@ -179,9 +179,9 @@ export const runLintInstructionWithCatch = async (
   pathInfos: PathInfo[]
 ): Promise<BasicInstructionResult> => {
   try {
-    const started = new Date().getTime();
+    const started = Date.now();
     await runLintInstruction(ctx, instruction, pathInfos);
-    const finished = new Date().getTime();
+    const finished = Date.now();
     const delta_seconds = ((finished - started) / 1000).toFixed(1);
     ctx.termFormatter({
       title: 'Linting - finished',
@@ -189,12 +189,12 @@ export const runLintInstructionWithCatch = async (
       format: 'default',
       kind: 'success',
     });
-  } catch (err) {
+  } catch (error) {
     ctx.errTermFormatter({
       title: 'Linting - lint error',
-      detail: err,
+      detail: error,
     });
-    throw err;
+    throw error;
   }
   return { status: 'ok' };
 };
@@ -254,9 +254,9 @@ export const runTestInstructionWithCatch = async (
   pathInfos: PathInfo[]
 ): Promise<BasicInstructionResult> => {
   try {
-    const started = new Date().getTime();
+    const started = Date.now();
     await runTestInstruction(ctx, instruction, pathInfos);
-    const finished = new Date().getTime();
+    const finished = Date.now();
     const delta_seconds = ((finished - started) / 1000).toFixed(1);
     ctx.termFormatter({
       title: 'Testing - finished',
@@ -264,12 +264,12 @@ export const runTestInstructionWithCatch = async (
       format: 'default',
       kind: 'success',
     });
-  } catch (err) {
+  } catch (error) {
     ctx.errTermFormatter({
       title: 'Testing - build error',
-      detail: err,
+      detail: error,
     });
-    throw err;
+    throw error;
   }
   return { status: 'ok' };
 };
@@ -318,9 +318,9 @@ export const runMarkdownInstructionWithCatch = async (
   pathInfos: PathInfo[]
 ): Promise<BasicInstructionResult> => {
   try {
-    const started = new Date().getTime();
+    const started = Date.now();
     await runMarkdownInstruction(ctx, instruction, pathInfos);
-    const finished = new Date().getTime();
+    const finished = Date.now();
     const delta_seconds = ((finished - started) / 1000).toFixed(1);
     ctx.termFormatter({
       title: 'Markdown - finished',
@@ -328,12 +328,12 @@ export const runMarkdownInstructionWithCatch = async (
       format: 'default',
       kind: 'success',
     });
-  } catch (err) {
+  } catch (error) {
     ctx.errTermFormatter({
       title: 'Markdown - markdown error',
-      detail: err,
+      detail: error,
     });
-    throw err;
+    throw error;
   }
   return { status: 'ok' };
 };

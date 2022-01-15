@@ -13,9 +13,9 @@ const simplifyObj = (obj: object): object => {
   return Object.fromEntries(relevantValues);
 };
 
-const greenSuccess = isCI() ? '✔ Success' : '\x1b[32m✔ Success\x1b[0m';
-const redFailure = isCI() ? '❌ Failure' : '\x1b[31m❌ Failure\x1b[0m';
-const blueIntro = isCI() ? ' ✸' : ' \x1b[34m✸\x1b[0m';
+const greenSuccess = isCI() ? '✔ Success' : '\u001B[32m✔ Success\u001B[0m';
+const redFailure = isCI() ? '❌ Failure' : '\u001B[31m❌ Failure\u001B[0m';
+const blueIntro = isCI() ? ' ✸' : ' \u001B[34m✸\u001B[0m';
 
 const simplifyJson = (value: string): string => value.replace(/["']/g, ' ');
 

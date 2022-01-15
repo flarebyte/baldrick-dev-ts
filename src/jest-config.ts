@@ -1,6 +1,6 @@
 import { Config } from '@jest/types';
 import { TestResolvedOpts } from './model.js';
-import path from 'path';
+import path from 'node:path';
 import { satisfyFlag } from './flag-helper.js';
 
 type JestConfigOptions = Partial<Config.InitialOptions>;

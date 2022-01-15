@@ -143,7 +143,7 @@ export const commanderStringsToFiltering = (
 
   const findValuesbyName = (name: string): string[] => {
     const found = cmdkeyRanges.find(
-      (keyRange) => keyRange[0].substring(2) === name
+      (keyRange) => keyRange[0].slice(2) === name
     );
     return found ? cmdStrings.slice(found[1], found[2]) : [];
   };
