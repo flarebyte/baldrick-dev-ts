@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import {
   ErrTermFormatterParams,
   TermFormatterFormat,
@@ -12,6 +11,10 @@ const simplifyObj = (obj: object): object => {
   );
   return Object.fromEntries(relevantValues);
 };
+
+const greenSuccess = '\x1b[32m✔ Success\x1b[0m';
+const redFailure = '\x1b[31m❌ Failure\x1b[0m';
+const blueIntro = ' \x1b[34m✸\x1b[0m';
 
 const simplifyJson = (value: string): string => value.replace(/["']/g, ' ');
 
@@ -31,14 +34,14 @@ export const basicFormatter = (params: TermFormatterParams) => {
   }
 
   if (params.kind === 'intro') {
-    console.info(chalk.blue(' ✸ ') + `${params.title} ⇨`, detail);
+    console.info(`${blueIntro} ${params.title} ⇨`, detail);
   }
 
   if (params.kind === 'success') {
-    console.info(chalk.green(' ✔ Success ') + `${params.title} ⇨`, detail);
+    console.info(`${greenSuccess} ${params.title} ⇨`, detail);
   }
 };
 
 export const errorFormatter = (params: ErrTermFormatterParams) => {
-  console.error(chalk.red('❌ Failure ') + `${params.title} ⇨`, params.detail);
+  console.error(`${redFailure} ${params.title} ⇨`, params.detail);
 };
