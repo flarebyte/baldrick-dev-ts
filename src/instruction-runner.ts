@@ -124,7 +124,8 @@ const toEslintStatus = (
 ): InstructionStatus => {
   const hasError = lintResults.some((res) => res.errorCount > 0);
   const hasWarning = lintResults.some((res) => res.warningCount > 0);
-  return hasError ? 'ko' : hasWarning ? 'warning' : 'ok';
+  const warningOrOk = hasWarning ? 'warning' : 'ok';
+  return hasError ? 'ko' : warningOrOk;
 };
 
 export const runLintInstruction = async (
@@ -391,11 +392,13 @@ export const runInstructions = async (
         )
       : false;
 
-  return linted
-    ? linted.status
-    : tested
-    ? tested.status
-    : markdowned
-    ? markdowned.status
-    : 'ko';
+  if (linted) {
+    return linted.status;
+  } else if (tested) {
+    return tested.status;
+  } else if (markdowned) {
+    return markdowned.status;
+  } else {
+    return 'ko';
+  }
 };
