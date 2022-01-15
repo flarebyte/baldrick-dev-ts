@@ -7,7 +7,7 @@ export type PackageJson = {
 };
 
 export const readPackageJson = async (): Promise<PackageJson> => {
-  const content = await fs.readFile('./package.json');
+  const content = await fs.readFile('./package.json', { encoding: 'utf-8' });
   const contentJson: PackageJson = JSON.parse(content);
   return contentJson;
 };

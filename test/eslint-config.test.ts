@@ -21,6 +21,7 @@ describe('eslint-config', () => {
             "plugin:jest/recommended",
             "plugin:import/recommended",
             "plugin:import/typescript",
+            "plugin:unicorn/recommended",
           ],
           "parser": "@typescript-eslint/parser",
           "parserOptions": Object {
@@ -32,6 +33,7 @@ describe('eslint-config', () => {
             "prettier",
             "jest",
             "import",
+            "unicorn",
           ],
           "root": true,
           "rules": Object {
@@ -44,6 +46,7 @@ describe('eslint-config', () => {
               },
             ],
             "prettier/prettier": "error",
+            "unicorn/prevent-abbreviations": "off",
           },
           "settings": Object {},
         },
