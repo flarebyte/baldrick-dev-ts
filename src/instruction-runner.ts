@@ -94,7 +94,7 @@ export const runGlobInstructionWithCatch = async (
       title: 'Globbing - finished',
       detail: `Took ${delta_seconds} seconds`,
       format: 'default',
-      kind: 'info',
+      kind: 'success',
     });
     return results;
   } catch (err) {
@@ -187,7 +187,7 @@ export const runLintInstructionWithCatch = async (
       title: 'Linting - finished',
       detail: `Took ${delta_seconds} seconds`,
       format: 'default',
-      kind: 'info',
+      kind: 'success',
     });
   } catch (err) {
     ctx.errTermFormatter({
@@ -262,7 +262,7 @@ export const runTestInstructionWithCatch = async (
       title: 'Testing - finished',
       detail: `Took ${delta_seconds} seconds`,
       format: 'default',
-      kind: 'info',
+      kind: 'success',
     });
   } catch (err) {
     ctx.errTermFormatter({
@@ -326,7 +326,7 @@ export const runMarkdownInstructionWithCatch = async (
       title: 'Markdown - finished',
       detail: `Took ${delta_seconds} seconds`,
       format: 'default',
-      kind: 'info',
+      kind: 'success',
     });
   } catch (err) {
     ctx.errTermFormatter({

@@ -1,3 +1,4 @@
+import { isCI } from './environment.js';
 import {
   ErrTermFormatterParams,
   TermFormatterFormat,
@@ -12,6 +13,10 @@ const simplifyObj = (obj: object): object => {
   return Object.fromEntries(relevantValues);
 };
 
+const greenSuccess = isCI() ? '✔ Success' : '\x1b[32m✔ Success\x1b[0m';
+const redFailure = isCI() ? '❌ Failure' : '\x1b[31m❌ Failure\x1b[0m';
+const blueIntro = isCI() ? ' ✸' : ' \x1b[34m✸\x1b[0m';
+
 const simplifyJson = (value: string): string => value.replace(/["']/g, ' ');
 
 const toJsonish = (format: TermFormatterFormat, value: object): string =>
@@ -25,9 +30,19 @@ export const basicFormatter = (params: TermFormatterParams) => {
       ? params.detail
       : toJsonish(params.format, params.detail);
 
-  console.info(` ★ ${params.title} ⇨`, detail);
+  if (params.kind === 'info') {
+    console.info(` ★ ${params.title} ⇨`, detail);
+  }
+
+  if (params.kind === 'intro') {
+    console.info(`${blueIntro} ${params.title} ⇨`, detail);
+  }
+
+  if (params.kind === 'success') {
+    console.info(`${greenSuccess} ${params.title} ⇨`, detail);
+  }
 };
 
 export const errorFormatter = (params: ErrTermFormatterParams) => {
-  console.error(` ★ ${params.title} ⇨`, params.detail);
+  console.error(`${redFailure} ${params.title} ⇨`, params.detail);
 };

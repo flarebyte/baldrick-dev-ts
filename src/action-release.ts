@@ -68,7 +68,7 @@ export const runReleaseActionWithCatch = async (
       title: 'Release - finished',
       detail: `Took ${delta_seconds} seconds`,
       format: 'default',
-      kind: 'info',
+      kind: 'success',
     });
   } catch (err) {
     ctx.errTermFormatter({
