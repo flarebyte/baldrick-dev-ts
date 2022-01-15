@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
+import { isCI } from './environment.js';
 import { commanding } from './index.js';
-const redFailure = '\x1b[31m❌ Failure\x1b[0m';
-
+const redFailure = isCI() ? '❌ Failure' : '\x1b[31m❌ Failure\x1b[0m';
 /**
  * This function may be merged in the future when the linter does a better job at recognizing .mts files
  */

@@ -1,3 +1,4 @@
+import { isCI } from './environment.js';
 import {
   ErrTermFormatterParams,
   TermFormatterFormat,
@@ -12,9 +13,9 @@ const simplifyObj = (obj: object): object => {
   return Object.fromEntries(relevantValues);
 };
 
-const greenSuccess = '\x1b[32m✔ Success\x1b[0m';
-const redFailure = '\x1b[31m❌ Failure\x1b[0m';
-const blueIntro = ' \x1b[34m✸\x1b[0m';
+const greenSuccess = isCI() ? '✔ Success' : '\x1b[32m✔ Success\x1b[0m';
+const redFailure = isCI() ? '❌ Failure' : '\x1b[31m❌ Failure\x1b[0m';
+const blueIntro = isCI() ? ' ✸' : ' \x1b[34m✸\x1b[0m';
 
 const simplifyJson = (value: string): string => value.replace(/["']/g, ' ');
 
