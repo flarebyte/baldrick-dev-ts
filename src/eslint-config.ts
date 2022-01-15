@@ -25,6 +25,7 @@ const defaultConfig = (ecmaVersion: SupportedEcmaVersion): Linter.Config => ({
   rules: {
     'prettier/prettier': 'error',
     'import/no-unresolved': [2, { ignore: ['.js$'] }],
+    "unicorn/prevent-abbreviations": "off",
   },
 });
 
