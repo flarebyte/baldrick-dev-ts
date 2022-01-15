@@ -113,6 +113,11 @@ export const filteringToCommanderStrings = (
   ];
 };
 
+const findByIdx = (values: [string, number][], idx: number): number => {
+  const found = values[idx];
+  return found ? found[1] || 0 : 0;
+};
+
 export const commanderStringsToFiltering = (
   cmdStrings: string[]
 ): FileFiltering => {
@@ -129,10 +134,6 @@ export const commanderStringsToFiltering = (
   const useEndIndex = (idx: number): boolean =>
     idx === cmdStringsIdxKeys.length - 1;
 
-  const findByIdx = (values: [string, number][], idx: number): number => {
-    const found = values[idx];
-    return found ? found[1] || 0 : 0;
-  };
   const cmdkeyRanges: [string, number, number][] = cmdStringsIdxKeys.map(
     ([a, b], idx, others) => [
       a,

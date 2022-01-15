@@ -26,6 +26,8 @@ const defaultConfig = (ecmaVersion: SupportedEcmaVersion): Linter.Config => ({
     'prettier/prettier': 'error',
     'import/no-unresolved': [2, { ignore: ['.js$'] }],
     'unicorn/prevent-abbreviations': 'off',
+    'unicorn/no-array-callback-reference': 'off', // Typescript would raise an issue in these cases
+    'unicorn/prefer-json-parse-buffer': 'off', // Typescript seems to expect a string for parse
   },
 });
 
