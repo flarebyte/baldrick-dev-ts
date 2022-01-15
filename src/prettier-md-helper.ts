@@ -1,6 +1,6 @@
 import prettier, { Options } from 'prettier';
 import { computePrettierMdConfig } from './prettier-md-config.js';
-import { readFile, writeFile } from 'fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { normalizeMdLine } from './text-helper.js';
 import { fixMdRemarkContent } from './remark-md-helper.js';
 

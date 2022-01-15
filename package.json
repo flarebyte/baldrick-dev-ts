@@ -6,7 +6,7 @@
     "eslint",
     "jest"
   ],
-  "version": "0.12.0",
+  "version": "0.13.0",
   "author": {
     "name": "Olivier Huin <olih@users.noreply.github.com>",
     "url": "https://github.com/olih"
@@ -72,6 +72,7 @@
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-jest": "25.3.4",
     "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-unicorn": "^40.0.0",
     "execa": "^6.0.0",
     "fs-extra": "^10.0.0",
     "jest": "27.4.7",

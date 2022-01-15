@@ -1,5 +1,5 @@
 import { ensureDir } from 'fs-extra';
-import fs, { readFile } from 'fs/promises';
+import fs, { readFile } from 'node:fs/promises';
 import { remark } from 'remark';
 import remarkPresetLintRecommended from 'remark-preset-lint-recommended';
 import remarkLintListItemIndent from 'remark-lint-list-item-indent';
@@ -18,7 +18,7 @@ import { MarkdownResolvedOpts } from './model.js';
 import { errorFormatter } from './term-formatter.js';
 import { VFile } from 'vfile';
 import { reporterJson } from 'vfile-reporter-json';
-import path from 'path';
+import path from 'node:path';
 
 const filesLimit = 200;
 

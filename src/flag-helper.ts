@@ -3,7 +3,7 @@ import { SupportedFlag } from './model';
 export const satisfyFlag = (
   expected: SupportedFlag,
   flags: SupportedFlag[]
-): boolean => flags.some((flag) => flag === expected);
+): boolean => flags.includes(expected);
 
 const supportedFlags: SupportedFlag[] = [
   'aim:fix',

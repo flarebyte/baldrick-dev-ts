@@ -43,7 +43,7 @@ export const runReleaseAction: ReleaseAction = async (
       detail: options,
       format: 'human',
     });
-    return Promise.resolve();
+    return;
   }
   await npmPublish(ctx);
   await ghRelease(ctx, version);
@@ -60,9 +60,9 @@ export const runReleaseActionWithCatch = async (
       detail: options,
       format: 'human',
     });
-    const started = new Date().getTime();
+    const started = Date.now();
     await runReleaseAction(ctx, options);
-    const finished = new Date().getTime();
+    const finished = Date.now();
     const delta_seconds = ((finished - started) / 1000).toFixed(1);
     ctx.termFormatter({
       title: 'Release - finished',
@@ -70,12 +70,12 @@ export const runReleaseActionWithCatch = async (
       format: 'default',
       kind: 'success',
     });
-  } catch (err) {
+  } catch (error) {
     ctx.errTermFormatter({
       title: 'Release - release error',
-      detail: err,
+      detail: error,
     });
-    throw err;
+    throw error;
   }
   return 'ok';
 };

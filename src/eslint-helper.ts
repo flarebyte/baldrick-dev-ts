@@ -1,7 +1,7 @@
 import { computeEsLintConfig } from './eslint-config.js';
 import { LintResolvedOpts } from './model.js';
 import { ESLint } from 'eslint';
-import path from 'path';
+import path from 'node:path';
 
 export interface ESLintHandle {
   eslint: ESLint;

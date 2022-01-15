@@ -1,4 +1,4 @@
-import fs from 'fs/promises';
+import fs from 'node:fs/promises';
 
 export type PackageJson = {
   name: string;
@@ -7,7 +7,7 @@ export type PackageJson = {
 };
 
 export const readPackageJson = async (): Promise<PackageJson> => {
-  const content = await fs.readFile('./package.json', 'utf8');
+  const content = await fs.readFile('./package.json', { encoding: 'utf-8' });
   const contentJson: PackageJson = JSON.parse(content);
   return contentJson;
 };

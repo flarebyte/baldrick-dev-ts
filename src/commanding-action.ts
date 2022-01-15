@@ -24,7 +24,7 @@ export const cmdLintAction: LintAction = async (
   const instructions = toLintInstructions(options);
   const status = await runInstructions(ctx, instructions);
   if (status === 'ko') {
-    throw Error('Lint action did fail !');
+    throw new Error('Lint action did fail !');
   }
 };
 
@@ -35,7 +35,7 @@ export const cmdTestAction: TestAction = async (
   const instructions = toTestInstructions(options);
   const status = await runInstructions(ctx, instructions);
   if (status === 'ko') {
-    throw Error('Test action did fail !');
+    throw new Error('Test action did fail !');
   }
 };
 
@@ -46,7 +46,7 @@ export const cmdMarkdownAction: MarkdownAction = async (
   const instructions = toMarkdownInstructions(options);
   const status = await runInstructions(ctx, instructions);
   if (status === 'ko') {
-    throw Error('Markdown action did fail !');
+    throw new Error('Markdown action did fail !');
   }
 };
 
@@ -56,6 +56,6 @@ export const cmdReleaseAction: ReleaseAction = async (
 ) => {
   const status = await runReleaseActionWithCatch(ctx, options);
   if (status === 'ko') {
-    throw Error('Release action did fail !');
+    throw new Error('Release action did fail !');
   }
 };

@@ -74,6 +74,7 @@ export class Commanding {
           withoutTag,
           withTagStarting,
           withoutTagStarting,
+          ecmaVersion,
         } = options;
         const lintOpts: LintActionOpts = {
           flags: toSupportedFlags([`aim:${aim}`]),
@@ -93,7 +94,7 @@ export class Commanding {
             },
             useGlob: 'auto',
           },
-          ecmaVersion: toSupportedEcma(options.ecmaVersion),
+          ecmaVersion: toSupportedEcma(ecmaVersion),
           reportBase,
           ...splitReportBase(reportBase),
         };

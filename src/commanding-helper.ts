@@ -1,12 +1,12 @@
 import { Option, Argument } from 'commander';
 import { CmdOption, SupportedEcmaVersion } from './model.js';
-import path from 'path';
+import path from 'node:path';
 
 const capitalize = (value: string): string =>
-  value.length > 0 ? (value[0] || '').toUpperCase() + value.substring(1) : '';
+  value.length > 0 ? (value[0] || '').toUpperCase() + value.slice(1) : '';
 
 const decapitalize = (value: string): string =>
-  value.length > 0 ? (value[0] || '').toLowerCase() + value.substring(1) : '';
+  value.length > 0 ? (value[0] || '').toLowerCase() + value.slice(1) : '';
 
 export const toCamelCase = (longFlag: string): string =>
   decapitalize(longFlag.split('-').map(capitalize).join(''));
@@ -34,7 +34,7 @@ export const toCommanderArgument = (option: CmdOption): Argument => {
 const supportedEcma: SupportedEcmaVersion[] = [2020, 2021];
 
 export const toSupportedEcma = (givenEcma: string): SupportedEcmaVersion => {
-  const found = supportedEcma.find((f) => f === parseInt(givenEcma));
+  const found = supportedEcma.find((f) => f === Number.parseInt(givenEcma));
   if (!found) {
     throw new Error(`This Ecma version is not supported yet ${givenEcma}`);
   }
