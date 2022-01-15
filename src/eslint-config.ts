@@ -11,7 +11,7 @@ const defaultConfig = (ecmaVersion: SupportedEcmaVersion): Linter.Config => ({
     ecmaVersion,
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'prettier', 'jest', 'import'],
+  plugins: ['@typescript-eslint', 'prettier', 'jest', 'import', 'unicorn'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -19,6 +19,7 @@ const defaultConfig = (ecmaVersion: SupportedEcmaVersion): Linter.Config => ({
     'plugin:jest/recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
+    'plugin:unicorn/recommended',
   ],
   settings: {},
   rules: {
