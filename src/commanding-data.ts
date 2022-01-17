@@ -22,6 +22,7 @@ type CmdOptionsMinFilter = Pick<CmdOptionsFilter, 'withPathStarting'>;
 
 interface CmdLintOptions extends CmdOptionsBase, CmdOptionsFilter {
   ecma: CmdOption;
+  style: CmdOption;
 }
 
 interface CmdTestOptions extends CmdOptionsBase, CmdOptionsMinFilter {
@@ -148,6 +149,10 @@ export const cmdLintFilterOptions: CmdLintOptions = {
   ecma: choiceOption('ecma', 'ecma-version', 'Specify the ECMAScript version', [
     '2020',
     '2021',
+  ]),
+  style: choiceOption('sty', 'style', 'Specify the style of programming', [
+    '',
+    'fp',
   ]),
 };
 

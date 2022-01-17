@@ -14,10 +14,14 @@ The main motivation is to reduce the amount of dev dependencies that needs to
 be installed and configured individually.
 
 -   **Typescript** the strongly typed alternative to Javascript.
+
 -   **Reduced configuration** the CLI should be ready go without further
     configuration.
+
 -   **ESLint** under the hood for linting.
+
 -   **Jest** under the hood for testing (very experimental)
+
 -   **ES2020** or later.
 
 ## Usage

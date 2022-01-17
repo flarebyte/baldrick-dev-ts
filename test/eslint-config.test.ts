@@ -47,6 +47,7 @@ describe('eslint-config', () => {
             ],
             "prettier/prettier": "error",
             "unicorn/no-array-callback-reference": "off",
+            "unicorn/no-array-reduce": "error",
             "unicorn/prefer-json-parse-buffer": "off",
             "unicorn/prevent-abbreviations": "off",
           },

@@ -4,11 +4,11 @@
 
 The typical developer workflow goes as follow:
 
-| Mode                   | Code analysis | Testing                    | Building     | Publishing                       |
-| ---------------------- | ------------- | -------------------------- | ------------ | -------------------------------- |
-| Checking               | yarn lint     | yarn test or yarn test:cov | yarn build   | yarn ready                       |
-| Fixing                 | yarn lint:fix | yarn test:fix              | Fix the code | Update dependencies and yarn doc |
-| Continuous integration | yarn lint:ci  | yarn test:ci               | yarn build   | Not available yet                |
+| Mode                   | Code analysis | Testing                    | Building     | Publishing                        |
+| ---------------------- | ------------- | -------------------------- | ------------ | --------------------------------- |
+| Checking               | yarn lint     | yarn test or yarn test:cov | yarn build   | yarn ready and yarn release:check |
+| Fixing                 | yarn lint:fix | yarn test:fix              | Fix the code | Update dependencies and yarn doc  |
+| Continuous integration | yarn lint:ci  | yarn test:ci               | yarn build   | yarn release:ci                   |
 
 ## Commands
 
@@ -263,18 +263,19 @@ development
 
 ***
 
-### Versioning
+### Release check
 
-> Checks that the code is ready for versioning and version it
+> Checks if a release could be created
 
-**Motivation:** Normalize the steps involved in versioning
+**Motivation:** Avoid failing the release
 
-**When to use it:** Before publishing
+**When to use it:** After publishing
 
-**Run:** `yarn version`
+**Run:** `yarn release:check`
 
-**From package:** [yarn](https://classic.yarnpkg.com/en/) of
-[npm](https://www.npmjs.com/) : Dependency management
+**From package:** [baldrick](https://github.com/flarebyte/baldrick-dev-ts) of
+[npm](https://www.npmjs.com/) : Zero-config CLI for TypeScript package
+development
 
 ***
 

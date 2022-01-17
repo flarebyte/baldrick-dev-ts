@@ -4,7 +4,6 @@ import {
   MarkdownAction,
   MarkdownActionOpts,
   MarkdownActionRawOpts,
-  GlobAction,
   LintAction,
   LintActionOpts,
   LintActionRawOpts,
@@ -14,6 +13,7 @@ import {
   TestActionRawOpts,
   ReleaseAction,
   ReleaseActionOpts,
+  SupportedFlag,
 } from './model';
 import {
   splitReportBase,
@@ -30,20 +30,22 @@ import {
 import { basicFormatter, errorFormatter } from '../src/term-formatter.js';
 import { toSupportedFlags } from './flag-helper.js';
 
+const checkStyle = (
+  search: string,
+  style: string | string[],
+  flag: SupportedFlag
+): string[] => {
+  const styles = Array.isArray(style) ? style : [style];
+  const found = styles.map((s) => s.trim()).find((s) => s === search);
+  return typeof found === 'string' ? [flag] : [];
+};
+
 export class Commanding {
   _program: Command = new Command();
   constructor() {
     this._program.version(version);
   }
-  declareGlobAction(globAction: GlobAction) {
-    this._program
-      .command('do')
-      .argument('[script...]')
-      .description('Run a glob script')
-      .action((script: string[]) => {
-        globAction(script);
-      });
-  }
+
   declareLintAction(lintAction: LintAction) {
     this._program
       .command('lint')
@@ -61,6 +63,7 @@ export class Commanding {
       .addOption(toCommanderOption(cmdLintFilterOptions.withTagStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.withoutTagStarting))
       .addOption(toCommanderOption(cmdLintFilterOptions.ecma))
+      .addOption(toCommanderOption(cmdLintFilterOptions.style))
       .action(async (aim: string, options: LintActionRawOpts) => {
         const {
           reportBase,
@@ -75,9 +78,13 @@ export class Commanding {
           withTagStarting,
           withoutTagStarting,
           ecmaVersion,
+          style,
         } = options;
         const lintOpts: LintActionOpts = {
-          flags: toSupportedFlags([`aim:${aim}`]),
+          flags: toSupportedFlags([
+            `aim:${aim}`,
+            ...checkStyle('fp', style, 'paradigm:fp'),
+          ]),
           fileSearching: {
             pathInfos: [],
             filtering: {

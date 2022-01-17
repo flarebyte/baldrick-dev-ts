@@ -24,6 +24,7 @@ import { createJest, jestCommand } from './jest-helper.js';
 import { satisfyFlag } from './flag-helper.js';
 import { runMdPrettier } from './prettier-md-helper.js';
 import { runMdRemark } from './remark-md-helper.js';
+import { getVersionsSummary } from './versions-summary.js';
 
 const instructionToTermIntro = (
   instruction: MicroInstruction
@@ -354,7 +355,13 @@ export const runInstructions = async (
   const markdownInstruction = instructions.find(
     (instr) => instr.name === 'markdown'
   );
-
+  const versionsSummary = await getVersionsSummary();
+  ctx.termFormatter({
+    title: 'Run instructions',
+    detail: versionsSummary,
+    kind: 'intro',
+    format: 'default',
+  });
   const files =
     filesInstruction && filesInstruction.name === 'files'
       ? runFilesInstruction(ctx, filesInstruction)
