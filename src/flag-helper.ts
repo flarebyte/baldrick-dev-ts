@@ -1,4 +1,4 @@
-import { SupportedFlag } from './model';
+import { SupportedFlag } from './model.js';
 
 export const satisfyFlag = (
   expected: SupportedFlag,
@@ -11,6 +11,7 @@ const supportedFlags: SupportedFlag[] = [
   'aim:ci',
   'aim:cov',
   'globInputPaths:false',
+  'paradigm:fp',
 ];
 const toSupportedFlag = (flag: string): SupportedFlag => {
   const found = supportedFlags.find((f) => f === flag);

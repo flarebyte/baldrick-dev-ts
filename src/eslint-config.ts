@@ -1,10 +1,20 @@
-import { LintResolvedOpts, SupportedEcmaVersion } from './model.js';
+import {
+  LintResolvedOpts,
+  SupportedEcmaVersion,
+  SupportedFlag,
+} from './model.js';
 import { ESLint, Linter } from 'eslint';
 import { satisfyFlag } from './flag-helper.js';
 
 // https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/README.md
 
-const defaultConfig = (ecmaVersion: SupportedEcmaVersion): Linter.Config => ({
+const isPureFunctionalProgramming = (flags: SupportedFlag[]): boolean =>
+  flags.includes('paradigm:fp');
+
+const defaultConfig = (
+  ecmaVersion: SupportedEcmaVersion,
+  flags: SupportedFlag[]
+): Linter.Config => ({
   root: true,
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -28,13 +38,16 @@ const defaultConfig = (ecmaVersion: SupportedEcmaVersion): Linter.Config => ({
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/no-array-callback-reference': 'off', // Typescript would raise an issue in these cases
     'unicorn/prefer-json-parse-buffer': 'off', // Typescript seems to expect a string for parse
+    'unicorn/no-array-reduce': isPureFunctionalProgramming(flags)
+      ? 'off'
+      : 'error',
   },
 });
 
 export const computeEsLintConfig = (opts: LintResolvedOpts): ESLint.Options => {
   return {
     baseConfig: {
-      ...defaultConfig(opts.ecmaVersion),
+      ...defaultConfig(opts.ecmaVersion, opts.flags),
     },
     extensions: ['.ts', '.mts', '.json'],
     fix: satisfyFlag('aim:fix', opts.flags),

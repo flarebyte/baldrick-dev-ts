@@ -26,14 +26,13 @@ export interface FileSearching {
   useGlob: 'auto' | 'yes';
 }
 
-export type GlobAction = (script: string[]) => void;
-
 export type SupportedFlag =
   | 'aim:fix'
   | 'aim:ci'
   | 'aim:check'
   | 'aim:cov'
-  | 'globInputPaths:false';
+  | 'globInputPaths:false'
+  | 'paradigm:fp';
 
 // Update there src/flag-helper.ts
 export type SupportedEcmaVersion = 2020 | 2021; // Update there too src/commanding-helper.ts
@@ -141,6 +140,7 @@ interface BaseAction {
 // Lint
 export interface LintActionRawOpts extends BaseAction, FileFiltering {
   ecmaVersion: string;
+  style: string | string[];
 }
 
 export interface LintActionOpts {
