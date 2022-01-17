@@ -34,8 +34,7 @@
     "src"
   ],
   "bin": {
-    "baldrick": "dist/src/cli.mjs",
-    "baldrick-dev-ts": "dist/src/cli.mjs"
+    "baldrick": "dist/src/cli.mjs"
   },
   "engines": {
     "node": ">=14"
@@ -50,12 +49,13 @@
     "md": "npx baldrick-dev-ts markdown check && npx baldrick-dev-ts markdown check -s .github",
     "md:fix": "npx baldrick-dev-ts markdown fix && npx baldrick-dev-ts markdown fix -s .github",
     "prebuild": "yarn reset",
-    "ready": "yarn lint && yarn test:cov && yarn md && yarn outdated",
+    "ready": "yarn lint && yarn test:cov && yarn md && yarn outdated && yarn audit",
     "reset": "rm -rf dist; rm -rf report",
     "test:ci": "npx baldrick-dev-ts test ci",
     "test": "npx baldrick-dev-ts test check",
     "test:cov": "npx baldrick-dev-ts test cov",
     "test:fix": "npx baldrick-dev-ts test fix",
+    "release:check": "npx baldrick-dev-ts release check",
     "release:ci": "npx baldrick-dev-ts release ci",
     "norm": "npx baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix",
     "norm:g": "baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix"
