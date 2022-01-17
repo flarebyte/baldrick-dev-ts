@@ -1,7 +1,13 @@
 import { execa } from 'execa';
 import { RunnerContext } from './model.js';
 
-type VersionsObj = { [Key in string]?: string };
+type VersionsObj = {
+  data: {
+    node: string;
+    yarn: string;
+    v8: string;
+  };
+};
 
 const isVersion = (version?: string): boolean =>
   typeof version === 'string' && version.split('.').length === 3;

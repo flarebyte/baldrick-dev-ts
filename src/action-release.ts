@@ -6,6 +6,7 @@ import {
   RunnerContext,
 } from './model.js';
 import { readPackageJson } from './package-json.js';
+import { getVersionsSummary } from './versions-summary.js';
 
 /**
  * @returns true if first publish or the version has been incremented
@@ -59,6 +60,13 @@ export const runReleaseActionWithCatch = async (
       title: `Starting release ...`,
       detail: options,
       format: 'human',
+    });
+    const versionsSummary = await getVersionsSummary();
+    ctx.termFormatter({
+      title: 'Context Summary',
+      detail: versionsSummary,
+      kind: 'info',
+      format: 'default',
     });
     const started = Date.now();
     await runReleaseAction(ctx, options);
