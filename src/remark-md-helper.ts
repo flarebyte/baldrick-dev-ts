@@ -12,10 +12,11 @@ import remarkLintStrongMarker from 'remark-lint-strong-marker';
 import remarkLintEmphasisMarker from 'remark-lint-emphasis-marker';
 import remarkLintUnorderedListMarkerStyle from 'remark-lint-unordered-list-marker-style';
 import remarkLintOrderedListMarkerStyle from 'remark-lint-ordered-list-marker-style';
+import remarkGfm from 'remark-gfm';
 
 import { reporter } from 'vfile-reporter';
 import { MarkdownResolvedOpts } from './model.js';
-import { errorFormatter } from './term-formatter.js';
+import { errorFormatter, basicFormatter } from './term-formatter.js';
 import { VFile } from 'vfile';
 import { reporterJson } from 'vfile-reporter-json';
 import path from 'node:path';
@@ -24,8 +25,17 @@ const filesLimit = 200;
 
 const formatWarnings = (filename: string, vfile: VFile) => {
   errorFormatter({
-    title: `Linting markdown failed for ${filename}`,
+    title: `Linting markdown failed (${vfile.messages.length}) for ${filename}`,
     detail: '\n' + reporter(vfile),
+  });
+};
+
+const formatSuccess = (filename: string, vfile: VFile) => {
+  basicFormatter({
+    title: `Linting markdown succeed for ${filename}`,
+    detail: '\n' + reporter(vfile),
+    kind: 'success',
+    format: 'default',
   });
 };
 
@@ -46,6 +56,7 @@ const createRemark = () =>
   remark()
     .use(remarkPresetLintConsistent)
     .use(remarkPresetLintRecommended)
+    .use(remarkGfm)
     .use(remarkLintMaximumLineLength)
     .use(remarkLintMaximumHeadingLength)
     .use(remarkLintListItemIndent)
@@ -65,7 +76,12 @@ const runMdRemarkOnFile =
       .then(
         async (file) => {
           file.basename = path.basename(filename);
-          formatWarnings(filename, file);
+          if (file.messages.length === 0) {
+            formatSuccess(filename, file);
+          } else {
+            formatWarnings(filename, file);
+          }
+
           await formatJsonWarnings(opts, file);
         },
         (error) => {
