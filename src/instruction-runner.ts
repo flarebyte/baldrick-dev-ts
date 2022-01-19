@@ -55,6 +55,7 @@ export const runLoadInstruction = async (
 ): Promise<PathInfo[]> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
+    name,
     params: { targetFiles },
   } = instruction;
   const contents = await Promise.all(
@@ -62,7 +63,7 @@ export const runLoadInstruction = async (
   );
   const pathInfos = toMergedPathInfos(contents);
   ctx.termFormatter({
-    title: `Finished ${instruction.name}`,
+    title: `Finished ${name}`,
     detail: `${pathInfos.length} files loaded`,
     kind: 'info',
     format: 'default',
