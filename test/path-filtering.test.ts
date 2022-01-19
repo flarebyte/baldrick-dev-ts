@@ -102,6 +102,14 @@ const givenExamples: [string, FileFiltering, string[]][] = [
   createExample(
     {
       ...emptyFileFiltering,
+      withPathStarting: ['src/'],
+      withExtension: ['.json', '.md'],
+    },
+    ['src/data.json']
+  ),
+  createExample(
+    {
+      ...emptyFileFiltering,
       withoutPathStarting: ['src/'],
       withExtension: ['.json', '.md'],
     },

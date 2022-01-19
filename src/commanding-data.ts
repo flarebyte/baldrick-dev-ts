@@ -94,12 +94,12 @@ const withoutExtension = stringsOption(
   'Exclude a list of unwanted suffixes for the path'
 );
 const withPathSegment = stringsOption(
-  's',
+  'sg',
   'with-path-segment',
   'Specify a list of expected texts that should be part of the path (any will match)'
 );
 const withoutPathSegment = stringsOption(
-  'S',
+  'SG',
   'without-path-segment',
   'Exclude a list of unwanted texts that should not be part of the path'
 );
