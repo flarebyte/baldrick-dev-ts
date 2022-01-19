@@ -14,43 +14,51 @@ export const emptyFileFiltering: FileFiltering = {
   withoutTagStarting: [],
 };
 
+const hasPathStarting =
+  (pathInfo: PathInfo) =>
+  (start: string): boolean =>
+    pathInfo.tags.some((tag) => tag.startsWith(start));
+
+interface FilterStatus {
+  required: boolean;
+  matched: boolean;
+}
+
+const status = (
+  criteria: string[],
+  predicate: (v: string) => boolean
+): FilterStatus => ({
+  required: criteria.length > 0,
+  matched: criteria.some(predicate),
+});
+
 export const byFileQuery =
   (query: FileFiltering) =>
   (pathInfo: PathInfo): boolean => {
-    const noWithFilter =
-      query.withPathStarting.length +
-        query.withExtension.length +
-        query.withPathSegment.length +
-        query.withTag.length +
-        query.withTagStarting.length ===
-      0;
-    return (
-      (noWithFilter ||
-        query.withPathStarting.some((start) =>
-          pathInfo.path.startsWith(start)
-        ) ||
-        query.withExtension.some((ext) => pathInfo.path.endsWith(ext)) ||
-        query.withPathSegment.some((segment) =>
-          pathInfo.path.includes(segment)
-        ) ||
-        query.withTag.some((tag) => pathInfo.tags.includes(tag)) ||
-        query.withTagStarting.some((start) =>
-          pathInfo.tags.some((tag) => tag.startsWith(start))
-        )) &&
-      !(
-        query.withoutPathStarting.some((start) =>
-          pathInfo.path.startsWith(start)
-        ) ||
-        query.withoutExtension.some((ext) => pathInfo.path.endsWith(ext)) ||
-        query.withoutPathSegment.some((segment) =>
-          pathInfo.path.includes(segment)
-        ) ||
-        query.withoutTag.some((tag) => pathInfo.tags.includes(tag)) ||
-        query.withoutTagStarting.some((start) =>
-          pathInfo.tags.some((tag) => tag.startsWith(start))
-        )
-      )
-    );
+    const startsWith = (v: string): boolean => pathInfo.path.startsWith(v);
+    const endsWith = (v: string): boolean => pathInfo.path.endsWith(v);
+    const includes = (v: string): boolean => pathInfo.path.includes(v);
+    const tagIncludes = (v: string): boolean => pathInfo.tags.includes(v);
+    const shouldMatch = [
+      status(query.withPathStarting, startsWith),
+      status(query.withExtension, endsWith),
+      status(query.withPathSegment, includes),
+      status(query.withTag, tagIncludes),
+      status(query.withTagStarting, hasPathStarting(pathInfo)),
+    ]
+      .filter((s) => s.required)
+      .every((s) => s.matched);
+
+    const shouldNotMatch = [
+      status(query.withoutPathStarting, startsWith),
+      status(query.withoutExtension, endsWith),
+      status(query.withoutPathSegment, includes),
+      status(query.withoutTag, tagIncludes),
+      status(query.withoutTagStarting, hasPathStarting(pathInfo)),
+    ]
+      .filter((s) => s.required)
+      .every((s) => !s.matched);
+    return shouldMatch && shouldNotMatch;
   };
 
 const optionOrEmpty = (option: CmdOption, values: string[]): string[] =>

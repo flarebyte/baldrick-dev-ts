@@ -55,12 +55,19 @@ export const runLoadInstruction = async (
 ): Promise<PathInfo[]> => {
   ctx.termFormatter(instructionToTermIntro(instruction));
   const {
+    name,
     params: { targetFiles },
   } = instruction;
   const contents = await Promise.all(
     (targetFiles || []).map(readUtf8File(ctx.currentPath))
   );
   const pathInfos = toMergedPathInfos(contents);
+  ctx.termFormatter({
+    title: `Finished ${name}`,
+    detail: `${pathInfos.length} files loaded`,
+    kind: 'info',
+    format: 'default',
+  });
   return pathInfos;
 };
 
@@ -93,7 +100,7 @@ export const runGlobInstructionWithCatch = async (
     const delta_seconds = ((finished - started) / 1000).toFixed(1);
     ctx.termFormatter({
       title: 'Globbing - finished',
-      detail: `Took ${delta_seconds} seconds`,
+      detail: `Took ${delta_seconds} seconds. Found ${results.length} files`,
       format: 'default',
       kind: 'success',
     });
@@ -117,7 +124,14 @@ export const runFilterInstruction = (
     params: { query },
   } = instruction;
   const filtering = commanderStringsToFiltering(query || []);
-  return pathInfos.filter(byFileQuery(filtering));
+  const filtered = pathInfos.filter(byFileQuery(filtering));
+  ctx.termFormatter({
+    title: 'Filtering done',
+    detail: `From ${pathInfos.length} files to ${filtered.length} files`,
+    format: 'default',
+    kind: 'info',
+  });
+  return filtered;
 };
 
 const toEslintStatus = (
