@@ -170,10 +170,10 @@ export const runLintInstruction = async (
   });
   const handle = await createESLint(lintOpts);
   const lintResults = await lintCommand(handle, shouldFix);
-  const text = handle.formatter.format(lintResults);
-  const json = handle.jsonFormatter.format(lintResults);
-  const junitXml = handle.junitFormatter.format(lintResults);
-  const compact = handle.compactFormatter.format(lintResults);
+  const text = await handle.formatter.format(lintResults);
+  const json = await handle.jsonFormatter.format(lintResults);
+  const junitXml = await handle.junitFormatter.format(lintResults);
+  const compact = await handle.compactFormatter.format(lintResults);
   const detail = isCI ? compact : text;
   ctx.termFormatter({
     title: 'Linting',
