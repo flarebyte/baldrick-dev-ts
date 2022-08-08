@@ -8,7 +8,7 @@ The typical developer workflow goes as follow:
 | ---------------------- | ------------- | -------------------------- | ------------ | --------------------------------- |
 | Checking               | yarn lint     | yarn test or yarn test:cov | yarn build   | yarn ready and yarn release:check |
 | Fixing                 | yarn lint:fix | yarn test:fix              | Fix the code | Update dependencies and yarn doc  |
-| Continuous integration | yarn lint:ci  | yarn test:ci               | yarn build   | yarn release:ci                   |
+| Continuous integration | yarn lint:ci  | yarn test:ci               | yarn build   | bpub                              |
 
 ## Commands
 
@@ -287,11 +287,42 @@ development
 
 **When to use it:** After publishing
 
-**Run:** `yarn release:ci`
+**Run:** `bpub`
 
 **From package:** [baldrick](https://github.com/flarebyte/baldrick-dev-ts) of
 [npm](https://www.npmjs.com/) : Zero-config CLI for TypeScript package
 development
+
+***
+
+### Help for commands
+
+> Summarize all the yarn and shell commands
+
+**Motivation:** Assist the developer in quickly finding commands
+
+**When to use it:** Before running a command
+
+**Run:** `yarn h`
+
+**From package:** [baldrick](https://github.com/flarebyte/baldrick-dev-ts) of
+[npm](https://www.npmjs.com/) : Zero-config CLI for TypeScript package
+development
+
+***
+
+### Git commit from file
+
+> Git commit a message that has been saved in the .message file
+
+**Motivation:** Quicker commit for pre-defined use cases
+
+**When to use it:** When commit to github
+
+**Run:** `gcf`
+
+**From package:** [zsh](https://www.zsh.org/) of
+[brew](https://docs.brew.sh/) : Shell designed for interactive use
 
 ***
 
@@ -304,7 +335,7 @@ development
 
 **When to use it:** When testing locally
 
-**Run:** \`\`\`yarn global add \`pwd\`\`\`\`
+**Run:** `yig`
 
 **From package:** [yarn](https://classic.yarnpkg.com/en/) of
 [npm](https://www.npmjs.com/) : Dependency management
@@ -338,5 +369,21 @@ development
 
 **From package:** [baldrick-ts](https://github.com/flarebyte/baldrick-ts) of
 [npm](https://www.npmjs.com/) : Typescript scaffolding assistant
+
+***
+
+### Run client directly
+
+> Run the client with ts-node during development
+
+**Motivation:** Simulate a CLI app in development without the need to install
+it globally
+
+**When to use it:** After compilation
+
+**Run:** `yarn cli`
+
+**From package:** [yarn](https://classic.yarnpkg.com/en/) of
+[npm](https://www.npmjs.com/) : Dependency management
 
 ***
