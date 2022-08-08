@@ -9,6 +9,8 @@
 
 -   **test**: Jest unit tests
 
+-   **script**: Folder for bash, python or ts-node scripts
+
 -   **dist**: Temporary folder for building distribution code
 
 -   **report**: Temporary folder for reporting; usually for continuous

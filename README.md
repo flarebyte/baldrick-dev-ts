@@ -56,6 +56,10 @@ gratitude to this initial project.
 -   [Code Of Conduct](CODE_OF_CONDUCT.md)
 -   [Api for baldrick-dev-ts](API.md)
 -   [Contributing](CONTRIBUTING.md)
+-   [Glossary](GLOSSARY.md)
+-   [Diagram for the code base](INTERNAL.md)
+-   [Vocabulary used in the code base](CODE_VOCABULARY.md)
+-   [Architectural Decision Records](DECISIONS.md)
 -   [Contributors](https://github.com/flarebyte/baldrick-dev-ts/graphs/contributors)
 -   [Dependencies](https://github.com/flarebyte/baldrick-dev-ts/network/dependencies)
 

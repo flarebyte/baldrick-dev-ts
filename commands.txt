@@ -3,6 +3,7 @@ act                 Run GitHub Actions inside a docker container
 bpub                Creates a github release
 gcf                 Git commit a message that has been saved in the .message file
 yarn build          Transpile all the typescript source code to javascript
+yarn cli            Run the client with ts-node during development
 yarn doc            Generate the markdown documentation for the typescript project
 yarn github         Enable useful features for the github project repository
 yarn h              Summarize all the yarn and shell commands

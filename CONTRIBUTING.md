@@ -15,14 +15,18 @@ in all your interactions with the project.
 
 ## Build the project locally
 
-The following commands should get you started
+The following commands should get you started:
 
 ```bash
 yarn install
 yarn test
 ```
 
-A list of [most used commands](MAINTENANCE.md) is available.
+A list of [most used commands](MAINTENANCE.md) is available:
+
+```bash
+yarn h
+```
 
 Please keep an eye on test coverage, bundle size and documentation.
 When you are ready for a pull request:
@@ -56,8 +60,11 @@ act
 ## Publishing the library
 
 This would be done by the main maintainers of the project. Locally for now as
-updates are pretty infrequent.
+updates are pretty infrequent, and some of tests have to be done manually.
+
+Assuming you have zsh installed, you can just do:
 
 ```bash
-yarn version
+source .aliases.zsh
+bpub
 ```

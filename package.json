@@ -6,7 +6,7 @@
     "eslint",
     "jest"
   ],
-  "version": "0.15.0",
+  "version": "0.16.0",
   "author": {
     "name": "Olivier Huin <olih@users.noreply.github.com>",
     "url": "https://github.com/olih"
@@ -29,27 +29,29 @@
       "default": "./package.json"
     }
   },
+  "main": "./dist/src/index.mjs",
   "files": [
     "dist/src",
     "src"
   ],
   "bin": {
-    "baldrick": "dist/src/cli.mjs"
+    "baldrick": "dist/src/cli.mjs",
+    "baldrick-dev-ts": "dist/src/cli.mjs"
   },
   "engines": {
     "node": ">=14"
   },
   "scripts": {
     "build": "tsc --outDir dist",
-    "doc": "npx typedoc --json report/doc.json --pretty src/index.ts && npx baldrick-doc-ts typedoc --json-source report/doc.json",
+    "doc": "npx typedoc --json report/doc.json --pretty src/index.ts && npx baldrick-doc-ts typedoc --json-source report/doc.json && baldrick-doc-ts parse -f internal ngram && yarn md:fix",
     "github": "gh repo edit --delete-branch-on-merge --enable-squash-merge",
     "lint:ci": "npx baldrick-dev-ts lint ci",
-    "lint": "npx baldrick-dev-ts lint check",
-    "lint:fix": "npx baldrick-dev-ts lint fix",
-    "md": "npx baldrick-dev-ts markdown check && npx baldrick-dev-ts markdown check -s .github",
-    "md:fix": "npx baldrick-dev-ts markdown fix && npx baldrick-dev-ts markdown fix -s .github",
+    "lint": "npx baldrick-dev-ts lint check -s src test",
+    "lint:fix": "npx baldrick-dev-ts lint fix -s src test",
+    "md": "npx baldrick-dev-ts markdown check && npx baldrick-dev-ts markdown check -s .github/",
+    "md:fix": "npx baldrick-dev-ts markdown fix && npx baldrick-dev-ts markdown fix -s .github/",
     "prebuild": "yarn reset",
-    "ready": "yarn lint && yarn test:cov && yarn md && yarn outdated && yarn audit",
+    "ready": "yarn lint && yarn test:cov && yarn md && yarn outdated && yarn audit && yarn release:check",
     "reset": "rm -rf dist; rm -rf report",
     "test:ci": "npx baldrick-dev-ts test ci",
     "test": "npx baldrick-dev-ts test check",
@@ -57,8 +59,10 @@
     "test:fix": "npx baldrick-dev-ts test fix",
     "release:check": "npx baldrick-dev-ts release check",
     "release:ci": "npx baldrick-dev-ts release ci",
+    "h": "cat commands.txt",
     "norm": "npx baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix",
-    "norm:g": "baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix"
+    "norm:g": "baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix",
+    "cli": "node --loader ts-node/esm src/cli.mts"
   },
   "dependencies": {
     "@types/jest": "27.4.0",
