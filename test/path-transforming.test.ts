@@ -1,4 +1,8 @@
-import { toMergedPathInfos, toPathInfo, toPathInfos } from '../src/path-transforming.js';
+import {
+  toMergedPathInfos,
+  toPathInfo,
+  toPathInfos,
+} from '../src/path-transforming.js';
 describe('toPathInfo', () => {
   it('should parse a filename followed by a tag', () => {
     const actual = toPathInfo('dir1/dir2/index.ts;@load');

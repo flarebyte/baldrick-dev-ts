@@ -34,9 +34,9 @@ describe('text-helper', () => {
     `);
     const splitted = actual.split('\n');
 
-    splitted.forEach((line) => {
+    for (const line of splitted) {
       expect(line.length).toBeLessThanOrEqual(30);
-    });
+    }
   });
 });
 
