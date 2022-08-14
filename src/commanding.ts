@@ -14,7 +14,7 @@ import {
   ReleaseAction,
   ReleaseActionOpts,
   SupportedFlag,
-} from './model';
+} from './model.js';
 import {
   splitReportBase,
   toCommanderArgument,

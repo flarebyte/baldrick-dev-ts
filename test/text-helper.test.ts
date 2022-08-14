@@ -1,4 +1,4 @@
-import { normalizeMdLine, wrapWord } from '../src/text-helper';
+import { normalizeMdLine, wrapWord } from '../src/text-helper.js';
 const loremIpsum = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ',
   'sed do eiusmod tempor incididunt ut labore et dolore magna',
