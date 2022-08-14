@@ -22,7 +22,7 @@ be installed and configured individually.
 
 -   **Jest** under the hood for testing (very experimental)
 
--   **ES2020** or later.
+-   **ES2021** or later.
 
 ## Usage
 

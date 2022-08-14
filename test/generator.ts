@@ -113,7 +113,7 @@ const readmeLint = `
 `;
 export const readmeMd: FileContent = createFileContent('README.md', readmeLint);
 
-export const tsconfigNode = (configVersion: 'es2020') =>
+export const tsconfigNode = (configVersion: 'es2021') =>
   createFileContent(
     'tsconfig.json',
     JSON.stringify(

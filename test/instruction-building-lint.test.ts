@@ -6,7 +6,7 @@ import { emptyFileFiltering } from '../src/path-filtering.js';
 
 const defaultOpts = {
   flags: [],
-  ecmaVersion: 2020 as SupportedEcmaVersion,
+  ecmaVersion: 2021 as SupportedEcmaVersion,
   reportBase: 'report/lint-report',
   reportDirectory: 'report',
   reportPrefix: 'lint-report',
@@ -32,7 +32,7 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
-            "ecmaVersion": 2020,
+            "ecmaVersion": 2021,
             "extensions": Array [],
             "flags": Array [],
             "reportBase": "report/lint-report",
@@ -67,7 +67,7 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
-            "ecmaVersion": 2020,
+            "ecmaVersion": 2021,
             "extensions": Array [
               ".specs.ts",
             ],
@@ -110,7 +110,7 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
-            "ecmaVersion": 2020,
+            "ecmaVersion": 2021,
             "extensions": Array [],
             "flags": Array [
               "globInputPaths:false",
@@ -158,7 +158,7 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
-            "ecmaVersion": 2020,
+            "ecmaVersion": 2021,
             "extensions": Array [],
             "flags": Array [
               "globInputPaths:false",
@@ -215,7 +215,7 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
-            "ecmaVersion": 2020,
+            "ecmaVersion": 2021,
             "extensions": Array [],
             "flags": Array [
               "globInputPaths:false",

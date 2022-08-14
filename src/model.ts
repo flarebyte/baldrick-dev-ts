@@ -35,7 +35,7 @@ export type SupportedFlag =
   | 'paradigm:fp';
 
 // Update there src/flag-helper.ts
-export type SupportedEcmaVersion = 2020 | 2021; // Update there too src/commanding-helper.ts
+export type SupportedEcmaVersion = 2020 | 2021 | 2022; // Update there too src/commanding-helper.ts
 
 type InstructionParams = {
   flags: SupportedFlag[];

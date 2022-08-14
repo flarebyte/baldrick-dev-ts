@@ -68,7 +68,7 @@
     "@types/jest": "28.1.6",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
-    "baldrick-tsconfig-es2020": "^0.9.0",
+    "baldrick-tsconfig-es2021": "^0.5.0",
     "commander": "9.4.0",
     "diff": "^5.0.0",
     "eslint": "8.22.0",
