@@ -70,7 +70,7 @@ const createRemark = () =>
 
 const runMdRemarkOnFile =
   (opts: MarkdownResolvedOpts) => async (filename: string) => {
-    const content = await readFile(filename, 'utf-8');
+    const content = await readFile(filename, 'utf8');
     await createRemark()
       .process(content)
       .then(

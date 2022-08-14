@@ -20,7 +20,7 @@ export const createPackageJson = (name: string): FileContent => ({
         node: '>=14',
       },
     },
-    null,
+    undefined,
     2
   ),
 });
@@ -142,7 +142,7 @@ export const tsconfigNode = (configVersion: 'es2021') =>
           useDefineForClassFields: true,
         },
       },
-      null,
+      undefined,
       2
     )
   );
@@ -192,7 +192,7 @@ const personSchemaObj = {
 
 export const personSchema = createFileContent(
   'schemas/author.schema.json',
-  JSON.stringify(personSchemaObj, null, 2)
+  JSON.stringify(personSchemaObj, undefined, 2)
 );
 
 export const author = (firstName: string, lastName: string, age: number) =>
@@ -204,7 +204,7 @@ export const author = (firstName: string, lastName: string, age: number) =>
         lastName,
         age,
       },
-      null,
+      undefined,
       2
     )
   );

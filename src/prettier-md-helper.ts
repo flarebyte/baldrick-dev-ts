@@ -8,13 +8,13 @@ const { format } = prettier;
 const filesLimit = 200;
 const runMdPrettierOnFile =
   (prettierOpts: Options) => async (filename: string) => {
-    const content = await readFile(filename, 'utf-8');
+    const content = await readFile(filename, 'utf8');
     const formatted = format(content, prettierOpts);
     const lines = formatted.split('\n');
     const fixedLines = lines.map(normalizeMdLine);
     const customFix = fixedLines.join('\n');
     const remarked = await fixMdRemarkContent(customFix);
-    writeFile(filename, remarked, 'utf-8');
+    writeFile(filename, remarked, 'utf8');
   };
 
 export const runMdPrettier = async (filenames: string[]) => {
