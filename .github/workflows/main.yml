@@ -22,7 +22,7 @@ jobs:
       - name: Installation
         run: yarn install
       - name: Installation of baldrick
-        run: yarn install baldrick-dev-ts
+        run: yarn add baldrick-dev-ts
       - name: Static code analysis
         run: yarn lint:ci
       - name: Test
