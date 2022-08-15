@@ -9,7 +9,6 @@ jobs:
       matrix:
         node:
           - 16.x
-          - 18.x
         os:
           - ubuntu-latest
           - macOS-latest
