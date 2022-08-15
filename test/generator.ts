@@ -20,7 +20,7 @@ export const createPackageJson = (name: string): FileContent => ({
         node: '>=14',
       },
     },
-    null,
+    undefined,
     2
   ),
 });
@@ -41,7 +41,7 @@ const randomBetween = (low: number, high: number): number =>
   Math.ceil(Math.random() * (high - low) + low);
 
 export const createTempDirsSync = (subfolder: string): string => {
-  const suffix = randomBetween(1, 1000000);
+  const suffix = randomBetween(1, 1_000_000);
   const tempFolder = `temp/${subfolder}/temp${suffix}`;
   fs.ensureDirSync(`${tempFolder}/src`);
   fs.ensureDirSync(`${tempFolder}/test`);
@@ -50,15 +50,15 @@ export const createTempDirsSync = (subfolder: string): string => {
   return tempFolder;
 };
 
-export const emptyTempDir = (subfolder: string) => fs.emptyDirSync(`temp/${subfolder}/`);
+export const emptyTempDir = (subfolder: string) =>
+  fs.emptyDirSync(`temp/${subfolder}/`);
 
 export const createTestingFilesSync = (
   modulePath: string,
   fileContents: FileContent[]
 ) => {
-  fileContents.forEach((fileContent) =>
-    fs.writeFileSync(`${modulePath}/${fileContent.path}`, fileContent.content)
-  );
+  for (const fileContent of fileContents)
+    fs.writeFileSync(`${modulePath}/${fileContent.path}`, fileContent.content);
 };
 
 const additionTs = `
@@ -113,7 +113,7 @@ const readmeLint = `
 `;
 export const readmeMd: FileContent = createFileContent('README.md', readmeLint);
 
-export const tsconfigNode = (configVersion: 'es2020') =>
+export const tsconfigNode = (configVersion: 'es2021') =>
   createFileContent(
     'tsconfig.json',
     JSON.stringify(
@@ -142,7 +142,7 @@ export const tsconfigNode = (configVersion: 'es2020') =>
           useDefineForClassFields: true,
         },
       },
-      null,
+      undefined,
       2
     )
   );
@@ -192,7 +192,7 @@ const personSchemaObj = {
 
 export const personSchema = createFileContent(
   'schemas/author.schema.json',
-  JSON.stringify(personSchemaObj, null, 2)
+  JSON.stringify(personSchemaObj, undefined, 2)
 );
 
 export const author = (firstName: string, lastName: string, age: number) =>
@@ -204,7 +204,7 @@ export const author = (firstName: string, lastName: string, age: number) =>
         lastName,
         age,
       },
-      null,
+      undefined,
       2
     )
   );

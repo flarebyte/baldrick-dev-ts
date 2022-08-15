@@ -35,7 +35,7 @@ const createProjectDir = () => {
     editorConfig,
     prettierContent,
     loadSelection,
-    tsconfigNode('es2020'),
+    tsconfigNode('es2021'),
   ];
   createTestingFilesSync(tempDir, fileContents);
   return tempDir;
@@ -70,7 +70,7 @@ describe.skip('Run Lint instructions', () => {
         reportBase: 'report/base',
         reportDirectory: 'report',
         reportPrefix: 'base',
-        ecmaVersion: 2020,
+        ecmaVersion: 2021,
       },
     };
     expect.assertions(7);
@@ -107,7 +107,7 @@ describe.skip('Run Lint instructions', () => {
         reportBase: 'report/base',
         reportDirectory: 'report',
         reportPrefix: 'base',
-        ecmaVersion: 2020,
+        ecmaVersion: 2021,
       },
     };
     expect.assertions(3);

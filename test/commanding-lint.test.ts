@@ -20,11 +20,11 @@ describe('Commands Lint', () => {
       'src',
       'test',
       '--ecma-version',
-      '2020',
+      '2021',
     ]);
     expect(secondParam).toMatchInlineSnapshot(`
       Object {
-        "ecmaVersion": 2020,
+        "ecmaVersion": 2021,
         "fileSearching": Object {
           "filtering": Object {
             "withExtension": Array [],

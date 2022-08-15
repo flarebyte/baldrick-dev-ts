@@ -147,8 +147,9 @@ export const cmdLintFilterOptions: CmdLintOptions = {
   withTagStarting,
   withoutTagStarting,
   ecma: choiceOption('ecma', 'ecma-version', 'Specify the ECMAScript version', [
-    '2020',
     '2021',
+    '2020',
+    '2022',
   ]),
   style: choiceOption('sty', 'style', 'Specify the style of programming', [
     '',

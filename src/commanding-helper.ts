@@ -31,7 +31,7 @@ export const toCommanderArgument = (option: CmdOption): Argument => {
   return opts;
 };
 
-const supportedEcma: SupportedEcmaVersion[] = [2020, 2021];
+const supportedEcma: SupportedEcmaVersion[] = [2020, 2021, 2022];
 
 export const toSupportedEcma = (givenEcma: string): SupportedEcmaVersion => {
   const found = supportedEcma.find((f) => f === Number.parseInt(givenEcma));

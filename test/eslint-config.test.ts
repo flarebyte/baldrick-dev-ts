@@ -7,7 +7,7 @@ describe('eslint-config', () => {
       modulePath: 'module-path',
       flags: ['aim:check'],
       pathPatterns: [],
-      ecmaVersion: 2020,
+      ecmaVersion: 2021,
     };
 
     const actual = computeEsLintConfig(resolvedOps);
@@ -25,7 +25,7 @@ describe('eslint-config', () => {
           ],
           "parser": "@typescript-eslint/parser",
           "parserOptions": Object {
-            "ecmaVersion": 2020,
+            "ecmaVersion": 2021,
             "sourceType": "module",
           },
           "plugins": Array [

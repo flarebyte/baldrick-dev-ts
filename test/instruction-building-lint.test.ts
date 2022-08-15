@@ -6,7 +6,7 @@ import { emptyFileFiltering } from '../src/path-filtering.js';
 
 const defaultOpts = {
   flags: [],
-  ecmaVersion: 2020 as SupportedEcmaVersion,
+  ecmaVersion: 2021 as SupportedEcmaVersion,
   reportBase: 'report/lint-report',
   reportDirectory: 'report',
   reportPrefix: 'lint-report',
@@ -22,7 +22,7 @@ describe('Build instruction for linting', () => {
           ...emptyFileFiltering,
           withPathStarting: ['src/', 'test/'],
         },
-        useGlob: 'auto'
+        useGlob: 'auto',
       },
     };
 
@@ -32,7 +32,7 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
-            "ecmaVersion": 2020,
+            "ecmaVersion": 2021,
             "extensions": Array [],
             "flags": Array [],
             "reportBase": "report/lint-report",
@@ -57,7 +57,7 @@ describe('Build instruction for linting', () => {
           withPathStarting: ['test/'],
           withExtension: ['.specs.ts'],
         },
-        useGlob: 'auto'
+        useGlob: 'auto',
       },
     };
 
@@ -67,7 +67,7 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
-            "ecmaVersion": 2020,
+            "ecmaVersion": 2021,
             "extensions": Array [
               ".specs.ts",
             ],
@@ -92,7 +92,7 @@ describe('Build instruction for linting', () => {
           { path: 'gen/step2.ts', tags: ['phase2'] },
         ],
         filtering: { ...emptyFileFiltering, withTag: ['phase1'] },
-        useGlob: 'auto'
+        useGlob: 'auto',
       },
     };
 
@@ -110,7 +110,7 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
-            "ecmaVersion": 2020,
+            "ecmaVersion": 2021,
             "extensions": Array [],
             "flags": Array [
               "globInputPaths:false",
@@ -131,7 +131,7 @@ describe('Build instruction for linting', () => {
       fileSearching: {
         pathInfos: [{ path: 'gen/schemas.csv', tags: ['@load'] }],
         filtering: { ...emptyFileFiltering, withTag: ['phase1'] },
-        useGlob: 'auto'
+        useGlob: 'auto',
       },
     };
 
@@ -158,7 +158,7 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
-            "ecmaVersion": 2020,
+            "ecmaVersion": 2021,
             "extensions": Array [],
             "flags": Array [
               "globInputPaths:false",
@@ -173,7 +173,7 @@ describe('Build instruction for linting', () => {
     `);
   });
 
-  it('lint and fix some sources ', () => {
+  it('lint and fix some sources', () => {
     const given: LintActionOpts = {
       ...defaultOpts,
       flags: ['aim:fix'],
@@ -184,7 +184,7 @@ describe('Build instruction for linting', () => {
           withPathStarting: ['src/', 'test/'],
           withoutPathSegment: ['fixture'],
         },
-        useGlob: 'auto'
+        useGlob: 'auto',
       },
     };
 
@@ -215,7 +215,7 @@ describe('Build instruction for linting', () => {
         Object {
           "name": "lint",
           "params": Object {
-            "ecmaVersion": 2020,
+            "ecmaVersion": 2021,
             "extensions": Array [],
             "flags": Array [
               "globInputPaths:false",
