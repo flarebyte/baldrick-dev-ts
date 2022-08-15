@@ -21,6 +21,8 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Installation
         run: yarn install
+      - name: Installation of baldrick
+        run: yarn install baldrick-dev-ts
       - name: Static code analysis
         run: yarn lint:ci
       - name: Test

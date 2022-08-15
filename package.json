@@ -39,7 +39,7 @@
     "baldrick-dev-ts": "dist/src/cli.mjs"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "scripts": {
     "build": "tsc --outDir dist",
