@@ -9,6 +9,8 @@
 
 > CLI utilities to help with Markdown hygiene and release checks for TypeScript packages (ESM).
 
+![Hero image for baldrick-dev-ts](baldrick-dev-ts-hero-512.jpeg)
+
 The current scope is intentionally small and focused to reduce setup time and dev-dependencies.
 
 - TypeScript (ESM) friendly
