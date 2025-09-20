@@ -39,8 +39,8 @@
 		"doc": "npx typedoc --json report/doc.json --pretty src/index.ts && npx baldrick-doc-ts typedoc --json-source report/doc.json && baldrick-doc-ts parse -f internal ngram && yarn md:fix",
 		"github": "gh repo edit --delete-branch-on-merge --enable-squash-merge",
 
-		"md": "npx baldrick-dev-ts markdown check && npx baldrick-dev-ts markdown check -s .github/",
-		"md:fix": "npx baldrick-dev-ts markdown fix && npx baldrick-dev-ts markdown fix -s .github/",
+    "md": "yarn cli markdown check --with-path-starting . && yarn cli markdown check --with-path-starting .github/",
+    "md:fix": "yarn cli markdown fix --with-path-starting . && yarn cli markdown fix --with-path-starting .github/",
 		"prebuild": "yarn reset",
 		"ready": "yarn md && yarn outdated && yarn audit && yarn release:check",
 		"reset": "rm -rf dist; rm -rf report",
