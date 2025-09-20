@@ -1,4 +1,3 @@
-import { ESLint } from 'eslint';
 
 export interface PathInfo {
   path: string;
@@ -68,28 +67,11 @@ export type MicroInstruction =
     }
   | {
       name: 'lint';
-      params: Pick<
-        InstructionParams,
-        | 'targetFiles'
-        | 'extensions'
-        | 'reportBase'
-        | 'reportDirectory'
-        | 'reportPrefix'
-        | 'flags'
-        | 'ecmaVersion'
-      >;
+      params: Pick<InstructionParams, 'targetFiles'>;
     }
   | {
       name: 'test';
-      params: Pick<
-        InstructionParams,
-        | 'targetFiles'
-        | 'reportBase'
-        | 'reportDirectory'
-        | 'reportPrefix'
-        | 'flags'
-        | 'displayName'
-      >;
+      params: Pick<InstructionParams, 'targetFiles'>;
     }
   | {
       name: 'markdown';
@@ -157,24 +139,8 @@ export type LintAction = (
   options: LintActionOpts
 ) => Promise<void>;
 
-export interface LintResolvedOpts {
-  modulePath: string;
-  flags: SupportedFlag[];
-  pathPatterns: string[];
-  ecmaVersion: SupportedEcmaVersion;
-}
-
 export interface BasicInstructionResult {
   status: InstructionStatus;
-}
-
-export interface LintInstructionResult {
-  text: string;
-  json: string;
-  junitXml: string;
-  compact: string;
-  status: InstructionStatus;
-  lintResults: ESLint.LintResult[];
 }
 
 // Test
@@ -196,18 +162,7 @@ export type TestAction = (
   options: TestActionOpts
 ) => Promise<void>;
 
-export interface TestResolvedOpts {
-  modulePath: string;
-  flags: SupportedFlag[];
-  pathPatterns: string[];
-  outputDirectory: string;
-  outputName: string;
-  displayName: string;
-}
-
-export interface TestInstructionResult {
-  status: InstructionStatus;
-}
+// No resolved opts or instruction result for test in reduced scope
 
 // Markdown
 export interface MarkdownActionRawOpts extends BaseAction, FileFiltering {}

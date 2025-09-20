@@ -1,13 +1,9 @@
 import {
-  LintInstructionResult,
   InstructionStatus,
-  LintResolvedOpts,
   MicroInstruction,
   PathInfo,
   RunnerContext,
   TermFormatterParams,
-  TestResolvedOpts,
-  TestInstructionResult,
   MarkdownInstructionResult,
   MarkdownResolvedOpts,
   BasicInstructionResult,
@@ -17,10 +13,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { byFileQuery, commanderStringsToFiltering } from './path-filtering.js';
 import glob from 'tiny-glob';
-import { createESLint, lintCommand } from './eslint-helper.js';
-import { outputFile } from 'fs-extra';
-import { ESLint } from 'eslint';
-import { createJest, jestCommand } from './jest-helper.js';
+// import { outputFile } from 'fs-extra';
 import { satisfyFlag } from './flag-helper.js';
 import { runMdPrettier } from './prettier-md-helper.js';
 import { runMdRemark } from './remark-md-helper.js';
@@ -134,161 +127,7 @@ export const runFilterInstruction = (
   return filtered;
 };
 
-const toEslintStatus = (
-  lintResults: ESLint.LintResult[]
-): InstructionStatus => {
-  const hasError = lintResults.some((res) => res.errorCount > 0);
-  const hasWarning = lintResults.some((res) => res.warningCount > 0);
-  const warningOrOk = hasWarning ? 'warning' : 'ok';
-  return hasError ? 'ko' : warningOrOk;
-};
-
-export const runLintInstruction = async (
-  ctx: RunnerContext,
-  instruction: MicroInstruction & { name: 'lint' },
-  pathInfos: PathInfo[]
-): Promise<LintInstructionResult> => {
-  ctx.termFormatter(instructionToTermIntro(instruction));
-  const {
-    params: { targetFiles, reportBase, flags, ecmaVersion },
-  } = instruction;
-  const isCI = satisfyFlag('aim:ci', flags);
-  const shouldFix = satisfyFlag('aim:fix', flags);
-  const targetFilesOrEmpty = targetFiles || [];
-  const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
-  const lintOpts: LintResolvedOpts = {
-    modulePath: ctx.currentPath,
-    flags,
-    pathPatterns,
-    ecmaVersion,
-  };
-  ctx.termFormatter({
-    title: 'Linting - final opts',
-    detail: lintOpts,
-    kind: 'info',
-    format: 'human',
-  });
-  const handle = await createESLint(lintOpts);
-  const lintResults = await lintCommand(handle, shouldFix);
-  const text = await handle.formatter.format(lintResults);
-  const json = await handle.jsonFormatter.format(lintResults);
-  const junitXml = await handle.junitFormatter.format(lintResults);
-  const compact = await handle.compactFormatter.format(lintResults);
-  const detail = isCI ? compact : text;
-  ctx.termFormatter({
-    title: 'Linting',
-    detail,
-    kind: 'info',
-    format: 'default',
-  });
-  if (isCI) {
-    await outputFile(`${reportBase}.json`, json, 'utf8');
-    await outputFile(`${reportBase}.junit.xml`, junitXml, 'utf8');
-  }
-  const status = toEslintStatus(lintResults);
-  return { text, json, junitXml, compact, status, lintResults };
-};
-
-export const runLintInstructionWithCatch = async (
-  ctx: RunnerContext,
-  instruction: MicroInstruction & { name: 'lint' },
-  pathInfos: PathInfo[]
-): Promise<BasicInstructionResult> => {
-  try {
-    const started = Date.now();
-    await runLintInstruction(ctx, instruction, pathInfos);
-    const finished = Date.now();
-    const delta_seconds = ((finished - started) / 1000).toFixed(1);
-    ctx.termFormatter({
-      title: 'Linting - finished',
-      detail: `Took ${delta_seconds} seconds`,
-      format: 'default',
-      kind: 'success',
-    });
-  } catch (error) {
-    ctx.errTermFormatter({
-      title: 'Linting - lint error',
-      detail: error,
-    });
-    throw error;
-  }
-  return { status: 'ok' };
-};
-
-export const runTestInstruction = async (
-  ctx: RunnerContext,
-  instruction: MicroInstruction & { name: 'test' },
-  pathInfos: PathInfo[]
-): Promise<TestInstructionResult> => {
-  ctx.termFormatter(instructionToTermIntro(instruction));
-  const {
-    params: { targetFiles, reportDirectory, reportPrefix, displayName, flags },
-  } = instruction;
-
-  const targetFilesOrEmpty = targetFiles || [];
-  const pathPatterns = [...targetFilesOrEmpty, ...pathInfos.map(asPath)];
-  const testOpts: TestResolvedOpts = {
-    modulePath: ctx.currentPath,
-    flags,
-    pathPatterns,
-    outputDirectory: reportDirectory,
-    outputName: reportPrefix,
-    displayName,
-  };
-
-  ctx.termFormatter({
-    title: 'Testing - final opts',
-    detail: testOpts,
-    kind: 'info',
-    format: 'human',
-  });
-
-  const handle = createJest(testOpts);
-
-  ctx.termFormatter({
-    title: 'Testing - jest config',
-    detail: handle.config,
-    kind: 'info',
-    format: 'human',
-  });
-
-  ctx.termFormatter({
-    title: 'Testing - jest argv',
-    detail: handle.argv.join(' '),
-    kind: 'info',
-    format: 'default',
-  });
-
-  await jestCommand(handle);
-
-  return { status: 'ok' };
-};
-
-export const runTestInstructionWithCatch = async (
-  ctx: RunnerContext,
-  instruction: MicroInstruction & { name: 'test' },
-  pathInfos: PathInfo[]
-): Promise<BasicInstructionResult> => {
-  try {
-    const started = Date.now();
-    await runTestInstruction(ctx, instruction, pathInfos);
-    const finished = Date.now();
-    const delta_seconds = ((finished - started) / 1000).toFixed(1);
-    ctx.termFormatter({
-      title: 'Testing - finished',
-      detail: `Took ${delta_seconds} seconds`,
-      format: 'default',
-      kind: 'success',
-    });
-  } catch (error) {
-    ctx.errTermFormatter({
-      title: 'Testing - build error',
-      detail: error,
-    });
-    throw error;
-  }
-  return { status: 'ok' };
-};
+// Lint and Test instruction implementations removed (out of scope)
 
 const runMarkdownInstruction = async (
   ctx: RunnerContext,
@@ -394,15 +233,9 @@ export const runInstructions = async (
     filterInstruction && filterInstruction.name === 'filter'
       ? runFilterInstruction(ctx, filterInstruction, allFileInfos)
       : allFileInfos;
-  const linted =
-    lintInstruction && lintInstruction.name === 'lint'
-      ? await runLintInstructionWithCatch(ctx, lintInstruction, filtered)
-      : false;
-
-  const tested =
-    testInstruction && testInstruction.name === 'test'
-      ? await runTestInstructionWithCatch(ctx, testInstruction, filtered)
-      : false;
+  // Lint and test are no-ops in the reduced scope
+  const linted = false;
+  const tested = false;
 
   const markdowned =
     markdownInstruction && markdownInstruction.name === 'markdown'

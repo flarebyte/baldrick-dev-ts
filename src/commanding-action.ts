@@ -1,42 +1,34 @@
 import { runReleaseActionWithCatch } from './action-release.js';
-import {
-  toMarkdownInstructions,
-  toLintInstructions,
-  toTestInstructions,
-} from './instruction-building.js';
+import { toMarkdownInstructions } from './instruction-building.js';
 import { runInstructions } from './instruction-runner.js';
 import {
   MarkdownAction,
   MarkdownActionOpts,
   LintAction,
-  LintActionOpts,
   RunnerContext,
   TestAction,
-  TestActionOpts,
   ReleaseAction,
   ReleaseActionOpts,
 } from './model.js';
 
-export const cmdLintAction: LintAction = async (
-  ctx: RunnerContext,
-  options: LintActionOpts
-) => {
-  const instructions = toLintInstructions(options);
-  const status = await runInstructions(ctx, instructions);
-  if (status === 'ko') {
-    throw new Error('Lint action did fail !');
-  }
+export const cmdLintAction: LintAction = async (ctx: RunnerContext) => {
+  ctx.termFormatter({
+    title: 'Lint - no longer supported',
+    detail:
+      'The lint command has been deprecated and is no longer supported in this project scope.',
+    kind: 'info',
+    format: 'default',
+  });
 };
 
-export const cmdTestAction: TestAction = async (
-  ctx: RunnerContext,
-  options: TestActionOpts
-) => {
-  const instructions = toTestInstructions(options);
-  const status = await runInstructions(ctx, instructions);
-  if (status === 'ko') {
-    throw new Error('Test action did fail !');
-  }
+export const cmdTestAction: TestAction = async (ctx: RunnerContext) => {
+  ctx.termFormatter({
+    title: 'Test - no longer supported',
+    detail:
+      'The test command has been deprecated and is no longer supported in this project scope.',
+    kind: 'info',
+    format: 'default',
+  });
 };
 
 export const cmdMarkdownAction: MarkdownAction = async (
