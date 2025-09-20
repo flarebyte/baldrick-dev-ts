@@ -42,6 +42,30 @@ describe("normalizeMdLine", () => {
 		assert.ok(lines.length > 1);
 		assert.ok(lines.every((l) => l.startsWith("> ")));
 	});
+
+	test("keeps ordered list as 1. prefixed and wraps", () => {
+		const line =
+			"1. This is a long ordered list item that should wrap on multiple lines when normalized";
+		const normalized = normalizeMdLine(line);
+		const lines = normalized.split("\n");
+		assert.ok(lines.length > 1);
+		assert.ok((lines[0] ?? "").startsWith("1. "));
+	});
+
+	test("keeps horizontal rule as-is", () => {
+		const line = "---";
+		assert.equal(normalizeMdLine(line), line);
+	});
+
+	test("keeps table row as-is", () => {
+		const line = "a | b | c";
+		assert.equal(normalizeMdLine(line), line);
+	});
+
+	test("keeps code block line (leading spaces) as-is", () => {
+		const line = "    const x = 1;";
+		assert.equal(normalizeMdLine(line), line);
+	});
 });
 
 describe("filtering round-trip", () => {
