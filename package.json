@@ -56,7 +56,12 @@
     "h": "cat commands.txt",
     "norm": "npx baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix",
     "norm:g": "baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix",
-    "cli": "tsx src/cli.mts"
+    "cli": "tsx src/cli.mts",
+    "pretest:ci": "yarn build",
+    "test:ci": "node --test --test-reporter=spec dist/test/**/*.test.js",
+    "lint": "npx @biomejs/biome lint .",
+    "lint:fix": "npx @biomejs/biome check --apply .",
+    "lint:ci": "npx @biomejs/biome check ."
   },
   "dependencies": {
     "baldrick-tsconfig-es2024": "*",
@@ -87,6 +92,8 @@
     "@types/diff": "5.0.2",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "18.7.3",
+    "@types/prettier": "^2.7.3",
+    "@biomejs/biome": "^1.8.3",
     "ts-node": "^10.9.1",
     "tsx": "^4.7.0",
     "typescript": "^5.4.0"

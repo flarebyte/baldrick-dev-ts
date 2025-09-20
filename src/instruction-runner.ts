@@ -203,8 +203,6 @@ export const runInstructions = async (
   const filterInstruction = instructions.find(
     (instr) => instr.name === 'filter'
   );
-  const lintInstruction = instructions.find((instr) => instr.name === 'lint');
-  const testInstruction = instructions.find((instr) => instr.name === 'test');
   const markdownInstruction = instructions.find(
     (instr) => instr.name === 'markdown'
   );
@@ -234,8 +232,7 @@ export const runInstructions = async (
       ? runFilterInstruction(ctx, filterInstruction, allFileInfos)
       : allFileInfos;
   // Lint and test are no-ops in the reduced scope
-  const linted = false;
-  const tested = false;
+  // lint/test disabled in reduced scope
 
   const markdowned =
     markdownInstruction && markdownInstruction.name === 'markdown'
@@ -246,11 +243,7 @@ export const runInstructions = async (
         )
       : false;
 
-  if (linted) {
-    return linted.status;
-  } else if (tested) {
-    return tested.status;
-  } else if (markdowned) {
+  if (markdowned) {
     return markdowned.status;
   } else {
     return 'ko';
