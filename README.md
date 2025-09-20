@@ -8,39 +8,41 @@ status](https://github.com/flarebyte/baldrick-dev-ts/actions/workflows/main.yml/
 ![node-current](https://img.shields.io/node/v/baldrick-dev-ts)
 ![NPM](https://img.shields.io/npm/l/baldrick-dev-ts)
 
-> CLI for the package development of Typescript library in ESM format.
+> CLI utilities to help with Markdown hygiene and release checks for TypeScript packages (ESM).
 
-The main motivation is to reduce the amount of dev dependencies that needs to
-be installed and configured individually.
+The current scope is intentionally small and focused to reduce setup time and dev-dependencies.
 
--   **Typescript** the strongly typed alternative to Javascript.
-
--   **Reduced configuration** the CLI should be ready go without further
-    configuration.
-
--   **ESLint** under the hood for linting.
-
--   **Jest** under the hood for testing (very experimental)
-
--   **ES2021** or later.
+- TypeScript (ESM) friendly
+- Markdown checks and formatting (remark + Prettier-based normalisation)
+- Release checks and publishing helper
+- Minimal config; tools invoked via `npx`
+- Requires Node.js >= 22
 
 ## Usage
 
-Statically analyzes the default source folder to quickly find problems:
+Markdown: check and fix
 
-`baldrick lint check`
+```bash
+# Check markdown under current repository (default extension .md)
+npx baldrick-dev-ts markdown check --with-path-starting .
 
-Fix problems in the default source folder:
+# Check markdown in .github/ only
+npx baldrick-dev-ts markdown check --with-path-starting .github/
 
-`baldrick lint fix`
+# Fix markdown formatting and line wrapping in-place
+npx baldrick-dev-ts markdown fix --with-path-starting .
+```
 
-Run unit tests:
+Release: dry-run check
 
-`baldrick test check`
+```bash
+# Check if the current version can be published (no publishing happens)
+npx baldrick-dev-ts release check
+```
 
-Update snapshots for unit test:
+Deprecated commands
 
-`baldrick test fix`
+- `lint` and `test` subcommands are no longer supported and only print a deprecation notice.
 
 ## Acknowledgements
 
@@ -63,25 +65,27 @@ gratitude to this initial project.
 -   [Contributors](https://github.com/flarebyte/baldrick-dev-ts/graphs/contributors)
 -   [Dependencies](https://github.com/flarebyte/baldrick-dev-ts/network/dependencies)
 
-## Installation
+## Installation & running
 
-This package is [ESM
-only](https://blog.sindresorhus.com/get-ready-for-esm-aa53530b3f77).
+This package is [ESM only](https://blog.sindresorhus.com/get-ready-for-esm-aa53530b3f77).
 
-```bash
-yarn global add baldrick-dev-ts
-baldrick --help
-```
-
-Or alternatively run it:
+Run without installing globally:
 
 ```bash
 npx baldrick-dev-ts --help
 ```
 
-If you want to tun the latest version from github. Mostly useful for dev:
+Or install locally in your project and add scripts:
 
 ```bash
-git clone git@github.com:flarebyte/baldrick-dev-ts.git
-yarn global add `pwd`
+yarn add -D baldrick-dev-ts
+yarn baldrick-dev-ts --help
 ```
+
+## Development
+
+- Build: `yarn build`
+- Lint: `yarn lint` (Biome via `npx @biomejs/biome@latest`)
+- Unit tests: `yarn test:ci` (Node.js test runner)
+- Coverage: `yarn test:cov` (via `npx c8@latest`)
+- CLI smoke tests: `yarn test:pest` (baldrick-pest specs in `pest-spec/`)
