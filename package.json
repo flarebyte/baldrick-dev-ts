@@ -35,7 +35,7 @@
 		"node": ">=22"
 	},
 	"scripts": {
-		"build": "tsc --outDir dist",
+		"build": "npx -p typescript tsc --outDir dist",
 		"doc": "npx typedoc --json report/doc.json --pretty src/index.ts && npx baldrick-doc-ts typedoc --json-source report/doc.json && baldrick-doc-ts parse -f internal ngram && yarn md:fix",
 		"github": "gh repo edit --delete-branch-on-merge --enable-squash-merge",
 
@@ -49,13 +49,13 @@
 		"h": "cat commands.txt",
 		"norm": "npx baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix",
 		"norm:g": "baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix",
-		"cli": "tsx src/cli.mts",
-    "pretest:ci": "yarn build",
-    "test:ci": "node --test --test-reporter=spec dist/test/**/*.test.js",
-    "test:cov": "yarn build && c8 -r text -r lcov -r html node --test dist/test/**/*.test.js",
-		"lint": "npx @biomejs/biome lint .",
-		"lint:fix": "npx @biomejs/biome check --apply .",
-		"lint:ci": "npx @biomejs/biome check ."
+		"cli": "npx -p tsx@latest tsx src/cli.mts",
+		"pretest:ci": "yarn build",
+		"test:ci": "node --test --test-reporter=spec dist/test/**/*.test.js",
+		"test:cov": "yarn build && npx -p c8@latest c8 -r text -r lcov -r html node --test dist/test/**/*.test.js",
+		"lint": "npx -p @biomejs/biome@latest biome lint src test .github",
+		"lint:fix": "npx -p @biomejs/biome@latest biome check --write src test .github",
+		"lint:ci": "npx -p @biomejs/biome@latest biome check src test .github"
 	},
 	"dependencies": {
 		"baldrick-tsconfig-es2024": "*",
@@ -82,17 +82,12 @@
 		"vfile-reporter": "^7.0.3",
 		"vfile-reporter-json": "^3.1.0"
 	},
-  "devDependencies": {
-    "@types/diff": "5.0.2",
-    "@types/fs-extra": "^9.0.13",
-    "@types/node": "18.7.3",
-    "@types/prettier": "^2.7.3",
-    "@biomejs/biome": "^1.8.3",
-    "c8": "^9.1.0",
-    "ts-node": "^10.9.1",
-    "tsx": "^4.7.0",
-    "typescript": "^5.4.0"
-  },
+	"devDependencies": {
+		"@types/diff": "5.0.2",
+		"@types/fs-extra": "^9.0.13",
+		"@types/node": "18.7.3",
+		"@types/prettier": "^2.7.3"
+	},
 	"peerDependencies": {
 		"typescript": "5.x"
 	}

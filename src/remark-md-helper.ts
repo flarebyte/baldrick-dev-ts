@@ -1,4 +1,5 @@
 import fs, { readFile } from "node:fs/promises";
+import path from "node:path";
 import { ensureDir } from "fs-extra";
 import { remark } from "remark";
 import remarkGfm from "remark-gfm";
@@ -13,8 +14,6 @@ import remarkLintStrongMarker from "remark-lint-strong-marker";
 import remarkLintUnorderedListMarkerStyle from "remark-lint-unordered-list-marker-style";
 import remarkPresetLintConsistent from "remark-preset-lint-consistent";
 import remarkPresetLintRecommended from "remark-preset-lint-recommended";
-
-import path from "node:path";
 import type { VFile } from "vfile";
 import { reporter } from "vfile-reporter";
 import { reporterJson } from "vfile-reporter-json";

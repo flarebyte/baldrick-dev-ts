@@ -3,9 +3,9 @@ import { describe, test } from "node:test";
 
 import {
 	commanderStringsToFiltering,
+	emptyFileFiltering,
 	filteringToCommanderStrings,
 } from "../src/path-filtering.js";
-import { emptyFileFiltering } from "../src/path-filtering.js";
 import { normalizeMdLine, wrapWord } from "../src/text-helper.js";
 
 describe("wrapWord", () => {

@@ -1,10 +1,10 @@
+import { Commanding } from "./commanding.js";
 import {
 	cmdLintAction,
 	cmdMarkdownAction,
 	cmdReleaseAction,
 	cmdTestAction,
 } from "./commanding-action.js";
-import { Commanding } from "./commanding.js";
 
 const commanding = new Commanding();
 commanding.declareLintAction(cmdLintAction);

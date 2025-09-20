@@ -34,7 +34,7 @@ export const toCommanderArgument = (option: CmdOption): Argument => {
 const supportedEcma: SupportedEcmaVersion[] = [2020, 2021, 2022];
 
 export const toSupportedEcma = (givenEcma: string): SupportedEcmaVersion => {
-	const found = supportedEcma.find((f) => f === Number.parseInt(givenEcma));
+	const found = supportedEcma.find((f) => f === Number.parseInt(givenEcma, 10));
 	if (!found) {
 		throw new Error(`This Ecma version is not supported yet ${givenEcma}`);
 	}
