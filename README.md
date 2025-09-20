@@ -18,6 +18,38 @@ The current scope is intentionally small and focused to reduce setup time and de
 - Minimal config; tools invoked via `npx`
 - Requires Node.js >= 22
 
+## Why this exists
+
+Most projects only need a thin layer of polish and safety around docs and releases. This CLI keeps the toolchain tiny by:
+
+- Focusing on the high‑value parts (Markdown + release checks).
+- Using `npx` to run heavy tools on demand (no permanent dev-deps).
+- Working out of the box with sensible defaults for ESM/TypeScript repos.
+
+If you need full linting/testing stacks, use dedicated tools; this CLI won’t get in your way.
+
+## Quickstart
+
+1) Prerequisite: Node.js 22+
+
+2) Check your Markdown
+
+```bash
+npx baldrick-dev-ts markdown check --with-path-starting .
+```
+
+3) Fix formatting (wrap lines, bullet style, etc.)
+
+```bash
+npx baldrick-dev-ts markdown fix --with-path-starting .
+```
+
+4) Sanity‑check your release (no publish)
+
+```bash
+npx baldrick-dev-ts release check
+```
+
 ## Usage
 
 Markdown: check and fix
