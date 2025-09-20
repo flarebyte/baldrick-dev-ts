@@ -24,6 +24,7 @@ const toJsonish = (format: TermFormatterFormat, value: object): string =>
 		? simplifyJson(JSON.stringify(simplifyObj(value)))
 		: JSON.stringify(value);
 
+/** Basic console formatter for informational output. */
 export const basicFormatter = (params: TermFormatterParams) => {
 	const detail =
 		typeof params.detail === "string"
@@ -43,6 +44,7 @@ export const basicFormatter = (params: TermFormatterParams) => {
 	}
 };
 
+/** Basic console formatter for error output. */
 export const errorFormatter = (params: ErrTermFormatterParams) => {
 	console.error(`${redFailure} ${params.title} ⇨`, params.detail);
 };

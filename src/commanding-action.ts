@@ -11,6 +11,9 @@ import type {
 	TestAction,
 } from "./model.js";
 
+/**
+ * Deprecated lint action. Prints a deprecation message.
+ */
 export const cmdLintAction: LintAction = async (ctx: RunnerContext) => {
 	ctx.termFormatter({
 		title: "Lint - no longer supported",
@@ -21,6 +24,9 @@ export const cmdLintAction: LintAction = async (ctx: RunnerContext) => {
 	});
 };
 
+/**
+ * Deprecated test action. Prints a deprecation message.
+ */
 export const cmdTestAction: TestAction = async (ctx: RunnerContext) => {
 	ctx.termFormatter({
 		title: "Test - no longer supported",
@@ -31,6 +37,9 @@ export const cmdTestAction: TestAction = async (ctx: RunnerContext) => {
 	});
 };
 
+/**
+ * Run markdown instructions according to provided options.
+ */
 export const cmdMarkdownAction: MarkdownAction = async (
 	ctx: RunnerContext,
 	options: MarkdownActionOpts,
@@ -42,6 +51,9 @@ export const cmdMarkdownAction: MarkdownAction = async (
 	}
 };
 
+/**
+ * Run the release flow with error handling.
+ */
 export const cmdReleaseAction: ReleaseAction = async (
 	ctx: RunnerContext,
 	options: ReleaseActionOpts,

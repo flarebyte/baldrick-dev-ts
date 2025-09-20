@@ -17,6 +17,7 @@ const runMdPrettierOnFile =
 		writeFile(filename, remarked, "utf8");
 	};
 
+/** Format and normalize a set of markdown files using Prettier and remark rules. */
 export const runMdPrettier = async (filenames: string[]) => {
 	if (filenames.length > filesLimit) {
 		throw new Error(`Too many files to process: ${filenames.length}`);

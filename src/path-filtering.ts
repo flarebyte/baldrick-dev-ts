@@ -1,6 +1,7 @@
 import { cmdLintFilterOptions } from "./commanding-data.js";
 import type { CmdOption, FileFiltering, PathInfo } from "./model.js";
 
+/** Default empty filtering (matches everything). */
 export const emptyFileFiltering: FileFiltering = {
 	withPathStarting: [],
 	withoutPathStarting: [],
@@ -32,6 +33,7 @@ const status = (
 	matched: criteria.some(predicate),
 });
 
+/** Predicate builder to filter PathInfo by a FileFiltering. */
 export const byFileQuery =
 	(query: FileFiltering) =>
 	(pathInfo: PathInfo): boolean => {
@@ -64,6 +66,7 @@ export const byFileQuery =
 const optionOrEmpty = (option: CmdOption, values: string[]): string[] =>
 	values.length === 0 ? [] : [`--${option.longFlag}`, ...values];
 
+/** Serialize filtering to CLI option strings for reuse in sub-commands. */
 export const filteringToCommanderStrings = (
 	filtering: FileFiltering,
 ): string[] => {
@@ -126,6 +129,7 @@ const findByIdx = (values: [string, number][], idx: number): number => {
 	return found ? found[1] || 0 : 0;
 };
 
+/** Parse CLI option strings back into a FileFiltering object. */
 export const commanderStringsToFiltering = (
 	cmdStrings: string[],
 ): FileFiltering => {

@@ -28,6 +28,7 @@ const instructionToTermIntro = (
 	format: "human",
 });
 
+/** Translate a static file list into PathInfos. */
 export const runFilesInstruction = (
 	ctx: RunnerContext,
 	instruction: MicroInstruction & { name: "files" },
@@ -42,6 +43,7 @@ export const runFilesInstruction = (
 const readUtf8File = (currentPath: string) => (filename: string) =>
 	readFile(path.join(currentPath, filename), { encoding: "utf8" });
 
+/** Load file lists from text files and merge them into PathInfos. */
 export const runLoadInstruction = async (
 	ctx: RunnerContext,
 	instruction: MicroInstruction & { name: "load" },
@@ -64,6 +66,7 @@ export const runLoadInstruction = async (
 	return pathInfos;
 };
 
+/** Run a glob search and convert matches into PathInfos. */
 export const runGlobInstruction = async (
 	ctx: RunnerContext,
 	instruction: MicroInstruction & { name: "glob" },
@@ -82,6 +85,7 @@ export const runGlobInstruction = async (
 	return matchedFiles.flat().map(toPathInfo);
 };
 
+/** Wrapper adding timing and error handling around globbing. */
 export const runGlobInstructionWithCatch = async (
 	ctx: RunnerContext,
 	instruction: MicroInstruction & { name: "glob" },
@@ -107,6 +111,7 @@ export const runGlobInstructionWithCatch = async (
 	}
 };
 
+/** Apply filtering to a list of PathInfos. */
 export const runFilterInstruction = (
 	ctx: RunnerContext,
 	instruction: MicroInstruction & { name: "filter" },
@@ -167,6 +172,7 @@ const runMarkdownInstruction = async (
 	return { status: "ok" };
 };
 
+/** Wrapper for the markdown processing instruction with timing and logging. */
 export const runMarkdownInstructionWithCatch = async (
 	ctx: RunnerContext,
 	instruction: MicroInstruction & { name: "markdown" },
@@ -193,6 +199,7 @@ export const runMarkdownInstructionWithCatch = async (
 	return { status: "ok" };
 };
 
+/** Execute the provided micro-instructions in order and report overall status. */
 export const runInstructions = async (
 	ctx: RunnerContext,
 	instructions: MicroInstruction[],

@@ -40,12 +40,22 @@ const checkStyle = (
 	return typeof found === "string" ? [flag] : [];
 };
 
+/**
+ * Main CLI builder registering available commands.
+ *
+ * Public commands:
+ * - `markdown`: Check/fix markdown files
+ * - `release`: Check/publish the current project (CI-focused)
+ *
+ * Note: `lint` and `test` are deprecated and only print a notice.
+ */
 export class Commanding {
 	_program: Command = new Command();
 	constructor() {
 		this._program.version(version);
 	}
 
+	/** Register the deprecated `lint` command (prints a deprecation notice). */
 	declareLintAction(lintAction: LintAction) {
 		this._program
 			.command("lint")
@@ -114,6 +124,7 @@ export class Commanding {
 			});
 	}
 
+	/** Register the deprecated `test` command (prints a deprecation notice). */
 	declareTestAction(testAction: TestAction) {
 		this._program
 			.command("test")
@@ -155,6 +166,7 @@ export class Commanding {
 			});
 	}
 
+	/** Register the `markdown` command for checking and fixing markdown files. */
 	declareMarkdownAction(markdownAction: MarkdownAction) {
 		this._program
 			.command("markdown")
@@ -217,6 +229,7 @@ export class Commanding {
 			});
 	}
 
+	/** Register the `release` command for release checks and publishing. */
 	declareReleaseAction(releaseAction: ReleaseAction) {
 		this._program
 			.command("release")
@@ -235,10 +248,12 @@ export class Commanding {
 			});
 	}
 
+	/** Parse the provided argv list and execute matching command. */
 	async parseAsync(argv: string[]) {
 		return await this._program.parseAsync(argv, { from: "node" });
 	}
 
+	/** Parse the current process argv (entrypoint helper). */
 	async parseAsyncArgv() {
 		return await this.parseAsync(process.argv);
 	}

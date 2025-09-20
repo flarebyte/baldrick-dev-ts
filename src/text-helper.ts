@@ -40,6 +40,7 @@ const mergeWrappingWords =
 				};
 	};
 
+/** Word-wrap a single line at the given width. */
 export const wrapWord = (width: number, text: string): string => {
 	const words = text.split(" ").map(createWrappingWord);
 	const result = words.reduce(mergeWrappingWords(width));
@@ -95,6 +96,7 @@ const maxLineOther = 72;
  * @param text
  * @returns
  */
+/** Normalize a single markdown line (wrapping lists/quotes, preserving code/headers). */
 export const normalizeMdLine = (line: string): string => {
 	const lineType = getMdLineType(line);
 	const keepLineAsIs =

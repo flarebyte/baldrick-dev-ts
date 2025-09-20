@@ -12,6 +12,7 @@ type VersionsObj = {
 const isVersion = (version?: string): boolean =>
 	typeof version === "string" && version.split(".").length === 3;
 
+/** Retrieve local toolchain versions using `yarn versions --json`. */
 export const getYarnVersions = async (): Promise<VersionsObj> => {
 	try {
 		const { stdout } = await execa("yarn", ["versions", "--json"]);
@@ -30,6 +31,7 @@ interface YarnInfo {
 	};
 }
 
+/** Retrieve published package info via `yarn info --json` with contextual logging. */
 export const getYarnInfo = async (ctx: RunnerContext): Promise<YarnInfo> => {
 	try {
 		const { stdout, stderr } = await execa("yarn", ["info", "--json"]);
@@ -50,6 +52,7 @@ export const getYarnInfo = async (ctx: RunnerContext): Promise<YarnInfo> => {
 	}
 };
 
+/** Run `npm publish` and log output. */
 export const npmPublish = async (ctx: RunnerContext): Promise<void> => {
 	try {
 		const { stdout, stderr } = await execa("npm", ["publish"]);
@@ -67,6 +70,7 @@ export const npmPublish = async (ctx: RunnerContext): Promise<void> => {
 /**
  * @example `gh release create v0.6.0 --generate-notes`
  */
+/** Create a GitHub release for the given version using the gh CLI. */
 export const ghRelease = async (
 	ctx: RunnerContext,
 	version: string,

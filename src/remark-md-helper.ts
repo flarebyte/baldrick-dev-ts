@@ -89,6 +89,7 @@ const runMdRemarkOnFile =
 			);
 	};
 
+/** Run remark checks and write JSON report entries. */
 export const runMdRemark = async (
 	opts: MarkdownResolvedOpts,
 	filenames: string[],
@@ -106,6 +107,7 @@ export const runMdRemark = async (
 	await Promise.all(jobs);
 };
 
+/** Apply remark-based normalization to a markdown string and return the new content. */
 export const fixMdRemarkContent = async (content: string) => {
 	const newContent = await createRemark()
 		.data("settings", {

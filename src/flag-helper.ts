@@ -1,5 +1,6 @@
 import type { SupportedFlag } from "./model.js";
 
+/** Check whether the given flag list contains the exact flag. */
 export const satisfyFlag = (
 	expected: SupportedFlag,
 	flags: SupportedFlag[],
@@ -21,5 +22,6 @@ const toSupportedFlag = (flag: string): SupportedFlag => {
 	return found;
 };
 
+/** Filter and type-narrow incoming string flags to the supported set. */
 export const toSupportedFlags = (flags: string[]): SupportedFlag[] =>
 	flags.map(toSupportedFlag);

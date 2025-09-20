@@ -21,6 +21,7 @@ const isPublishable = async (
 		: [localInfo.version !== remoteInfo.data.version, localInfo.version];
 };
 
+/** Publish (or simulate) the current project version to npm and GitHub. */
 export const runReleaseAction: ReleaseAction = async (
 	ctx: RunnerContext,
 	options: ReleaseActionOpts,
@@ -50,6 +51,7 @@ export const runReleaseAction: ReleaseAction = async (
 	await ghRelease(ctx, version);
 };
 
+/** Wrapper with contextual logging and error handling for the release flow. */
 export const runReleaseActionWithCatch = async (
 	ctx: RunnerContext,
 	options: ReleaseActionOpts,

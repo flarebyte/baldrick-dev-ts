@@ -1,5 +1,6 @@
 import type { PathInfo } from "./model.js";
 
+/** Extract the path string from a PathInfo. */
 export const asPath = (pathInfo: PathInfo): string => pathInfo.path;
 
 const splitBySpace = (value: string): string[] =>
@@ -9,6 +10,7 @@ const splitBySpace = (value: string): string[] =>
 		.map((s) => s.trim())
 		.filter((s) => s.length > 0);
 
+/** Parse a line "path [#tags]" into PathInfo. */
 export const toPathInfo = (pathAndTags: string): PathInfo => {
 	const [pathStr, tagsStr] = pathAndTags.split(";", 2);
 	const tags = tagsStr ? splitBySpace(tagsStr) : [];
@@ -18,6 +20,7 @@ export const toPathInfo = (pathAndTags: string): PathInfo => {
 	};
 };
 
+/** Parse a multi-line content into PathInfos, ignoring comments and blanks. */
 export const toPathInfos = (content: string): PathInfo[] => {
 	const lines = content
 		.split("\n")
@@ -34,6 +37,7 @@ const noDuplicatePathInfo = (
 	pathInfos: PathInfo[],
 ): boolean => pathInfos.findIndex((pi) => pi.path === pathInfo.path) === index;
 
+/** Merge multiple content files into a de-duplicated list of PathInfos. */
 export const toMergedPathInfos = (contents: string[]): PathInfo[] => {
 	const pathInfos = contents.flatMap(toPathInfos).filter(noDuplicatePathInfo);
 	return pathInfos;
