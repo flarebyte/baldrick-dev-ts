@@ -1,7 +1,6 @@
 # Baldrick-dev-ts
 
-![npm](https://img.shields.io/npm/v/baldrick-dev-ts) ![Build
-status](https://github.com/flarebyte/baldrick-dev-ts/actions/workflows/main.yml/badge.svg)
+![npm](https://img.shields.io/npm/v/baldrick-dev-ts) ![Build status](https://github.com/flarebyte/baldrick-dev-ts/actions/workflows/main.yml/badge.svg)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/baldrick-dev-ts)
 
 ![npm type definitions](https://img.shields.io/npm/types/baldrick-dev-ts)
