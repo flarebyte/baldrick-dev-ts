@@ -84,7 +84,6 @@
     "vfile-reporter-json": "^4.0.0"
   },
   "devDependencies": {
-    "@types/diff": "^8.0.0",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^24.5.2"
   },
