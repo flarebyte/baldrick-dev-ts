@@ -1,0 +1,22 @@
+title: markdown-fix-and-validate
+cases:
+  fix-then-check:
+    title: fix a complex markdown file and validate it
+    steps:
+      - title: initial check should report failures
+        run: yarn cli markdown check --with-path-starting pest-spec/fixtures/to-fix/
+        expect:
+          exitCode: "exit 0"
+          stderrContains:
+            - Linting markdown failed
+      - title: run fixer on complex markdown
+        run: yarn cli markdown fix --with-path-starting pest-spec/fixtures/to-fix/
+        expect:
+          exitCode: "exit 0"
+      - title: final check should pass without failures
+        run: yarn cli markdown check --with-path-starting pest-spec/fixtures/to-fix/
+        expect:
+          exitCode: "exit 0"
+          stderrNotContains:
+            - Linting markdown failed
+

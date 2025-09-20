@@ -3,29 +3,29 @@ on:
   - push
 jobs:
   build:
-    name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         node:
-          - 16.x
+          - 22.x
         os:
           - ubuntu-latest
-          - macOS-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Use Node ${{ matrix.node }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-      - name: Installation
+          cache: 'yarn'
+      - name: Install dependencies
         run: yarn install
-      - name: Installation of baldrick
-        run: yarn add baldrick-dev-ts
-      - name: Static code analysis
+      - name: Lint (Biome)
         run: yarn lint:ci
       - name: Test
         run: yarn test:ci
+      - name: Markdown checks
+        run: yarn md
       - name: Build
         run: yarn build
