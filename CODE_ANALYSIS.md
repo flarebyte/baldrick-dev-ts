@@ -44,35 +44,34 @@ All actions can target files via a unified filter model:
 - Central command wiring in `Commanding` with typed models for options and flags.
 
 ## Usage Across Flarebyte Repos
-
 | Project | lint check | lint fix | lint ci | test check | markdown check | markdown fix | release check | release ci |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| baldrick-broth |  |  |  | npx baldrick-dev-ts test check | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ | npx baldrick-dev-ts@latest release check |  |
-| baldrick-doc-ts |  |  |  | npx baldrick-dev-ts test check | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ | npx baldrick-dev-ts@latest release check |  |
-| baldrick-pest |  |  |  | npx baldrick-dev-ts test check | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ | npx baldrick-dev-ts@latest release check |  |
-| baldrick-zest-engine | npx baldrick-dev-ts@latest lint check -s src test | npx baldrick-dev-ts@latest lint fix -s src test |  | npx baldrick-dev-ts test check | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ | npx baldrick-dev-ts@latest release check | npx baldrick-dev-ts@latest release ci |
-| baldrick-zest-mess | npx baldrick-dev-ts@latest lint check -s src test | npx baldrick-dev-ts@latest lint fix -s src test |  | npx baldrick-dev-ts test check | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ | npx baldrick-dev-ts@latest release check | npx baldrick-dev-ts@latest release ci |
-| beaming-well-of-mimir |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| beaming-yggdrasil |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| boolean_rhapsody |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| clingy-code-detective |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| delimatrix_dart |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| document_slot_bubblegum |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| eagleyeix |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| elegant_fragment_copperframe |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| fairlie-functional |  |  |  | npx baldrick-dev-ts test check | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ | npx baldrick-dev-ts@latest release check |  |
-| faora-kai |  |  |  | npx baldrick-dev-ts test check | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ | npx baldrick-dev-ts@latest release check |  |
-| grand_copperframe |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| incy-wincy-code-bite |  |  |  | npx baldrick-dev-ts test check | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ | npx baldrick-dev-ts@latest release check |  |
-| kiwi_watermelon_store |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| lunar-diamond-engraving |  |  |  | npx baldrick-dev-ts test check | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ | npx baldrick-dev-ts@latest release check |  |
-| lunar-multiple-prism-beam |  |  |  | npx baldrick-dev-ts test check | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ | npx baldrick-dev-ts@latest release check |  |
-| lunar-obsidian-crypt |  |  |  | npx baldrick-dev-ts test check | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ | npx baldrick-dev-ts@latest release check |  |
-| message_copperframe |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| message_slot_bubblegum |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| overview |  |  |  |  | npx baldrick-dev-ts@latest markdown check | npx baldrick-dev-ts@latest markdown fix |  |  |
-| pico-accountancy | npx baldrick-dev-ts@latest lint check -s src test | npx baldrick-dev-ts@latest lint fix -s src test |  | npx baldrick-dev-ts test check | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ | npx baldrick-dev-ts@latest release check |  |
-| preview_slot_bubblegum |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| slotboard_copperframe |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| text_copperframe |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
-| validomix |  |  |  |  | baldrick markdown check<br>npx baldrick-dev-ts@latest markdown check<br>npx baldrick-dev-ts@latest markdown check -s .github/ | npx baldrick-dev-ts@latest markdown fix<br>npx baldrick-dev-ts@latest markdown fix -s .github/ |  |  |
+| [baldrick-broth](https://github.com/flarebyte/baldrick-broth) |  |  |  | ✓ | ✓ | ✓ | ✓ |  |
+| [baldrick-doc-ts](https://github.com/flarebyte/baldrick-doc-ts) |  |  |  | ✓ | ✓ | ✓ | ✓ |  |
+| [baldrick-pest](https://github.com/flarebyte/baldrick-pest) |  |  |  | ✓ | ✓ | ✓ | ✓ |  |
+| [baldrick-zest-engine](https://github.com/flarebyte/baldrick-zest-engine) | ✓ | ✓ |  | ✓ | ✓ | ✓ | ✓ | ✓ |
+| [baldrick-zest-mess](https://github.com/flarebyte/baldrick-zest-mess) | ✓ | ✓ |  | ✓ | ✓ | ✓ | ✓ | ✓ |
+| [beaming-well-of-mimir](https://github.com/flarebyte/beaming-well-of-mimir) |  |  |  |  | ✓ | ✓ |  |  |
+| [beaming-yggdrasil](https://github.com/flarebyte/beaming-yggdrasil) |  |  |  |  | ✓ | ✓ |  |  |
+| [boolean_rhapsody](https://github.com/flarebyte/boolean_rhapsody) |  |  |  |  | ✓ | ✓ |  |  |
+| [clingy-code-detective](https://github.com/flarebyte/clingy-code-detective) |  |  |  |  | ✓ | ✓ |  |  |
+| [delimatrix_dart](https://github.com/flarebyte/delimatrix_dart) |  |  |  |  | ✓ | ✓ |  |  |
+| [document_slot_bubblegum](https://github.com/flarebyte/document_slot_bubblegum) |  |  |  |  | ✓ | ✓ |  |  |
+| [eagleyeix](https://github.com/flarebyte/eagleyeix) |  |  |  |  | ✓ | ✓ |  |  |
+| [elegant_fragment_copperframe](https://github.com/flarebyte/elegant_fragment_copperframe) |  |  |  |  | ✓ | ✓ |  |  |
+| [fairlie-functional](https://github.com/flarebyte/fairlie-functional) |  |  |  | ✓ | ✓ | ✓ | ✓ |  |
+| [faora-kai](https://github.com/flarebyte/faora-kai) |  |  |  | ✓ | ✓ | ✓ | ✓ |  |
+| [grand_copperframe](https://github.com/flarebyte/grand_copperframe) |  |  |  |  | ✓ | ✓ |  |  |
+| [incy-wincy-code-bite](https://github.com/flarebyte/incy-wincy-code-bite) |  |  |  | ✓ | ✓ | ✓ | ✓ |  |
+| [kiwi_watermelon_store](https://github.com/flarebyte/kiwi_watermelon_store) |  |  |  |  | ✓ | ✓ |  |  |
+| [lunar-diamond-engraving](https://github.com/flarebyte/lunar-diamond-engraving) |  |  |  | ✓ | ✓ | ✓ | ✓ |  |
+| [lunar-multiple-prism-beam](https://github.com/flarebyte/lunar-multiple-prism-beam) |  |  |  | ✓ | ✓ | ✓ | ✓ |  |
+| [lunar-obsidian-crypt](https://github.com/flarebyte/lunar-obsidian-crypt) |  |  |  | ✓ | ✓ | ✓ | ✓ |  |
+| [message_copperframe](https://github.com/flarebyte/message_copperframe) |  |  |  |  | ✓ | ✓ |  |  |
+| [message_slot_bubblegum](https://github.com/flarebyte/message_slot_bubblegum) |  |  |  |  | ✓ | ✓ |  |  |
+| [overview](https://github.com/flarebyte/overview) |  |  |  |  | ✓ | ✓ |  |  |
+| [pico-accountancy](https://github.com/flarebyte/pico-accountancy) | ✓ | ✓ |  | ✓ | ✓ | ✓ | ✓ |  |
+| [preview_slot_bubblegum](https://github.com/flarebyte/preview_slot_bubblegum) |  |  |  |  | ✓ | ✓ |  |  |
+| [slotboard_copperframe](https://github.com/flarebyte/slotboard_copperframe) |  |  |  |  | ✓ | ✓ |  |  |
+| [text_copperframe](https://github.com/flarebyte/text_copperframe) |  |  |  |  | ✓ | ✓ |  |  |
+| [validomix](https://github.com/flarebyte/validomix) |  |  |  |  | ✓ | ✓ |  |  |
