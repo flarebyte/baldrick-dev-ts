@@ -51,12 +51,13 @@
 		"norm:g": "baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix",
 		"cli": "npx -p tsx@latest tsx src/cli.mts",
 		"pretest:ci": "yarn build",
-		"test:ci": "node --test --test-reporter=spec dist/test/**/*.test.js",
-		"test:cov": "yarn build && npx -p c8@latest c8 -r text -r lcov -r html node --test dist/test/**/*.test.js",
-		"lint": "npx -p @biomejs/biome@latest biome lint src test .github",
-		"lint:fix": "npx -p @biomejs/biome@latest biome check --write src test .github",
-		"lint:ci": "npx -p @biomejs/biome@latest biome check src test .github"
-	},
+    "test:ci": "node --test --test-reporter=spec dist/test/**/*.test.js",
+    "test:cov": "yarn build && npx -p c8@latest c8 -r text -r lcov -r html node --test dist/test/**/*.test.js",
+    "test:pest": "npx -p baldrick-pest@latest baldrick-pest test -f pest-spec/markdown-validate.yaml",
+    "lint": "npx -p @biomejs/biome@latest biome lint src test .github",
+    "lint:fix": "npx -p @biomejs/biome@latest biome check --write src test .github",
+    "lint:ci": "npx -p @biomejs/biome@latest biome check src test .github"
+  },
 	"dependencies": {
 		"baldrick-tsconfig-es2024": "*",
 		"commander": "9.4.0",

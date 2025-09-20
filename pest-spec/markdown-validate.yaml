@@ -1,0 +1,21 @@
+title: markdown-validation
+cases:
+  valid-markdown:
+    title: validate a correct markdown file
+    steps:
+      - title: run markdown check on valid fixture
+        run: yarn cli markdown check --with-path-starting pest-spec/fixtures/valid/
+        expect:
+          exitCode: "exit 0"
+          stderrNotContains:
+            - Linting markdown failed
+
+  invalid-markdown:
+    title: validate an incorrect markdown file
+    steps:
+      - title: run markdown check on invalid fixture
+        run: yarn cli markdown check --with-path-starting pest-spec/fixtures/invalid/
+        expect:
+          exitCode: "exit 0"
+          stderrContains:
+            - Linting markdown failed
