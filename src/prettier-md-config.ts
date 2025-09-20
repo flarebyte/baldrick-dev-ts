@@ -1,5 +1,5 @@
-import { Options } from 'prettier';
+import type { Options } from "prettier";
 
 export const computePrettierMdConfig = (): Options => ({
-  parser: 'markdown',
+	parser: "markdown",
 });

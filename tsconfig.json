@@ -1,10 +1,7 @@
 {
-  "extends": "baldrick-tsconfig-es2024",
-  "compilerOptions": {
-    "extendedDiagnostics": true
-  },
-  "include": [
-    "src",
-    "test"
-  ]
+	"extends": "baldrick-tsconfig-es2024",
+	"compilerOptions": {
+		"extendedDiagnostics": true
+	},
+	"include": ["src", "test"]
 }

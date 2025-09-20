@@ -1,104 +1,97 @@
 {
-  "name": "baldrick-dev-ts",
-  "description": "CLI for TypeScript package development",
-  "keywords": [
-    "cli",
-    "markdown",
-    "release"
-  ],
-  "version": "1.0.0",
-  "author": {
-    "name": "Olivier Huin <olih@users.noreply.github.com>",
-    "url": "https://github.com/olih"
-  },
-  "license": "MIT",
-  "homepage": "https://github.com/flarebyte/baldrick-dev-ts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/flarebyte/baldrick-dev-ts.git"
-  },
-  "bugs": "https://github.com/flarebyte/baldrick-dev-ts/issues",
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/src/cli.mjs",
-      "default": "./dist/src/cli.mjs",
-      "types": "./dist/src"
-    },
-    "./package.json": {
-      "default": "./package.json"
-    }
-  },
-  "main": "./dist/src/index.mjs",
-  "files": [
-    "dist/src",
-    "src"
-  ],
-  "bin": {
-    "baldrick": "dist/src/cli.mjs",
-    "baldrick-dev-ts": "dist/src/cli.mjs"
-  },
-  "engines": {
-    "node": ">=22"
-  },
-  "scripts": {
-    "build": "tsc --outDir dist",
-    "doc": "npx typedoc --json report/doc.json --pretty src/index.ts && npx baldrick-doc-ts typedoc --json-source report/doc.json && baldrick-doc-ts parse -f internal ngram && yarn md:fix",
-    "github": "gh repo edit --delete-branch-on-merge --enable-squash-merge",
-    
-    "md": "npx baldrick-dev-ts markdown check && npx baldrick-dev-ts markdown check -s .github/",
-    "md:fix": "npx baldrick-dev-ts markdown fix && npx baldrick-dev-ts markdown fix -s .github/",
-    "prebuild": "yarn reset",
-    "ready": "yarn md && yarn outdated && yarn audit && yarn release:check",
-    "reset": "rm -rf dist; rm -rf report",
-    "release:check": "npx baldrick-dev-ts release check",
-    "release:ci": "npx baldrick-dev-ts release ci",
-    "h": "cat commands.txt",
-    "norm": "npx baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix",
-    "norm:g": "baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix",
-    "cli": "tsx src/cli.mts",
-    "pretest:ci": "yarn build",
-    "test:ci": "node --test --test-reporter=spec dist/test/**/*.test.js",
-    "lint": "npx @biomejs/biome lint .",
-    "lint:fix": "npx @biomejs/biome check --apply .",
-    "lint:ci": "npx @biomejs/biome check ."
-  },
-  "dependencies": {
-    "baldrick-tsconfig-es2024": "*",
-    "commander": "9.4.0",
-    "diff": "^5.0.0",
-    "execa": "^6.0.0",
-    "fs-extra": "^10.0.0",
-    "prettier": "2.7.1",
-    "remark-cli": "^11.0.0",
-    "remark-gfm": "^3.0.1",
-    "remark-lint-emphasis-marker": "^3.1.1",
-    "remark-lint-list-item-indent": "^3.1.1",
-    "remark-lint-list-item-spacing": "^4.1.1",
-    "remark-lint-maximum-heading-length": "^3.1.1",
-    "remark-lint-maximum-line-length": "^3.1.2",
-    "remark-lint-ordered-list-marker-style": "^3.1.1",
-    "remark-lint-ordered-list-marker-value": "^3.1.1",
-    "remark-lint-strong-marker": "^3.1.1",
-    "remark-lint-unordered-list-marker-style": "^3.1.1",
-    "remark-preset-lint-consistent": "^5.1.1",
-    "remark-preset-lint-recommended": "^6.1.2",
-    "tiny-glob": "^0.2.9",
-    "tslib": "^2.3.1",
-    "vfile-reporter": "^7.0.3",
-    "vfile-reporter-json": "^3.1.0"
-  },
-  "devDependencies": {
-    "@types/diff": "5.0.2",
-    "@types/fs-extra": "^9.0.13",
-    "@types/node": "18.7.3",
-    "@types/prettier": "^2.7.3",
-    "@biomejs/biome": "^1.8.3",
-    "ts-node": "^10.9.1",
-    "tsx": "^4.7.0",
-    "typescript": "^5.4.0"
-  },
-  "peerDependencies": {
-    "typescript": "5.x"
-  }
+	"name": "baldrick-dev-ts",
+	"description": "CLI for TypeScript package development",
+	"keywords": ["cli", "markdown", "release"],
+	"version": "1.0.0",
+	"author": {
+		"name": "Olivier Huin <olih@users.noreply.github.com>",
+		"url": "https://github.com/olih"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/flarebyte/baldrick-dev-ts",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/flarebyte/baldrick-dev-ts.git"
+	},
+	"bugs": "https://github.com/flarebyte/baldrick-dev-ts/issues",
+	"type": "module",
+	"exports": {
+		".": {
+			"import": "./dist/src/cli.mjs",
+			"default": "./dist/src/cli.mjs",
+			"types": "./dist/src"
+		},
+		"./package.json": {
+			"default": "./package.json"
+		}
+	},
+	"main": "./dist/src/index.mjs",
+	"files": ["dist/src", "src"],
+	"bin": {
+		"baldrick": "dist/src/cli.mjs",
+		"baldrick-dev-ts": "dist/src/cli.mjs"
+	},
+	"engines": {
+		"node": ">=22"
+	},
+	"scripts": {
+		"build": "tsc --outDir dist",
+		"doc": "npx typedoc --json report/doc.json --pretty src/index.ts && npx baldrick-doc-ts typedoc --json-source report/doc.json && baldrick-doc-ts parse -f internal ngram && yarn md:fix",
+		"github": "gh repo edit --delete-branch-on-merge --enable-squash-merge",
+
+		"md": "npx baldrick-dev-ts markdown check && npx baldrick-dev-ts markdown check -s .github/",
+		"md:fix": "npx baldrick-dev-ts markdown fix && npx baldrick-dev-ts markdown fix -s .github/",
+		"prebuild": "yarn reset",
+		"ready": "yarn md && yarn outdated && yarn audit && yarn release:check",
+		"reset": "rm -rf dist; rm -rf report",
+		"release:check": "npx baldrick-dev-ts release check",
+		"release:ci": "npx baldrick-dev-ts release ci",
+		"h": "cat commands.txt",
+		"norm": "npx baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix",
+		"norm:g": "baldrick-ts generate -f cli npx -ga 'flarebyte' -ch 'Flarebyte.com' -cy 2021 -l MIT -b baldrick && yarn md:fix",
+		"cli": "tsx src/cli.mts",
+		"pretest:ci": "yarn build",
+		"test:ci": "node --test --test-reporter=spec dist/test/**/*.test.js",
+		"lint": "npx @biomejs/biome lint .",
+		"lint:fix": "npx @biomejs/biome check --apply .",
+		"lint:ci": "npx @biomejs/biome check ."
+	},
+	"dependencies": {
+		"baldrick-tsconfig-es2024": "*",
+		"commander": "9.4.0",
+		"diff": "^5.0.0",
+		"execa": "^6.0.0",
+		"fs-extra": "^10.0.0",
+		"prettier": "2.7.1",
+		"remark-cli": "^11.0.0",
+		"remark-gfm": "^3.0.1",
+		"remark-lint-emphasis-marker": "^3.1.1",
+		"remark-lint-list-item-indent": "^3.1.1",
+		"remark-lint-list-item-spacing": "^4.1.1",
+		"remark-lint-maximum-heading-length": "^3.1.1",
+		"remark-lint-maximum-line-length": "^3.1.2",
+		"remark-lint-ordered-list-marker-style": "^3.1.1",
+		"remark-lint-ordered-list-marker-value": "^3.1.1",
+		"remark-lint-strong-marker": "^3.1.1",
+		"remark-lint-unordered-list-marker-style": "^3.1.1",
+		"remark-preset-lint-consistent": "^5.1.1",
+		"remark-preset-lint-recommended": "^6.1.2",
+		"tiny-glob": "^0.2.9",
+		"tslib": "^2.3.1",
+		"vfile-reporter": "^7.0.3",
+		"vfile-reporter-json": "^3.1.0"
+	},
+	"devDependencies": {
+		"@types/diff": "5.0.2",
+		"@types/fs-extra": "^9.0.13",
+		"@types/node": "18.7.3",
+		"@types/prettier": "^2.7.3",
+		"@biomejs/biome": "^1.8.3",
+		"ts-node": "^10.9.1",
+		"tsx": "^4.7.0",
+		"typescript": "^5.4.0"
+	},
+	"peerDependencies": {
+		"typescript": "5.x"
+	}
 }
