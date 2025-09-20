@@ -1,0 +1,11 @@
+title: release-check
+cases:
+  simulate-release-check:
+    title: run release in check mode (no publish)
+    steps:
+      - title: run release check and verify output
+        run: yarn cli release check
+        expect:
+          exitCode: "exit 0"
+          stdoutContains:
+            - Checking publishing for
