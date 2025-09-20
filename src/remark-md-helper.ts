@@ -114,14 +114,13 @@ export const fixMdRemarkContent = async (content: string) => {
     .data(
       "settings",
       {
-        commonmark: true,
         emphasis: "_",
         strong: "*",
         bullet: "-",
         listItemIndent: "tab",
         incrementListMarker: true,
         fences: true,
-      } as any,
+      },
     )
     .process(content);
 
