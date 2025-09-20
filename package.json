@@ -58,37 +58,36 @@
     "lint:fix": "npx -p @biomejs/biome@latest biome check --write src test .github",
     "lint:ci": "npx -p @biomejs/biome@latest biome check src test .github"
   },
-	"dependencies": {
-		"baldrick-tsconfig-es2024": "*",
-		"commander": "9.4.0",
-		"diff": "^5.0.0",
-		"execa": "^6.0.0",
-		"fs-extra": "^10.0.0",
-		"prettier": "2.7.1",
-		"remark-cli": "^11.0.0",
-		"remark-gfm": "^3.0.1",
-		"remark-lint-emphasis-marker": "^3.1.1",
-		"remark-lint-list-item-indent": "^3.1.1",
-		"remark-lint-list-item-spacing": "^4.1.1",
-		"remark-lint-maximum-heading-length": "^3.1.1",
-		"remark-lint-maximum-line-length": "^3.1.2",
-		"remark-lint-ordered-list-marker-style": "^3.1.1",
-		"remark-lint-ordered-list-marker-value": "^3.1.1",
-		"remark-lint-strong-marker": "^3.1.1",
-		"remark-lint-unordered-list-marker-style": "^3.1.1",
-		"remark-preset-lint-consistent": "^5.1.1",
-		"remark-preset-lint-recommended": "^6.1.2",
-		"tiny-glob": "^0.2.9",
-		"tslib": "^2.3.1",
-		"vfile-reporter": "^7.0.3",
-		"vfile-reporter-json": "^3.1.0"
-	},
-	"devDependencies": {
-		"@types/diff": "5.0.2",
-		"@types/fs-extra": "^9.0.13",
-		"@types/node": "18.7.3",
-		"@types/prettier": "^2.7.3"
-	},
+  "dependencies": {
+    "baldrick-tsconfig-es2024": "*",
+    "commander": "^14.0.1",
+    "diff": "^8.0.2",
+    "execa": "^9.6.0",
+    "fs-extra": "^11.3.2",
+    "prettier": "^3.6.2",
+    "remark-cli": "^12.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-lint-emphasis-marker": "^4.0.1",
+    "remark-lint-list-item-indent": "^4.0.1",
+    "remark-lint-list-item-spacing": "^5.0.1",
+    "remark-lint-maximum-heading-length": "^4.1.1",
+    "remark-lint-maximum-line-length": "^4.1.1",
+    "remark-lint-ordered-list-marker-style": "^4.0.1",
+    "remark-lint-ordered-list-marker-value": "^4.0.1",
+    "remark-lint-strong-marker": "^4.0.1",
+    "remark-lint-unordered-list-marker-style": "^4.0.1",
+    "remark-preset-lint-consistent": "^6.0.1",
+    "remark-preset-lint-recommended": "^7.0.1",
+    "tiny-glob": "^0.2.9",
+    "tslib": "^2.8.1",
+    "vfile-reporter": "^8.1.1",
+    "vfile-reporter-json": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/diff": "^8.0.0",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.5.2"
+  },
 	"peerDependencies": {
 		"typescript": "5.x"
 	}

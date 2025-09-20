@@ -109,17 +109,21 @@ export const runMdRemark = async (
 
 /** Apply remark-based normalization to a markdown string and return the new content. */
 export const fixMdRemarkContent = async (content: string) => {
-	const newContent = await createRemark()
-		.data("settings", {
-			commonmark: true,
-			emphasis: "_",
-			strong: "*",
-			bullet: "-",
-			listItemIndent: "tab",
-			incrementListMarker: true,
-			fences: true,
-		})
-		.process(content);
+  const newContent = await createRemark()
+    // Cast to any to accommodate settings changes across remark versions
+    .data(
+      "settings",
+      {
+        commonmark: true,
+        emphasis: "_",
+        strong: "*",
+        bullet: "-",
+        listItemIndent: "tab",
+        incrementListMarker: true,
+        fences: true,
+      } as any,
+    )
+    .process(content);
 
 	return String(newContent);
 };

@@ -59,9 +59,9 @@ describe("fs-extra (smoke)", () => {
 });
 
 describe("prettier (smoke)", () => {
-	test("formats simple JS", () => {
+	test("formats simple JS", async () => {
 		const code = "const x=1\n";
-		const formatted = format(code, {
+		const formatted = await format(code, {
 			semi: true,
 			singleQuote: true,
 			parser: "babel",
